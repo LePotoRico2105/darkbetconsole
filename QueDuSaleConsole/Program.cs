@@ -11,7 +11,7 @@ namespace QueDuSaleConsole
         static void Main(string[] args)
         {
             Console.WriteLine(" ------------------------");
-            Console.WriteLine(" | QUEDUSALE PRONOSTICS |");
+            Console.WriteLine(" | QUEDUSALE PRONOSTICSS |");
             Console.WriteLine(" ------------------------");
             Console.Read();
         }
