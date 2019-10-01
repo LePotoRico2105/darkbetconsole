@@ -53,7 +53,6 @@ namespace QueDuSaleConsole
             {
                 // competition.Id = Convert.ToInt32(objectCompetitions["id"]);
             }
-            return competition;
         }
     }
 }
