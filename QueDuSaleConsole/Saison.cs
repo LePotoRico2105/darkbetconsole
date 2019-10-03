@@ -9,6 +9,7 @@ namespace QueDuSaleConsole
     class Saison
     {
         private int id;
+        private string champion;
         private DateTime debut, fin;
 
         public Saison()
@@ -16,9 +17,10 @@ namespace QueDuSaleConsole
             Console.WriteLine("Nouvelle saison créé");
         }
 
-        public Saison(int pId, DateTime pDebut, DateTime pFin)
+        public Saison(int pId, string pChampion, DateTime pDebut, DateTime pFin)
         {
             this.id = pId;
+            this.champion = pChampion;
             this.debut = pDebut;
             this.fin = pFin;
             Console.WriteLine("Saison n° " + id + "crée ");
@@ -39,6 +41,19 @@ namespace QueDuSaleConsole
             set
             {
                 id = value;
+            }
+        }
+
+        public string Champion
+        {
+            get
+            {
+                return champion;
+            }
+
+            set
+            {
+                champion = value;
             }
         }
 

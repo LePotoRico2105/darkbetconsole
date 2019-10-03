@@ -10,6 +10,7 @@ namespace QueDuSaleConsole
     {
         private int id, nbSaisonsDisponible;
         private Pays unPays;
+        private Saison saisonActuelle;
         private string nom, code;
         private DateTime maj;
 
@@ -19,9 +20,11 @@ namespace QueDuSaleConsole
             Console.WriteLine("Nouvelle compétition créé");
         }
 
-        public Competition(int pId, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
+        public Competition(int pId, Pays pUnPays, Saison pSaisonActuelle, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
         {
             this.id = pId;
+            this.unPays = pUnPays;
+            this.saisonActuelle = pSaisonActuelle;
             this.nbSaisonsDisponible = pNbSaisonsDisponible;
             this.nom = pNom;
             this.code = pCode;
