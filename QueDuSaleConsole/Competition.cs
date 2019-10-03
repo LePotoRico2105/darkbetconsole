@@ -98,5 +98,18 @@ namespace QueDuSaleConsole
                 nbSaisonsDisponible = value;
             }
         }
+
+        public Pays UnPays
+        {
+            get
+            {
+                return unPays;
+            }
+
+            set
+            {
+                unPays = value;
+            }
+        }
     }
 }
