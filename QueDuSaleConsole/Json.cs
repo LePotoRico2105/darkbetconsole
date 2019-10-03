@@ -51,9 +51,10 @@ namespace QueDuSaleConsole
             Newtonsoft.Json.Linq.JObject objectCompetitions = this.GetJsonObject("https://api.football-data.org/v2/competitions?plan=TIER_ONE");
             for (int i = 0; i < Convert.ToInt32(objectCompetitions["count"]); i++)
             {
-                // competition.Id = Convert.ToInt32(objectCompetitions["id"]);
+                competition.Id = Convert.ToInt32(objectCompetitions["id"]);
+                
+
             }
-            return competition;
         }
     }
 }
