@@ -60,6 +60,7 @@ namespace QueDuSaleConsole
                 competition = new Competition();
                 competition.Id = Convert.ToInt32(objectCompetitions["competitions"][i]["id"]);
                 competition.UnPays = new Pays(Convert.ToInt32(objectCompetitions["competitions"][i]["area"]["id"]), objectCompetitions["competitions"][i]["area"]["name"].ToString());
+                competition.SaisonActuelle = new Saison(Convert.ToInt32(objectCompetitions["competitions"][i]["currentSeason"]["id"]), Convert.ToDateTime(objectCompetitions["competitions"][i]["currentSeason"]["startDate"]), Convert.ToDateTime(objectCompetitions["competitions"][i]["currentSeason"]["endDate"]));
                 byte[] bytes = Encoding.Default.GetBytes(objectCompetitions["competitions"][i]["name"].ToString());
                 competition.Nom = Encoding.UTF8.GetString(bytes);
                 competition.Code = objectCompetitions["competitions"][i]["code"].ToString();

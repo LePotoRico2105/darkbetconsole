@@ -6,29 +6,24 @@ using System.Threading.Tasks;
 
 namespace QueDuSaleConsole
 {
-    class Saison
+    public class Saison
     {
         private int id;
-        private string champion;
         private DateTime debut, fin;
 
         public Saison()
         {
-            Console.WriteLine("Nouvelle saison créé");
         }
 
-        public Saison(int pId, string pChampion, DateTime pDebut, DateTime pFin)
+        public Saison(int pId, DateTime pDebut, DateTime pFin)
         {
             this.id = pId;
-            this.champion = pChampion;
             this.debut = pDebut;
             this.fin = pFin;
-            Console.WriteLine("Saison n° " + id + "crée ");
         }
 
         ~Saison()
         {
-            Console.WriteLine("Saison détruite");
         }
 
         public int Id
@@ -44,18 +39,6 @@ namespace QueDuSaleConsole
             }
         }
 
-        public string Champion
-        {
-            get
-            {
-                return champion;
-            }
-
-            set
-            {
-                champion = value;
-            }
-        }
 
         public DateTime Debut
         {

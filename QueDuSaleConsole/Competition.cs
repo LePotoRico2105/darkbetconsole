@@ -111,5 +111,18 @@ namespace QueDuSaleConsole
                 unPays = value;
             }
         }
+
+        public Saison SaisonActuelle
+        {
+            get
+            {
+                return saisonActuelle;
+            }
+
+            set
+            {
+                saisonActuelle = value;
+            }
+        }
     }
 }
