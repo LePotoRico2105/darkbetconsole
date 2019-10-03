@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QueDuSaleConsole
 {
-    class Competition
+    public class Competition
     {
         private int id, nbSaisonsDisponible;
         private Pays unPays;
@@ -16,7 +16,6 @@ namespace QueDuSaleConsole
 
         public Competition()
         {
-            Console.WriteLine("Nouvelle compétition créé");
         }
 
         public Competition(int pId, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
@@ -26,12 +25,10 @@ namespace QueDuSaleConsole
             this.nom = pNom;
             this.code = pCode;
             this.maj = pMaj;
-            Console.WriteLine("Compétition n° " + id + " - "+ nom + "crée ");
         }
 
         ~Competition()
         {
-            Console.WriteLine("Compétition détruite");
         }
 
         public int Id

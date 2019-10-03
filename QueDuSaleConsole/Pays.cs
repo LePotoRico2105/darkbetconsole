@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QueDuSaleConsole
 {
-    class Pays
+    public class Pays
     {
         private int id;
         private string nom;

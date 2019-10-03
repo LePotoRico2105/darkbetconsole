@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Competition.cs" />
+    <Compile Include="Data.cs" />
     <Compile Include="Pays.cs" />
     <Compile Include="Json.cs" />
     <Compile Include="Program.cs" />
