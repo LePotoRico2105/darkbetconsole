@@ -9,7 +9,7 @@ namespace QueDuSaleConsole
     class Competition
     {
         private int id, nbSaisonsDisponible;
-        private Pays pays;
+        private Pays unPays;
         private string nom, code;
         private DateTime maj;
 
@@ -96,6 +96,19 @@ namespace QueDuSaleConsole
             set
             {
                 nbSaisonsDisponible = value;
+            }
+        }
+
+        public Pays UnPays
+        {
+            get
+            {
+                return unPays;
+            }
+
+            set
+            {
+                unPays = value;
             }
         }
     }
