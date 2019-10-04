@@ -49,7 +49,7 @@ namespace QueDuSaleConsole
             catch (Exception e){ Console.WriteLine("\n" + e); Console.ReadKey(); return new Newtonsoft.Json.Linq.JObject(); }
         }
 
-        // Renvoi 
+        // Créé les competitions
         public List<Competition> CreateCompetitions()
         {
             List<Competition> competitions = new List<Competition>();
@@ -71,5 +71,34 @@ namespace QueDuSaleConsole
             competitions = competitions.OrderBy(x => x.Nom).ToList();
             return competitions;
         }
+
+        // Crée les équipes
+        public List<Equipe> CreateEquipes(Data data)
+        {
+            List<Equipe> equipes = new List<Equipe>();
+            Equipe equipe = new Equipe();
+            for(int c = 0; c < data.Competitions.Count(); c++)
+            {
+                Newtonsoft.Json.Linq.JObject objectEquipes = GetJsonObject("https://api.football-data.org/v2/competitions/" + data.Competitions[c].Code + "/teams");
+                for (int i = 0; i < Convert.ToInt32(objectEquipes["count"]); i++)
+                {
+                    equipe = new Equipe();
+                    equipe.Id = Convert.ToInt32(objectEquipes["teams"][i]["id"]);
+                    byte[] bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["name"].ToString());
+                    equipe.Nom = Encoding.UTF8.GetString(bytes);
+                    bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["shortName"].ToString());
+                    equipe.NomCourt = Encoding.UTF8.GetString(bytes);
+                    equipe.Initiale = objectEquipes["competitions"][i]["tla"].ToString();
+                    equipe.Logo = objectEquipes["competitions"][i]["crestUrl"].ToString();
+                    equipe.Stade = objectEquipes["competitions"][i]["venue"].ToString();
+                    equipe.Maj = Convert.ToDateTime(objectEquipes["competitions"][i]["lastUpdated"]);
+                    equipes.Add(equipe);
+                }
+            }       
+            equipes = equipes.OrderBy(x => x.Nom).ToList();
+            return equipes;
+        }
+
+
     }
 }
