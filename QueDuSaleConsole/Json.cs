@@ -35,22 +35,22 @@ namespace QueDuSaleConsole
                 using (var webClient = new System.Net.WebClient())
                 {
                     for (int i = 0; i < this.tokens.Count(); i++)
-                    { 
+                    {
                         try
                         {
                             webClient.Headers.Add("X-Auth-Token", this.tokens[i]);
                             jsonObject = JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(webClient.DownloadString(adresse));
                         }
-                        catch{}
+                        catch { }
                     }
                 }
                 return jsonObject;
             }
-            catch (Exception e){ Console.WriteLine("\n" + e); Console.ReadKey(); return new Newtonsoft.Json.Linq.JObject(); }
+            catch (Exception e) { Console.WriteLine("\n" + e); Console.ReadKey(); return new Newtonsoft.Json.Linq.JObject(); }
         }
 
         // Créé les competitions
-        public List<Competition> CreateCompetitions()
+        public List<Competition> CreateCompetitions(Data data)
         {
             List<Competition> competitions = new List<Competition>();
             Competition competition = new Competition();
@@ -72,33 +72,44 @@ namespace QueDuSaleConsole
             return competitions;
         }
 
-        // Crée les équipes
-        public List<Equipe> CreateEquipes(Data data)
+        // Crée les saisons
+        public List<Saison> CreateSaisons(Data data, Competition competition)
+        {
+            List<Saison> saisons = new List<Saison>();
+            Saison saison = new Saison();
+            for (int s = DateTime.Today.Year; s >= 2017; s--)
+            {
+                Newtonsoft.Json.Linq.JObject objectEquipes = GetJsonObject("https://api.football-data.org/v2/competitions/" + competition.Code + "/teams?saison=" + s);
+                saison = new Saison();
+                saison.Id = Convert.ToInt32(objectEquipes["season"]["id"]);
+                saison.Debut = Convert.ToDateTime(objectEquipes["season"]["startDate"]);
+                saison.Fin = Convert.ToDateTime(objectEquipes["season"]["endDate"]);
+            }
+            return saisons;
+        }
+
+        public List<Equipe> CreateEquipes(Data data, Newtonsoft.Json.Linq.JObject objectEquipes)
         {
             List<Equipe> equipes = new List<Equipe>();
             Equipe equipe = new Equipe();
-            for(int c = 0; c < data.Competitions.Count(); c++)
+
+            
+            for (int i = 0; i < Convert.ToInt32(objectEquipes["count"]); i++)
             {
-                Newtonsoft.Json.Linq.JObject objectEquipes = GetJsonObject("https://api.football-data.org/v2/competitions/" + data.Competitions[c].Code + "/teams");
-                for (int i = 0; i < Convert.ToInt32(objectEquipes["count"]); i++)
-                {
-                    equipe = new Equipe();
-                    equipe.Id = Convert.ToInt32(objectEquipes["teams"][i]["id"]);
-                    byte[] bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["name"].ToString());
-                    equipe.Nom = Encoding.UTF8.GetString(bytes);
-                    bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["shortName"].ToString());
-                    equipe.NomCourt = Encoding.UTF8.GetString(bytes);
-                    equipe.Initiale = objectEquipes["competitions"][i]["tla"].ToString();
-                    equipe.Logo = objectEquipes["competitions"][i]["crestUrl"].ToString();
-                    equipe.Stade = objectEquipes["competitions"][i]["venue"].ToString();
-                    equipe.Maj = Convert.ToDateTime(objectEquipes["competitions"][i]["lastUpdated"]);
-                    equipes.Add(equipe);
-                }
-            }       
+                equipe = new Equipe();
+                equipe.Id = Convert.ToInt32(objectEquipes["teams"][i]["id"]);
+                byte[] bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["name"].ToString());
+                equipe.Nom = Encoding.UTF8.GetString(bytes);
+                bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["shortName"].ToString());
+                equipe.NomCourt = Encoding.UTF8.GetString(bytes);
+                equipe.Initiale = objectEquipes["competitions"][i]["tla"].ToString();
+                equipe.Logo = objectEquipes["competitions"][i]["crestUrl"].ToString();
+                equipe.Stade = objectEquipes["competitions"][i]["venue"].ToString();
+                equipe.Maj = Convert.ToDateTime(objectEquipes["competitions"][i]["lastUpdated"]);
+                equipes.Add(equipe);
+            }
             equipes = equipes.OrderBy(x => x.Nom).ToList();
             return equipes;
         }
-
-
     }
 }

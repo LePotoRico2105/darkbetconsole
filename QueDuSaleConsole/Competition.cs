@@ -11,6 +11,7 @@ namespace QueDuSaleConsole
         private int id, nbSaisonsDisponible;
         private Pays unPays;
         private Saison saisonActuelle;
+        private List<Saison> saisons;
         private string nom, code;
         private DateTime maj;
 
@@ -18,7 +19,7 @@ namespace QueDuSaleConsole
         {
         }
 
-        public Competition(int pId, Pays pUnPays, Saison pSaisonActuelle, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
+        public Competition(int pId, Pays pUnPays, Saison pSaisonActuelle, List<Saison> pSaisons, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
         {
             this.id = pId;
             this.unPays = pUnPays;
@@ -27,6 +28,7 @@ namespace QueDuSaleConsole
             this.nom = pNom;
             this.code = pCode;
             this.maj = pMaj;
+            this.saisons = pSaisons;
         }
 
         ~Competition()
@@ -121,6 +123,19 @@ namespace QueDuSaleConsole
             set
             {
                 saisonActuelle = value;
+            }
+        }
+
+        public List<Saison> Saisons
+        {
+            get
+            {
+                return saisons;
+            }
+
+            set
+            {
+                saisons = value;
             }
         }
     }

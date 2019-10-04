@@ -11,6 +11,7 @@ namespace QueDuSaleConsole
         private int id;
         private string gagnant;
         private DateTime debut, fin;
+        private List<Equipe> equipes;
 
         public Saison()
         {
@@ -22,6 +23,7 @@ namespace QueDuSaleConsole
             this.debut = pDebut;
             this.gagnant = null;
             this.fin = pFin;
+            this.equipes = new List<Equipe>();
         }
 
         public Saison(int pId, string pGagnant, DateTime pDebut, DateTime pFin)
@@ -30,6 +32,7 @@ namespace QueDuSaleConsole
             this.gagnant = pGagnant;
             this.debut = pDebut;
             this.fin = pFin;
+            this.equipes = new List<Equipe>();
         }
 
         ~Saison()
@@ -89,5 +92,18 @@ namespace QueDuSaleConsole
                 fin = value;
             }
         }
+        public List<Equipe> Equipes
+        {
+            get
+            {
+                return equipes;
+            }
+
+            set
+            {
+                equipes = value;
+            }
+        }
+
     }
 }
