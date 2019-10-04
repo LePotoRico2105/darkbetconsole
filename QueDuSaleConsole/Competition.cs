@@ -18,6 +18,9 @@ namespace QueDuSaleConsole
         {
         }
 
+        /**
+         * 
+         */
         public Competition(int pId, Pays pUnPays, Saison pSaisonActuelle, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
         {
             this.id = pId;

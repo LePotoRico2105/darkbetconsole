@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QueDuSaleConsole
 {
-    class Equipe
+    public class Equipe
     {
         private int id;
         private Pays unPays;
@@ -114,6 +114,19 @@ namespace QueDuSaleConsole
             set
             {
                 stade = value;
+            }
+        }
+
+        public DateTime Maj
+        {
+            get
+            {
+                return maj;
+            }
+
+            set
+            {
+                maj = value;
             }
         }
     }

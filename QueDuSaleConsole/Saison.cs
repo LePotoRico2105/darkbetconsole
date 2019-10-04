@@ -16,18 +16,11 @@ namespace QueDuSaleConsole
         {
         }
 
-        public Saison(int pId, DateTime pDebut, DateTime pFin)
-        {
-            this.id = pId;
-            this.debut = pDebut;
-            this.gagnant = null;
-            this.fin = pFin;
-        }
-
         public Saison(int pId, string pGagnant, DateTime pDebut, DateTime pFin)
         {
             this.id = pId;
-            this.gagnant = pGagnant;
+            if (this.gagnant == null) this.gagnant = null;
+                else this.gagnant = pGagnant;
             this.debut = pDebut;
             this.fin = pFin;
         }
