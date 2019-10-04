@@ -68,6 +68,7 @@ namespace QueDuSaleConsole
                 competition.Maj = Convert.ToDateTime(objectCompetitions["competitions"][i]["lastUpdated"]);
                 competitions.Add(competition);
             }
+            competitions = competitions.OrderBy(x => x.Nom).ToList();
             return competitions;
         }
     }
