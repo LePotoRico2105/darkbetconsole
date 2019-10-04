@@ -14,7 +14,7 @@ namespace QueDuSaleConsole
             Data data = new Data();
             Console.Clear();
             Console.WriteLine(" ------------------------");
-            Console.WriteLine(" | QUEDUSALE PRONOSTICSS |");
+            Console.WriteLine(" | QUEDUSALE PRONOSTICS |");
             Console.WriteLine(" ------------------------");
             AfficherCompetitions(data);
             Console.Read();

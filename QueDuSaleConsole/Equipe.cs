@@ -6,30 +6,34 @@ using System.Threading.Tasks;
 
 namespace QueDuSaleConsole
 {
-    public class Competition
+    class Equipe
     {
-        private int id, nbSaisonsDisponible;
+        private int id;
         private Pays unPays;
         private Saison saisonActuelle;
-        private string nom, code;
+        private string nom, nomCourt, initiale, stade, logo;
         private DateTime maj;
 
-        public Competition()
+        public Equipe()
         {
         }
 
-        public Competition(int pId, Pays pUnPays, Saison pSaisonActuelle, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
+        public Equipe(int pId, Pays pPUnPays, Saison pSaisonActuelle, string pNom, string pNomCourt, string pInitiale, string pStade, string pLogo, DateTime pMaj)
         {
             this.id = pId;
-            this.unPays = pUnPays;
+            this.unPays = pPUnPays;
             this.saisonActuelle = pSaisonActuelle;
-            this.nbSaisonsDisponible = pNbSaisonsDisponible;
             this.nom = pNom;
-            this.code = pCode;
+            this.nomCourt = pNomCourt;
+            this.initiale = pInitiale;
+            if (this.stade == null) this.stade = "";
+                else this.stade = pStade;
+            if (this.logo == null) this.logo = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd6OLePQd6vAlw-npkXL-9jaQRXxj8ADDrusZjon19DyEsPgLU-g";
+                else this.logo = pLogo;
             this.maj = pMaj;
         }
 
-        ~Competition()
+        ~Equipe()
         {
         }
 
@@ -51,6 +55,7 @@ namespace QueDuSaleConsole
             get
             {
                 return nom;
+                ;
             }
 
             set
@@ -59,68 +64,56 @@ namespace QueDuSaleConsole
             }
         }
 
-        public string Code
+
+        public string NomCourt
         {
             get
             {
-                return code;
+                return nomCourt;
             }
 
             set
             {
-                code = value;
+                nomCourt = value;
             }
         }
 
-        public DateTime Maj
+        public string Initiale
         {
             get
             {
-                return maj;
+                return initiale;
             }
 
             set
             {
-                maj = value;
+                initiale = value;
             }
         }
 
-        public int NbSaisonsDisponible
+        public string Logo
         {
             get
             {
-                return nbSaisonsDisponible;
+                return logo;
             }
 
             set
             {
-                nbSaisonsDisponible = value;
+                logo = value;
             }
         }
 
-        public Pays UnPays
+        public string Stade
         {
             get
             {
-                return unPays;
+                return stade;
             }
 
             set
             {
-                unPays = value;
-            }
-        }
-
-        public Saison SaisonActuelle
-        {
-            get
-            {
-                return saisonActuelle;
-            }
-
-            set
-            {
-                saisonActuelle = value;
+                stade = value;
             }
         }
     }
