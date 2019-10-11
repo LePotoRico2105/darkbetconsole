@@ -88,8 +88,8 @@ namespace QueDuSaleConsole
         }
 
         /** 
-         * <summary> Création d'une liste des competitions </summary>
-         * <returns> Retourne la liste des compétitions </returns>
+         * <summary> Création d'une liste de saison pour une compétition donnée </summary>
+         * <returns> Retourne la liste des saisons de la compétition en paramètre </returns>
          */
         public List<Saison> CreateSaisons(Data data, Competition competition)
         {
@@ -106,7 +106,10 @@ namespace QueDuSaleConsole
             return saisons;
         }
 
-        // Création d'une liste des équipe
+        /** 
+         * <summary> Création d'une liste d'équipes pour une compétition </summary>
+         * <returns> Retourne la liste des équipes dans une compétition </returns>
+         */
         public List<Equipe> CreateEquipes(Data data, Newtonsoft.Json.Linq.JObject objectEquipes)
         {
             List<Equipe> equipes = new List<Equipe>();
@@ -125,6 +128,7 @@ namespace QueDuSaleConsole
                 equipe.Logo = objectEquipes["competitions"][i]["crestUrl"].ToString();
                 equipe.Stade = objectEquipes["competitions"][i]["venue"].ToString();
                 equipe.Maj = Convert.ToDateTime(objectEquipes["competitions"][i]["lastUpdated"]);
+                // on ajoute l'équipe
                 equipes.Add(equipe);
             }
             equipes = equipes.OrderBy(x => x.Nom).ToList();
