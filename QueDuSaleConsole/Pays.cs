@@ -8,26 +8,42 @@ namespace QueDuSaleConsole
 {
     public class Pays
     {
+        #region Variables
         private int id;
         private string nom;
-
+        #endregion
+    
+        #region
+        /**
+         * Constructeur de la classe Pays
+         **/
         public Pays()
         {
-            Console.WriteLine("Nouveau pays créé");
+
         }
 
+        /**
+         * Constructeur de la classe Pays avec ses paramètres
+         **/
         public Pays(int pId, string pNom)
         {
             this.id = pId;
             this.nom = pNom;
-            Console.WriteLine("Nouveau pays créé : " + nom);
         }
 
+        /**
+         * Destructeur de la classe Pays
+         **/
         ~Pays()
         {
-            Console.WriteLine("Pays détruit");
+
         }
-    
+        #endregion
+
+        #region Acesseur(Getter->get)/Mutateur(Setter->set)
+        /**
+         * Acesseur/Mutateur de la variable id
+         **/
         public int Id
         {
             get
@@ -41,6 +57,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * Acesseur/Mutateur de la variable nom
+         **/
         public string Nom
         {
             get
@@ -53,5 +72,6 @@ namespace QueDuSaleConsole
                 nom = value;
             }
         }
+        #endregion
     }
 }

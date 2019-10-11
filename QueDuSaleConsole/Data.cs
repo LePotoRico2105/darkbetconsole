@@ -13,7 +13,7 @@ namespace QueDuSaleConsole
         public Data()
         {
             json = new Json();
-            competitions = json.CreateCompetitions();
+            competitions = json.CreateCompetitions(this);
         }
 
         ~Data()

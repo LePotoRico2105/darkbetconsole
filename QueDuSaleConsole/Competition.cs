@@ -8,17 +8,27 @@ namespace QueDuSaleConsole
 {
     public class Competition
     {
+        #region Variables
         private int id, nbSaisonsDisponible;
         private Pays unPays;
         private Saison saisonActuelle;
         private List<Saison> saisons;
         private string nom, code;
         private DateTime maj;
+        #endregion
 
+        #region Constructeur/Destructeur
+        /**
+         * Constructeur de la classe Compétition
+         **/
         public Competition()
         {
+
         }
 
+        /**
+         * Constructeur de la classe Compétition avec ses paramètres
+         **/
         public Competition(int pId, Pays pUnPays, Saison pSaisonActuelle, List<Saison> pSaisons, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
         {
             this.id = pId;
@@ -31,10 +41,19 @@ namespace QueDuSaleConsole
             this.saisons = pSaisons;
         }
 
+        /**
+         * Destructeur de la classe Compétition
+         **/
         ~Competition()
         {
-        }
 
+        }
+        #endregion
+
+        #region Acesseur(Getter->get)/Mutateur(Setter->set)
+        /**
+         * Acesseur/Mutateur de la variable id
+         **/
         public int Id
         {
             get
@@ -48,6 +67,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * Acesseur/Mutateur de la variable nom
+         **/
         public string Nom
         {
             get
@@ -61,6 +83,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * Acesseur/Mutateur de la variable code
+         **/
         public string Code
         {
             get
@@ -74,6 +99,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * Acesseur/Mutateur de la variable maj
+         **/
         public DateTime Maj
         {
             get
@@ -87,6 +115,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * Acesseur/Mutateur de la variable nbSaisonsDisponible
+         **/
         public int NbSaisonsDisponible
         {
             get
@@ -100,6 +131,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * Acesseur/Mutateur de la variable unPays
+         **/
         public Pays UnPays
         {
             get
@@ -113,6 +147,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * Acesseur/Mutateur de la variable saisonActuelle
+         **/
         public Saison SaisonActuelle
         {
             get
@@ -126,6 +163,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * Acesseur/Mutateur de la variable saisons
+         **/
         public List<Saison> Saisons
         {
             get
@@ -138,5 +178,6 @@ namespace QueDuSaleConsole
                 saisons = value;
             }
         }
+        #endregion
     }
 }
