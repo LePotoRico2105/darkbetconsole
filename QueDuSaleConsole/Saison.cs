@@ -17,7 +17,7 @@ namespace QueDuSaleConsole
 
         #region
         /**
-         * Constructeur de la classe Saison
+         * <summary> Constructeur de la classe Saison </summary>
          **/
         public Saison()
         {
@@ -25,7 +25,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Constructeur de la classe Saison avec ses paramètres
+         * <summary> Constructeur de la classe Saison avec ses paramètres </summary>
          **/
         public Saison(int pId, string pGagnant, DateTime pDebut, DateTime pFin)
         {
@@ -38,7 +38,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Destructeur de la classe Saison
+         * <summary> Destructeur de la classe Saison </summary>
          **/
         ~Saison()
         {
@@ -48,7 +48,7 @@ namespace QueDuSaleConsole
 
         #region Acesseur(Getter->get)/Mutateur(Setter->set)
         /**
-         * Acesseur/Mutateur de la variable id
+         * <summary> Acesseur/Mutateur de la variable id </summary>
          **/
         public int Id
         {
@@ -64,7 +64,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable gagnant
+         * <summary> Acesseur/Mutateur de la variable gagnant </summary>
          **/
         public string Gagnant
         {
@@ -81,7 +81,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable debut
+         * <summary> Acesseur/Mutateur de la variable debut </summary>
          **/
         public DateTime Debut
         {
@@ -97,7 +97,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable fin
+         * <summary> Acesseur/Mutateur de la variable fin </summary>
          **/
         public DateTime Fin
         {
@@ -113,7 +113,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable Equipe
+         * <summmary> Acesseur/Mutateur de la variable Equipe </summmary>
          **/
         public List<Equipe> Equipes
         {

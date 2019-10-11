@@ -11,21 +11,33 @@ namespace QueDuSaleConsole
     {
         List<string> tokens;
 
+        #region
+        /**
+         * Constructeur de la classe Json
+         */
         public Json()
         {
-            tokens = new List<string>();
+            tokens = new List<string>(); // initialisation d'une liste de Token
+            // ici, on ajoute à la liste toutes les clés de l'API
             tokens.Add("832593ac26474ca08bf040526470f67a");
             tokens.Add("89f54cbe1d4a40afa128132bc25499de");
             tokens.Add("8eaad1b696ca4e5eafbcf2f447a500d7");
             tokens.Add("6e6e9b9dd4d6431e9977ca0ff448ed56");
         }
 
+        /**
+         * Destructeur de la classe Json
+         */
         ~Json()
         {
 
         }
+        #endregion
 
-        // Renvoi les données JSON sous format string de l'adresse fourni
+        #region Fonctions et Procédures
+        /**
+         * Renvoi les données JSON sous format string de l'adresse fourni
+         */
         protected Newtonsoft.Json.Linq.JObject GetJsonObject(string adresse)
         {
             try
@@ -49,7 +61,10 @@ namespace QueDuSaleConsole
             catch (Exception e) { Console.WriteLine("\n" + e); Console.ReadKey(); return new Newtonsoft.Json.Linq.JObject(); }
         }
 
-        // Créé les competitions
+        /** 
+         * Création d'une liste des competitions
+         * <returns> Retourne la liste des compétitions </returns>
+         */
         public List<Competition> CreateCompetitions(Data data)
         {
             List<Competition> competitions = new List<Competition>();
@@ -72,7 +87,10 @@ namespace QueDuSaleConsole
             return competitions;
         }
 
-        // Crée les saisons
+        /** 
+         * <summary> Création d'une liste des competitions </summary>
+         * <returns> Retourne la liste des compétitions </returns>
+         */
         public List<Saison> CreateSaisons(Data data, Competition competition)
         {
             List<Saison> saisons = new List<Saison>();
@@ -88,6 +106,7 @@ namespace QueDuSaleConsole
             return saisons;
         }
 
+        // Création d'une liste des équipe
         public List<Equipe> CreateEquipes(Data data, Newtonsoft.Json.Linq.JObject objectEquipes)
         {
             List<Equipe> equipes = new List<Equipe>();
@@ -111,5 +130,6 @@ namespace QueDuSaleConsole
             equipes = equipes.OrderBy(x => x.Nom).ToList();
             return equipes;
         }
+        #endregion
     }
 }

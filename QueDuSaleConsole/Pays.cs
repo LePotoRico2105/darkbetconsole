@@ -15,7 +15,7 @@ namespace QueDuSaleConsole
     
         #region
         /**
-         * Constructeur de la classe Pays
+         * <summary> Constructeur de la classe Pays </summary>
          **/
         public Pays()
         {
@@ -23,7 +23,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Constructeur de la classe Pays avec ses paramètres
+         * <summary> Constructeur de la classe Pays avec ses paramètres </summary>
          **/
         public Pays(int pId, string pNom)
         {
@@ -32,7 +32,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Destructeur de la classe Pays
+         * <summary> Destructeur de la classe Pays </summary>
          **/
         ~Pays()
         {
@@ -42,7 +42,7 @@ namespace QueDuSaleConsole
 
         #region Acesseur(Getter->get)/Mutateur(Setter->set)
         /**
-         * Acesseur/Mutateur de la variable id
+         * <summary> Acesseur/Mutateur de la variable id </summary>
          **/
         public int Id
         {
@@ -58,7 +58,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable nom
+         * <summary> Acesseur/Mutateur de la variable nom </summary>
          **/
         public string Nom
         {

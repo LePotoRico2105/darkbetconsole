@@ -18,7 +18,7 @@ namespace QueDuSaleConsole
 
         #region Constructeur/Destructeur
         /**
-         * Constructeur de la classe Equipe
+         * <summary> Constructeur de la classe Equipe </summary>
          **/
         public Equipe()
         {
@@ -26,7 +26,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Constructeur de la classe Compétition avec ses paramètres
+         * <summary> Constructeur de la classe Compétition avec ses paramètres </summary>
          **/
         public Equipe(int pId, Pays pPUnPays, Saison pSaisonActuelle, string pNom, string pNomCourt, string pInitiale, string pStade, string pLogo, DateTime pMaj)
         {
@@ -44,7 +44,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Destructeur de la classe Equipe
+         * <summary> Destructeur de la classe Equipe </summary>
          **/
         ~Equipe()
         {
@@ -54,7 +54,7 @@ namespace QueDuSaleConsole
 
         #region Acesseur(Getter->get)/Mutateur(Setter->set)
         /**
-         * Acesseur/Mutateur de la variable id
+         * <summary> Acesseur/Mutateur de la variable id </summary>
          **/
         public int Id
         {
@@ -70,7 +70,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable nom
+         * <summary> Acesseur/Mutateur de la variable nom </summary>
          **/
         public string Nom
         {
@@ -87,7 +87,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable nomCourt
+         * <summary> Acesseur/Mutateur de la variable nomCourt </summary>
          **/
         public string NomCourt
         {
@@ -103,7 +103,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable initiale
+         * <summary> Acesseur/Mutateur de la variable initiale </summary>
          **/
         public string Initiale
         {
@@ -119,7 +119,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable logo
+         * <summary> Acesseur/Mutateur de la variable logo </summary>
          **/
         public string Logo
         {
@@ -135,7 +135,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable stade
+         * <summary> Acesseur/Mutateur de la variable stade </summary>
          **/
         public string Stade
         {
@@ -151,7 +151,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable maj
+         * <summary> Acesseur/Mutateur de la variable maj </summary>
          **/
         public DateTime Maj
         {

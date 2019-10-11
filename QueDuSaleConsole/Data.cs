@@ -15,7 +15,7 @@ namespace QueDuSaleConsole
 
         #region Constructeur/Destructeur
         /**
-         * Constructeur de la classe Data
+         * <summary> Constructeur de la classe Data </summary>
          **/
         public Data()
         {
@@ -24,7 +24,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Destructeur de la classe Data 
+         * <summary> Destructeur de la classe Data </summary>
          **/
         ~Data()
         {
@@ -34,7 +34,7 @@ namespace QueDuSaleConsole
 
         #region Acesseur(Getter->get)/Mutateur(Setter->set)
         /**
-         *  Acesseur/Mutateur de la variable competitions
+         *  <summary> Acesseur/Mutateur de la variable competitions </summary>
          **/
         public List<Competition> Competitions
         {
@@ -50,7 +50,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         *  Acesseur/Mutateur de la variable json
+         * <summary> Acesseur/Mutateur de la variable json </summary>
          **/
         public Json _Json
         {

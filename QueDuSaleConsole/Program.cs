@@ -20,10 +20,15 @@ namespace QueDuSaleConsole
             Console.Read();
         }
 
+        #region
+        /**
+         * <summary> Procédure qui affiche les compétitions </summary>
+         */
         static void AfficherCompetitions(Data data)
         {
             Console.WriteLine("\n La liste des compétitions :");
             for (int c = 0; c < data.Competitions.Count(); c++) Console.WriteLine(" - " + data.Competitions[c].Nom + "(" + data.Competitions[c].Id + "/" + data.Competitions[c].Code + ") - " + data.Competitions[c].UnPays.Nom + "(" + data.Competitions[c].UnPays.Id + ") - saison actuelle(" + data.Competitions[c].SaisonActuelle.Id + ") : " + data.Competitions[c].SaisonActuelle.Debut.ToShortDateString() + " -> " + data.Competitions[c].SaisonActuelle.Fin.ToShortDateString());
         }
+        #endregion
     }
 }

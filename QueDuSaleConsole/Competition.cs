@@ -19,7 +19,7 @@ namespace QueDuSaleConsole
 
         #region Constructeur/Destructeur
         /**
-         * Constructeur de la classe Compétition
+         * <summary> Constructeur de la classe Compétition </summary>
          **/
         public Competition()
         {
@@ -27,7 +27,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Constructeur de la classe Compétition avec ses paramètres
+         * <summary> Constructeur de la classe Compétition avec ses paramètres </summary>
          **/
         public Competition(int pId, Pays pUnPays, Saison pSaisonActuelle, List<Saison> pSaisons, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
         {
@@ -42,7 +42,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Destructeur de la classe Compétition
+         * <summary> Destructeur de la classe Compétition </summary>
          **/
         ~Competition()
         {
@@ -52,7 +52,7 @@ namespace QueDuSaleConsole
 
         #region Acesseur(Getter->get)/Mutateur(Setter->set)
         /**
-         * Acesseur/Mutateur de la variable id
+         * <summary> Acesseur/Mutateur de la variable id </summary>
          **/
         public int Id
         {
@@ -68,7 +68,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable nom
+         * <summary> Acesseur/Mutateur de la variable nom </summary>
          **/
         public string Nom
         {
@@ -84,7 +84,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable code
+         * <summary> Acesseur/Mutateur de la variable code </summary>
          **/
         public string Code
         {
@@ -100,7 +100,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable maj
+         * <summary> Acesseur/Mutateur de la variable maj </summary>
          **/
         public DateTime Maj
         {
@@ -116,7 +116,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable nbSaisonsDisponible
+         * <summary> Acesseur/Mutateur de la variable nbSaisonsDisponible </summary>
          **/
         public int NbSaisonsDisponible
         {
@@ -132,7 +132,8 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable unPays
+         * <summary> Acesseur/Mutateur de la variable unPays </summary>
+         * <remarks> Une compétition appartient à un pays </remarks>
          **/
         public Pays UnPays
         {
@@ -148,7 +149,8 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable saisonActuelle
+         * <summary> Acesseur/Mutateur de la variable saisonActuelle </summary>
+         * <remarks> Une compétition comporte une saison actuelle </remarks>
          **/
         public Saison SaisonActuelle
         {
@@ -164,7 +166,8 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * Acesseur/Mutateur de la variable saisons
+         * <summary> Acesseur/Mutateur de la variable saisons </summary>
+         * <remarks> Une compétition comporte plusieurs saisons </remarks>
          **/
         public List<Saison> Saisons
         {
