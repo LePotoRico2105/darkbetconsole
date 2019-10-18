@@ -29,7 +29,7 @@ namespace QueDuSaleConsole
         /**
          * <summary> Constructeur de la classe Compétition avec ses paramètres </summary>
          **/
-        public Competition(int pId, Pays pUnPays, Saison pSaisonActuelle, List<Saison> pSaisons, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
+        public Competition(int pId, Pays pUnPays, List<Saison> pSaisons, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
         {
             this.id = pId;
             this.unPays = pUnPays;

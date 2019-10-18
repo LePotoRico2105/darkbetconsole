@@ -10,7 +10,7 @@ namespace QueDuSaleConsole
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(" DOWNLOAD DATE...");
+            Console.WriteLine("DOWNLOAD DATA...");
             Data data = new Data();
             Console.Clear();
             Console.WriteLine(" ------------------------");
