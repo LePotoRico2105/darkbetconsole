@@ -11,7 +11,6 @@ namespace QueDuSaleConsole
         #region Variables
         private int id, nbSaisonsDisponible;
         private Pays unPays;
-        private Saison saisonActuelle;
         private List<Saison> saisons;
         private string nom, code;
         private DateTime maj;
