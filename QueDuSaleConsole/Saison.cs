@@ -17,15 +17,6 @@ namespace QueDuSaleConsole
         {
         }
 
-        public Saison(int pId, DateTime pDebut, DateTime pFin)
-        {
-            this.id = pId;
-            this.debut = pDebut;
-            this.gagnant = null;
-            this.fin = pFin;
-            this.equipes = new List<Equipe>();
-        }
-
         public Saison(int pId, string pGagnant, DateTime pDebut, DateTime pFin)
         {
             this.id = pId;

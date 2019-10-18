@@ -19,11 +19,10 @@ namespace QueDuSaleConsole
         {
         }
 
-        public Competition(int pId, Pays pUnPays, Saison pSaisonActuelle, List<Saison> pSaisons, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
+        public Competition(int pId, Pays pUnPays, List<Saison> pSaisons, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
         {
             this.id = pId;
             this.unPays = pUnPays;
-            this.saisonActuelle = pSaisonActuelle;
             this.nbSaisonsDisponible = pNbSaisonsDisponible;
             this.nom = pNom;
             this.code = pCode;
@@ -117,12 +116,12 @@ namespace QueDuSaleConsole
         {
             get
             {
-                return saisonActuelle;
+                return saisons[0];
             }
 
             set
             {
-                saisonActuelle = value;
+                saisons[0] = value;
             }
         }
 

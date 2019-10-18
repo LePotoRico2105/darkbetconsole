@@ -13,19 +13,16 @@ namespace QueDuSaleConsole
 
         public Pays()
         {
-            Console.WriteLine("Nouveau pays créé");
         }
 
         public Pays(int pId, string pNom)
         {
             this.id = pId;
             this.nom = pNom;
-            Console.WriteLine("Nouveau pays créé : " + nom);
         }
 
         ~Pays()
         {
-            Console.WriteLine("Pays détruit");
         }
     
         public int Id
