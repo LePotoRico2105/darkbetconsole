@@ -8,18 +8,28 @@ namespace QueDuSaleConsole
 {
     public class Competition
     {
+        #region Variables
         private int id, nbSaisonsDisponible;
         private Pays unPays;
         private Saison saisonActuelle;
         private List<Saison> saisons;
         private string nom, code;
         private DateTime maj;
+        #endregion
 
+        #region Constructeur/Destructeur
+        /**
+         * <summary> Constructeur de la classe Compétition </summary>
+         **/
         public Competition()
         {
+
         }
 
-        public Competition(int pId, Pays pUnPays, List<Saison> pSaisons, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
+        /**
+         * <summary> Constructeur de la classe Compétition avec ses paramètres </summary>
+         **/
+        public Competition(int pId, Pays pUnPays, Saison pSaisonActuelle, List<Saison> pSaisons, int pNbSaisonsDisponible, string pNom, string pCode, DateTime pMaj)
         {
             this.id = pId;
             this.unPays = pUnPays;
@@ -30,10 +40,19 @@ namespace QueDuSaleConsole
             this.saisons = pSaisons;
         }
 
+        /**
+         * <summary> Destructeur de la classe Compétition </summary>
+         **/
         ~Competition()
         {
-        }
 
+        }
+        #endregion
+
+        #region Acesseur(Getter->get)/Mutateur(Setter->set)
+        /**
+         * <summary> Acesseur/Mutateur de la variable id </summary>
+         **/
         public int Id
         {
             get
@@ -47,6 +66,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * <summary> Acesseur/Mutateur de la variable nom </summary>
+         **/
         public string Nom
         {
             get
@@ -60,6 +82,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * <summary> Acesseur/Mutateur de la variable code </summary>
+         **/
         public string Code
         {
             get
@@ -73,6 +98,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * <summary> Acesseur/Mutateur de la variable maj </summary>
+         **/
         public DateTime Maj
         {
             get
@@ -86,6 +114,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * <summary> Acesseur/Mutateur de la variable nbSaisonsDisponible </summary>
+         **/
         public int NbSaisonsDisponible
         {
             get
@@ -99,6 +130,10 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * <summary> Acesseur/Mutateur de la variable unPays </summary>
+         * <remarks> Une compétition appartient à un pays </remarks>
+         **/
         public Pays UnPays
         {
             get
@@ -112,6 +147,10 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * <summary> Acesseur/Mutateur de la variable saisonActuelle </summary>
+         * <remarks> Une compétition comporte une saison actuelle </remarks>
+         **/
         public Saison SaisonActuelle
         {
             get
@@ -125,6 +164,10 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * <summary> Acesseur/Mutateur de la variable saisons </summary>
+         * <remarks> Une compétition comporte plusieurs saisons </remarks>
+         **/
         public List<Saison> Saisons
         {
             get
@@ -137,5 +180,6 @@ namespace QueDuSaleConsole
                 saisons = value;
             }
         }
+        #endregion
     }
 }

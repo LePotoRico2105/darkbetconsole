@@ -8,19 +8,34 @@ namespace QueDuSaleConsole
 {
     public class Data
     {
+        #region Variables
         private List<Competition> competitions;
         private Json json;
+        #endregion
+
+        #region Constructeur/Destructeur
+        /**
+         * <summary> Constructeur de la classe Data </summary>
+         **/
         public Data()
         {
             json = new Json();
             competitions = json.CreateCompetitions(this);
         }
 
+        /**
+         * <summary> Destructeur de la classe Data </summary>
+         **/
         ~Data()
         {
 
         }
+        #endregion
 
+        #region Acesseur(Getter->get)/Mutateur(Setter->set)
+        /**
+         *  <summary> Acesseur/Mutateur de la variable competitions </summary>
+         **/
         public List<Competition> Competitions
         {
             get
@@ -34,6 +49,9 @@ namespace QueDuSaleConsole
             }
         }
 
+        /**
+         * <summary> Acesseur/Mutateur de la variable json </summary>
+         **/
         public Json _Json
         {
             get
@@ -46,5 +64,6 @@ namespace QueDuSaleConsole
                 json = value;
             }
         }
+        #endregion
     }
 }
