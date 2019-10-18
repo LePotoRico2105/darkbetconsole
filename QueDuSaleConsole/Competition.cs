@@ -48,9 +48,9 @@ namespace QueDuSaleConsole
         }
         #endregion
 
-        #region Acesseur(Getter->get)/Mutateur(Setter->set)
+        #region Accesseur(Getter->get)/Mutateur(Setter->set)
         /**
-         * <summary> Acesseur/Mutateur de la variable id </summary>
+         * <summary> Accesseur/Mutateur de la variable id </summary>
          **/
         public int Id
         {
@@ -66,7 +66,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable nom </summary>
+         * <summary> Accesseur/Mutateur de la variable nom </summary>
          **/
         public string Nom
         {
@@ -82,7 +82,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable code </summary>
+         * <summary> Accesseur/Mutateur de la variable code </summary>
          **/
         public string Code
         {
@@ -98,7 +98,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable maj </summary>
+         * <summary> Accesseur/Mutateur de la variable maj </summary>
          **/
         public DateTime Maj
         {
@@ -114,7 +114,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable nbSaisonsDisponible </summary>
+         * <summary> Accesseur/Mutateur de la variable nbSaisonsDisponible </summary>
          **/
         public int NbSaisonsDisponible
         {
@@ -130,7 +130,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable unPays </summary>
+         * <summary> Accesseur/Mutateur de la variable unPays </summary>
          * <remarks> Une compétition appartient à un pays </remarks>
          **/
         public Pays UnPays
@@ -147,7 +147,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable saisonActuelle </summary>
+         * <summary> Accesseur/Mutateur de la variable saisonActuelle </summary>
          * <remarks> Une compétition comporte une saison actuelle </remarks>
          **/
         public Saison SaisonActuelle
@@ -164,7 +164,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable saisons </summary>
+         * <summary> Accesseur/Mutateur de la variable saisons </summary>
          * <remarks> Une compétition comporte plusieurs saisons </remarks>
          **/
         public List<Saison> Saisons

@@ -38,9 +38,9 @@ namespace QueDuSaleConsole
         }
         #endregion
 
-        #region Acesseur(Getter->get)/Mutateur(Setter->set)
+        #region Accesseur(Getter->get)/Mutateur(Setter->set)
         /**
-         * <summary> Acesseur/Mutateur de la variable id </summary>
+         * <summary> Accesseur/Mutateur de la variable id </summary>
          **/
         public int Id
         {
@@ -56,7 +56,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable nom </summary>
+         * <summary> Accesseur/Mutateur de la variable nom </summary>
          **/
         public string Nom
         {

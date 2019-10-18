@@ -38,7 +38,7 @@ namespace QueDuSaleConsole
 
         #region Fonctions et Procédures
         /**
-         * Renvoi les données JSON sous format string de l'adresse fourni
+         * Renvoi les données JSON sous format string de l'adresse fournie
          */
         protected Newtonsoft.Json.Linq.JObject GetJsonObject(string adresse)
         {
@@ -65,7 +65,7 @@ namespace QueDuSaleConsole
         }
 
         /** 
-         * Création d'une liste des competitions
+         * Création d'une liste des compétitions
          * <returns> Retourne la liste des compétitions </returns>
          */
         public List<Competition> CreateCompetitions(Data data)

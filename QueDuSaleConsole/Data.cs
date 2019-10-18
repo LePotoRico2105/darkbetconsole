@@ -32,9 +32,9 @@ namespace QueDuSaleConsole
         }
         #endregion
 
-        #region Acesseur(Getter->get)/Mutateur(Setter->set)
+        #region Accesseur(Getter->get)/Mutateur(Setter->set)
         /**
-         *  <summary> Acesseur/Mutateur de la variable competitions </summary>
+         *  <summary> Accesseur/Mutateur de la variable competitions </summary>
          **/
         public List<Competition> Competitions
         {
@@ -50,7 +50,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable json </summary>
+         * <summary> Accesseur/Mutateur de la variable json </summary>
          **/
         public Json _Json
         {

@@ -11,6 +11,7 @@ namespace QueDuSaleConsole
         #region Variables
         private int id;
         private string gagnant;
+        private Competition laCompetition;
         private DateTime debut, fin;
         private List<Equipe> equipes;
         #endregion
@@ -35,6 +36,7 @@ namespace QueDuSaleConsole
             this.debut = pDebut;
             this.fin = pFin;
             this.equipes = new List<Equipe>();
+            this.laCompetition = new Competition();
         }
 
         /**
@@ -46,9 +48,9 @@ namespace QueDuSaleConsole
         }
         #endregion
 
-        #region Acesseur(Getter->get)/Mutateur(Setter->set)
+        #region Accesseur(Getter->get)/Mutateur(Setter->set)
         /**
-         * <summary> Acesseur/Mutateur de la variable id </summary>
+         * <summary> Accesseur/Mutateur de la variable id </summary>
          **/
         public int Id
         {
@@ -64,7 +66,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable gagnant </summary>
+         * <summary> Accesseur/Mutateur de la variable gagnant </summary>
          **/
         public string Gagnant
         {
@@ -81,7 +83,23 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable debut </summary>
+         * <summary> Accesseur/Mutateur de la variable laCompetition </summary>
+         **/
+        public Competition LaCompetition
+        {
+            get
+            {
+                return laCompetition;
+            }
+
+            set
+            {
+                laCompetition = value;
+            }
+        }
+
+        /**
+         * <summary> Accesseur/Mutateur de la variable debut </summary>
          **/
         public DateTime Debut
         {
@@ -97,7 +115,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable fin </summary>
+         * <summary> Accesseur/Mutateur de la variable fin </summary>
          **/
         public DateTime Fin
         {
@@ -113,7 +131,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summmary> Acesseur/Mutateur de la variable Equipe </summmary>
+         * <summmary> Accesseur/Mutateur de la variable Equipe </summmary>
          **/
         public List<Equipe> Equipes
         {

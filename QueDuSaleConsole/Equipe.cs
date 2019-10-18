@@ -11,7 +11,7 @@ namespace QueDuSaleConsole
         #region Variables
         private int id;
         private Pays unPays;
-        private Saison saisonActuelle;
+        private List<Saison> saisons;
         private string nom, nomCourt, initiale, stade, logo;
         private DateTime maj;
         #endregion
@@ -28,11 +28,11 @@ namespace QueDuSaleConsole
         /**
          * <summary> Constructeur de la classe Compétition avec ses paramètres </summary>
          **/
-        public Equipe(int pId, Pays pPUnPays, Saison pSaisonActuelle, string pNom, string pNomCourt, string pInitiale, string pStade, string pLogo, DateTime pMaj)
+        public Equipe(int pId, Pays pPUnPays, string pNom, string pNomCourt, string pInitiale, string pStade, string pLogo, DateTime pMaj)
         {
             this.id = pId;
             this.unPays = pPUnPays;
-            this.saisonActuelle = pSaisonActuelle;
+            this.saisons = new List<Saison>();
             this.nom = pNom;
             this.nomCourt = pNomCourt;
             this.initiale = pInitiale;
@@ -52,9 +52,9 @@ namespace QueDuSaleConsole
         }
         #endregion
 
-        #region Acesseur(Getter->get)/Mutateur(Setter->set)
+        #region Accesseur(Getter->get)/Mutateur(Setter->set)
         /**
-         * <summary> Acesseur/Mutateur de la variable id </summary>
+         * <summary> Accesseur/Mutateur de la variable id </summary>
          **/
         public int Id
         {
@@ -70,7 +70,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable nom </summary>
+         * <summary> Accesseur/Mutateur de la variable nom </summary>
          **/
         public string Nom
         {
@@ -87,7 +87,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable nomCourt </summary>
+         * <summary> Accesseur/Mutateur de la variable nomCourt </summary>
          **/
         public string NomCourt
         {
@@ -103,7 +103,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable initiale </summary>
+         * <summary> Accesseur/Mutateur de la variable initiale </summary>
          **/
         public string Initiale
         {
@@ -119,7 +119,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable logo </summary>
+         * <summary> Accesseur/Mutateur de la variable logo </summary>
          **/
         public string Logo
         {
@@ -135,7 +135,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable stade </summary>
+         * <summary> Accesseur/Mutateur de la variable stade </summary>
          **/
         public string Stade
         {
@@ -151,7 +151,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Acesseur/Mutateur de la variable maj </summary>
+         * <summary> Accesseur/Mutateur de la variable maj </summary>
          **/
         public DateTime Maj
         {
@@ -163,6 +163,23 @@ namespace QueDuSaleConsole
             set
             {
                 maj = value;
+            }
+        }
+        
+
+        /**
+         * <summary> Accesseur/Mutateur de la variable maj </summary>
+         **/
+        public List<Saison> Saisons
+        {
+            get
+            {
+                return saisons;
+            }
+
+            set
+            {
+                saisons = value;
             }
         }
         #endregion
