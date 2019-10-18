@@ -13,7 +13,7 @@ namespace QueDuSaleConsole
         private string nom;
         #endregion
     
-        #region
+        #region Constructeur/Destrcuteur
         /**
          * <summary> Constructeur de la classe Pays </summary>
          **/

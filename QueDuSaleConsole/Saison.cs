@@ -16,7 +16,7 @@ namespace QueDuSaleConsole
         private List<Equipe> equipes;
         #endregion
 
-        #region
+        #region Constructeur/Destructeur
         /**
          * <summary> Constructeur de la classe Saison </summary>
          **/
