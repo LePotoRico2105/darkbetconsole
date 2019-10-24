@@ -64,6 +64,7 @@
     <Compile Include="Competition.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="Equipe.cs" />
+    <Compile Include="Match.cs" />
     <Compile Include="Pays.cs" />
     <Compile Include="Json.cs" />
     <Compile Include="Program.cs" />

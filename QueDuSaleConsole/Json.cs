@@ -10,9 +10,11 @@ namespace QueDuSaleConsole
 {
     public class Json
     {
+        #region Variables
         List<string> tokens;
+        #endregion
 
-        #region
+        #region Constructeur/Destructeur
         /**
          * Constructeur de la classe Json
          */
