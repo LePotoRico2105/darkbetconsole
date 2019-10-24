@@ -90,7 +90,7 @@ namespace QueDuSaleConsole
                     competitions.Add(competition);
                 }
             }
-            competitions = competitions.OrderBy(x => x.Nom).ToList();
+
             return competitions;
         }
 
@@ -112,7 +112,7 @@ namespace QueDuSaleConsole
                 saison.Debut = Convert.ToDateTime(objectEquipes["season"]["startDate"]);
                 saison.Fin = Convert.ToDateTime(objectEquipes["season"]["endDate"]);
                 saison.Gagnant = objectEquipes["season"]["winner"].ToString();
-                saison.Equipes = CreateEquipes(data, objectEquipes);
+                saison.Equipes = CreateEquipes(data, objectEquipes, saison);
                 saisons.Add(saison);
             }
             
@@ -123,22 +123,33 @@ namespace QueDuSaleConsole
          * <summary> Création d'une liste d'équipes pour une compétition </summary>
          * <returns> Retourne la liste des équipes dans une compétition </returns>
          */
-        public List<Equipe> CreateEquipes(Data data, Newtonsoft.Json.Linq.JObject objectEquipes)
+        public List<Equipe> CreateEquipes(Data data, Newtonsoft.Json.Linq.JObject objectEquipes, Saison saison)
         {
             List<Equipe> equipes = new List<Equipe>();
             Equipe equipe = new Equipe();
             for (int i = 0; i < Convert.ToInt32(objectEquipes["count"]); i++)
             {
+
                 equipe = new Equipe();
-                equipe.Id = Convert.ToInt32(objectEquipes["teams"][i]["id"]);
-                byte[] bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["name"].ToString());
-                equipe.Nom = Encoding.UTF8.GetString(bytes);
-                bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["shortName"].ToString());
-                equipe.NomCourt = Encoding.UTF8.GetString(bytes);
-                equipe.Initiale = objectEquipes["teams"][i]["tla"].ToString();
-                equipe.Logo = objectEquipes["teams"][i]["crestUrl"].ToString();
-                equipe.Stade = objectEquipes["teams"][i]["venue"].ToString();
-                equipe.Maj = Convert.ToDateTime(objectEquipes["teams"][i]["lastUpdated"]);
+                try {
+                    equipe = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectEquipes["teams"][i]["id"])).ToList()[0];
+                }
+                catch
+                {
+                    equipe.Id = Convert.ToInt32(objectEquipes["teams"][i]["id"]);
+                    byte[] bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["name"].ToString());
+                    equipe.Nom = Encoding.UTF8.GetString(bytes);
+                    bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["shortName"].ToString());
+                    equipe.NomCourt = Encoding.UTF8.GetString(bytes);
+                    equipe.Initiale = objectEquipes["teams"][i]["tla"].ToString();
+                    equipe.Logo = objectEquipes["teams"][i]["crestUrl"].ToString();
+                    bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["venue"].ToString());
+                    equipe.Stade = Encoding.UTF8.GetString(bytes);
+                    equipe.Maj = Convert.ToDateTime(objectEquipes["teams"][i]["lastUpdated"]);
+                    data.Equipes.Add(equipe);
+                }
+                equipe.Saisons.Add(saison);
+                data.Equipes.Where(x => x.Id == Convert.ToInt32(objectEquipes["teams"][i]["id"])).ToList()[0] = equipe;
                 equipes.Add(equipe);
             }
             equipes = equipes.OrderBy(x => x.Nom).ToList();

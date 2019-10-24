@@ -22,7 +22,15 @@ namespace QueDuSaleConsole
          **/
         public Equipe()
         {
-
+            this.id = 0;
+            this.unPays = new Pays();
+            this.saisons = new List<Saison>();
+            this.nom = "";
+            this.nomCourt = "";
+            this.initiale = "";
+            this.stade = "";
+            this.logo = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd6OLePQd6vAlw-npkXL-9jaQRXxj8ADDrusZjon19DyEsPgLU-g";
+            this.maj = new DateTime();
         }
 
         /**
