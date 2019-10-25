@@ -12,6 +12,7 @@ namespace QueDuSaleConsole
         private int id;
         private Pays unPays;
         private List<Saison> saisons;
+        private List<Match> matchs;
         private string nom, nomCourt, initiale, stade, logo;
         private DateTime maj;
         #endregion
@@ -25,6 +26,7 @@ namespace QueDuSaleConsole
             this.id = 0;
             this.unPays = new Pays();
             this.saisons = new List<Saison>();
+            this.matchs = new List<Match>();
             this.nom = "";
             this.nomCourt = "";
             this.initiale = "";
@@ -41,6 +43,7 @@ namespace QueDuSaleConsole
             this.id = pId;
             this.unPays = pPUnPays;
             this.saisons = new List<Saison>();
+            this.matchs = new List<Match>();
             this.nom = pNom;
             this.nomCourt = pNomCourt;
             this.initiale = pInitiale;
@@ -176,7 +179,7 @@ namespace QueDuSaleConsole
         
 
         /**
-         * <summary> Accesseur/Mutateur de la variable maj </summary>
+         * <summary> Accesseur/Mutateur de la variable saisons </summary>
          **/
         public List<Saison> Saisons
         {
@@ -188,6 +191,22 @@ namespace QueDuSaleConsole
             set
             {
                 saisons = value;
+            }
+        }
+
+        /**
+        * <summary> Accesseur/Mutateur de la variable matchs</summary>
+        **/
+        public List<Match> Matchs
+        {
+            get
+            {
+                return matchs;
+            }
+
+            set
+            {
+                matchs = value;
             }
         }
         #endregion

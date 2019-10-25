@@ -14,6 +14,7 @@ namespace QueDuSaleConsole
         private Competition laCompetition;
         private DateTime debut, fin;
         private List<Equipe> equipes;
+        private List<Match> matchs;
         #endregion
 
         #region Constructeur/Destructeur
@@ -22,7 +23,13 @@ namespace QueDuSaleConsole
          **/
         public Saison()
         {
-
+            this.id = 0;
+            this.gagnant = "";
+            this.debut = new DateTime();
+            this.fin = new DateTime();
+            this.equipes = new List<Equipe>();
+            this.matchs = new List<Match>();
+            this.laCompetition = new Competition();
         }
 
         /**
@@ -36,6 +43,7 @@ namespace QueDuSaleConsole
             this.debut = pDebut;
             this.fin = pFin;
             this.equipes = new List<Equipe>();
+            this.matchs = new List<Match>();
             this.laCompetition = new Competition();
         }
 
@@ -131,7 +139,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summmary> Accesseur/Mutateur de la variable Equipe </summmary>
+         * <summmary> Accesseur/Mutateur de la variable Equipes </summmary>
          **/
         public List<Equipe> Equipes
         {
@@ -143,6 +151,22 @@ namespace QueDuSaleConsole
             set
             {
                 equipes = value;
+            }
+        }
+
+        /**
+        * <summmary> Accesseur/Mutateur de la variable Matchs </summmary>
+        **/
+        public List<Match> Matchs
+        {
+            get
+            {
+                return matchs;
+            }
+
+            set
+            {
+                matchs = value;
             }
         }
         #endregion

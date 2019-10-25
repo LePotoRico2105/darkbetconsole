@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace QueDuSaleConsole
 {
-    class Match
+    public class Match
     {
         #region Variables
-        private Competition uneCompetition;
         private int id, journee;
         private Saison laSaison;
         private DateTime dateEtHeure, maj;
@@ -33,12 +32,11 @@ namespace QueDuSaleConsole
         /**
          * <summary> Constructeur de la classe Match avec ses paramètres </summary>
          **/
-        public Match(Competition pUneCompetition, int pId, int pJournee, int pScoreMTEquipeDomicile, int pScoreMTEquipeExterieure, 
-            int pScoreFTEquipeDomicile, int pScoreFTEquipeExterieure, int pScoreProlongationEquipeDomicile, int pScoreProlongationEquipeExterieure,
-            int pScorePenaltyEquipeDomicile, int pScorePenaltyEquipeExterieure, Saison pLaSaison, DateTime pDateEtHeure, DateTime pMaj, string pGagnant,
-            Equipe pEquipeDomicile, Equipe pEquipeExterieure)
+        public Match(int pId, int pJournee, List<int> pScoreMT, 
+            List<int> pScoreFT,List<int> pScoreProlongation,
+            List<int> pScorePenalty, Saison pLaSaison, DateTime pDateEtHeure, DateTime pMaj, string pGagnant,
+            List<Equipe> pEquipes)
         {
-            this.uneCompetition = pUneCompetition;
             this.id = pId;
             this.journee = pJournee;
             this.laSaison = pLaSaison;
@@ -46,25 +44,15 @@ namespace QueDuSaleConsole
             this.maj = pMaj;
             this.gagnant = pGagnant;
             // Liste des scores à la fin de la 1ère mi-temps
-            scoreMT = new List<int>();
-            scoreMT.Add(pScoreMTEquipeDomicile);
-            scoreMT.Add(pScoreMTEquipeExterieure);
+            scoreMT = pScoreMT;
             // Liste des scores à la fin du temps réglementaire
-            scoreFT = new List<int>();
-            scoreFT.Add(pScoreFTEquipeDomicile);
-            scoreFT.Add(pScoreFTEquipeExterieure);
+            scoreFT = pScoreFT;
             // Liste des scores à la fin des prolongations
-            scoreProlongation = new List<int>();
-            scoreProlongation.Add(pScoreProlongationEquipeDomicile);
-            scoreProlongation.Add(pScoreProlongationEquipeExterieure);
+            scoreProlongation = pScoreProlongation;
             // Liste des scores à la fin des penaltys
-            scorePenalty = new List<int>();
-            scorePenalty.Add(pScoreProlongationEquipeDomicile);
-            scorePenalty.Add(pScoreProlongationEquipeExterieure);
+            scorePenalty = pScorePenalty;
             // Liste des scores à la fin des penaltys
-            equipes = new List<Equipe>();
-            equipes.Add(pEquipeDomicile);
-            equipes.Add(pEquipeExterieure);
+            equipes = pEquipes;
         }
 
         /**
@@ -80,18 +68,6 @@ namespace QueDuSaleConsole
         /**
          * <summary> Accesseur/Mutateur de la variable uneCompetition </summary>
          **/
-        public Competition UneCompetition
-        {
-            get
-            {
-                return UneCompetition;
-            }
-
-            set
-            {
-                UneCompetition = value;
-            }
-        }
 
         /**
          * <summary> Accesseur/Mutateur de la variable id </summary>
@@ -180,8 +156,7 @@ namespace QueDuSaleConsole
         {
             get
             {
-                return gagnant;
-                ;
+                return gagnant;            
             }
 
             set
