@@ -19,6 +19,8 @@ namespace QueDuSaleConsole
          **/
         public Pays()
         {
+            this.id = 0;
+            this.nom = "";
         }
 
         /**

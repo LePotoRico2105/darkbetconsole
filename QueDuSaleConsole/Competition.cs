@@ -22,7 +22,13 @@ namespace QueDuSaleConsole
          **/
         public Competition()
         {
-
+            this.id = 0;
+            this.nbSaisonsDisponible = 0;
+            this.unPays = new Pays();
+            this.saisons = new List<Saison>();
+            this.nom = "";
+            this.code = "";
+            this.maj = new DateTime();
         }
 
         /**

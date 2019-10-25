@@ -26,7 +26,22 @@ namespace QueDuSaleConsole
          **/
         public Match()
         {
-
+            this.id = 0;
+            this.journee = 0;
+            this.laSaison = new Saison();
+            this.dateEtHeure = new DateTime();
+            this.maj = new DateTime();
+            this.gagnant = "";
+            // Liste des scores à la fin de la 1ère mi-temps
+            scoreMT = new List<int>();
+            // Liste des scores à la fin du temps réglementaire
+            scoreFT = new List<int>();
+            // Liste des scores à la fin des prolongations
+            scoreProlongation = new List<int>();
+            // Liste des scores à la fin des penaltys
+            scorePenalty = new List<int>();
+            // Liste des scores à la fin des penaltys
+            equipes = new List<Equipe>();
         }
 
         /**
