@@ -170,20 +170,41 @@ namespace QueDuSaleConsole
             Match match = new Match();
             for (int i = 0; i < Convert.ToInt32(objectMatchs["count"]); i++)
             {
-                match = new Match();
-                match.Id = Convert.ToInt32(objectMatchs["matches"][i]["id"]);
-                match.LaSaison = saison;
-                match.Journee = Convert.ToInt32(objectMatchs["matches"][i]["matchday"]);
-                match.Maj = Convert.ToDateTime(objectMatchs["matches"][i]["lastUpdated"]);
-                match.ScoreFT.Add(Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["homeTeam"]));
-                match.ScoreFT.Add(Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["awayTeam"]));
-                match.ScoreMT.Add(Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["homeTeam"]));
-                match.ScoreMT.Add(Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["awayTeam"]));
-                match.ScorePenalty.Add(Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["homeTeam"]));
-                match.ScorePenalty.Add(Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["awayTeam"]));
-                match.Equipes.Add(data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0]);
-                match.Equipes.Add(data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0]);
-                matchs.Add(match);
+                try
+                {
+                    match = new Match();
+                    match.Id = Convert.ToInt32(objectMatchs["matches"][i]["id"]);
+                    match.LaSaison = saison;
+                    match.Journee = Convert.ToInt32(objectMatchs["matches"][i]["matchday"]);
+                    match.Maj = Convert.ToDateTime(objectMatchs["matches"][i]["lastUpdated"]);
+                    int scoreFTh = 0;
+                    int scoreFTa = 0;
+                    int scoreMTh = 0;
+                    int scoreMTa = 0;
+                    int scoreETh = 0;
+                    int scoreETa = 0;
+                    int scorePh = 0;
+                    int scorePa = 0;
+                    try { scoreFTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["homeTeam"]); } catch { }
+                    try { scoreFTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["awayTeam"]); } catch { }
+                    try { scoreMTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["homeTeam"]); } catch { }
+                    try { scoreMTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["awayTeam"]); } catch { }
+                    try { scoreETh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["homeTeam"]); } catch { }
+                    try { scoreETa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["awayTeam"]); } catch { }
+                    try { scorePh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["homeTeam"]); } catch { }
+                    try { scorePa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["awayTeam"]); } catch { }
+                    match.ScoreFT.Add(scoreFTh);
+                    match.ScoreFT.Add(scoreFTa);
+                    match.ScoreMT.Add(scoreMTh);
+                    match.ScoreMT.Add(scoreMTa);
+                    match.ScoreProlongation.Add(scoreETh);
+                    match.ScoreProlongation.Add(scoreETa);
+                    match.ScorePenalty.Add(scorePh);
+                    match.ScorePenalty.Add(scorePa);
+                    match.Equipes.Add(data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0]);
+                    match.Equipes.Add(data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0]);
+                    matchs.Add(match);
+                }catch{ }
             }
             
             return matchs;
