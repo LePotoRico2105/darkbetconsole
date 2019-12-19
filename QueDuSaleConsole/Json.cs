@@ -58,7 +58,7 @@ namespace QueDuSaleConsole
                             i = tokens.Count();
                         }
                     }
-                    catch{  }
+                    catch{ }
                 }
 
                 return jsonObject;
@@ -87,7 +87,6 @@ namespace QueDuSaleConsole
                     competition.Code = objectCompetitions["competitions"][i]["code"].ToString();
                     competition.NbSaisonsDisponible = Convert.ToInt32(objectCompetitions["competitions"][i]["numberOfAvailableSeasons"]);
                     competition.Maj = Convert.ToDateTime(objectCompetitions["competitions"][i]["lastUpdated"]);
-
                     competition.Saisons = CreateSaisons(data, competition);
                     competitions.Add(competition);
                 }
@@ -104,22 +103,23 @@ namespace QueDuSaleConsole
         {
             List<Saison> saisons = new List<Saison>();
             Saison saison = new Saison();
-
-            for (int s = DateTime.Today.Year; s >= 2017; s--)
+            Newtonsoft.Json.Linq.JObject objectSaison = GetJsonObject("https://api.football-data.org/v2/competitions/" + competition.Code);
+            //Newtonsoft.Json.Linq.JObject objectMatchs = GetJsonObject("https://api.football-data.org/v2/competitions/" + competition.Code + "/matches?season=" + s);
+            for (int i = 0; i < 3; i++)
             {
-
-                Newtonsoft.Json.Linq.JObject objectEquipes = GetJsonObject("https://api.football-data.org/v2/competitions/" + competition.Code + "/teams?season=" + s);
-                Newtonsoft.Json.Linq.JObject objectMatchs = GetJsonObject("https://api.football-data.org/v2/competitions/" + competition.Code + "/matches?season=" + s);
                 saison = new Saison();
-                saison.Id = Convert.ToInt32(objectEquipes["season"]["id"]);
-                saison.Debut = Convert.ToDateTime(objectEquipes["season"]["startDate"]);
-                saison.Fin = Convert.ToDateTime(objectEquipes["season"]["endDate"]);
-                saison.Gagnant = objectEquipes["season"]["winner"].ToString();
-                saison.Equipes = CreateEquipes(data, objectEquipes, saison);
-                saison.Matchs = CreateMatchs(data, objectMatchs, saison);
                 saisons.Add(saison);
+                saison.Id = Convert.ToInt32(objectSaison["seasons"][i]["id"]);
+                saison.IdCompetition = competition.Id;
+                saison.Debut = Convert.ToDateTime(objectSaison["seasons"][i]["startDate"]);
+                saison.Fin = Convert.ToDateTime(objectSaison["seasons"][i]["endDate"]);
+                saison.Gagnant = objectSaison["seasons"][i]["winner"].ToString();
+                //CreateEquipes(data, objectEquipes, saison);
+                //saison.Matchs = CreateMatchs(data, objectMatchs, saison);
+                saisons[saisons.Count()-1] = saison;
             }
-            
+
+
             return saisons;
         }
 
@@ -127,20 +127,21 @@ namespace QueDuSaleConsole
          * <summary> Création d'une liste d'équipes pour une compétition </summary>
          * <returns> Retourne la liste des équipes dans une compétition </returns>
          */
-        public List<Equipe> CreateEquipes(Data data, Newtonsoft.Json.Linq.JObject objectEquipes, Saison saison)
+        public void CreateEquipes(Data data, Newtonsoft.Json.Linq.JObject objectEquipes, Saison saison)
         {
-            List<Equipe> equipes = new List<Equipe>();
             Equipe equipe = new Equipe();
             for (int i = 0; i < Convert.ToInt32(objectEquipes["count"]); i++)
             {
 
                 equipe = new Equipe();
                 try {
-                    equipe = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectEquipes["teams"][i]["id"])).ToList()[0];
+                    equipe = data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes.Where(x => x.Id == Convert.ToInt32(objectEquipes["teams"][i]["id"])).ToList()[0];
                 }
                 catch
                 {
                     equipe.Id = Convert.ToInt32(objectEquipes["teams"][i]["id"]);
+                    equipe.IdCompetition = saison.IdCompetition;
+                    equipe.IdSaison = saison.Id;
                     byte[] bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["name"].ToString());
                     equipe.Nom = Encoding.UTF8.GetString(bytes);
                     bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["shortName"].ToString());
@@ -150,21 +151,17 @@ namespace QueDuSaleConsole
                     bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["venue"].ToString());
                     equipe.Stade = Encoding.UTF8.GetString(bytes);
                     equipe.Maj = Convert.ToDateTime(objectEquipes["teams"][i]["lastUpdated"]);
-                    data.Equipes.Add(equipe);
+                    Console.WriteLine(data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0]);
+                    //.Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes.Add(equipe);
                 }
-                equipe.Saisons.Add(saison);
-                data.Equipes.Where(x => x.Id == Convert.ToInt32(objectEquipes["teams"][i]["id"])).ToList()[0] = equipe;
-                equipes.Add(equipe);
             }
-            equipes = equipes.OrderBy(x => x.Nom).ToList();
-            return equipes;
         }
         
         /** 
-         * <summary> Création d'une list*8e de matchs pour une compétition </summary>
+         * <summary> Création d'une liste de matchs pour une compétition </summary>
          * <returns> Retourne la liste des matchs dans une compétition </returns>
          */
-        public List<Match> CreateMatchs(Data data, Newtonsoft.Json.Linq.JObject objectMatchs, Saison saison)
+       /* public List<Match> CreateMatchs(Data data, Newtonsoft.Json.Linq.JObject objectMatchs, Saison saison)
         {
             List<Match> matchs = new List<Match>();
             Match match = new Match();
@@ -185,14 +182,14 @@ namespace QueDuSaleConsole
                     int scoreETa = 0;
                     int scorePh = 0;
                     int scorePa = 0;
-                    try { scoreFTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["homeTeam"]); } catch { }
-                    try { scoreFTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["awayTeam"]); } catch { }
-                    try { scoreMTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["homeTeam"]); } catch { }
-                    try { scoreMTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["awayTeam"]); } catch { }
-                    try { scoreETh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["homeTeam"]); } catch { }
-                    try { scoreETa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["awayTeam"]); } catch { }
-                    try { scorePh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["homeTeam"]); } catch { }
-                    try { scorePa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["awayTeam"]); } catch { }
+                    try { scoreFTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["homeTeam"]); } catch { scoreFTh = 0; }
+                    try { scoreFTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["awayTeam"]); } catch { scoreFTa = 0; }
+                    try { scoreMTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["homeTeam"]); } catch { scoreMTh = 0; }
+                    try { scoreMTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["awayTeam"]); } catch { scoreMTa = 0; }
+                    try { scoreETh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["homeTeam"]); } catch { scoreETh = 0; }
+                    try { scoreETa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["awayTeam"]); } catch { scoreETa = 0; }
+                    try { scorePh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["homeTeam"]); } catch { scorePh = 0; }
+                    try { scorePa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["awayTeam"]); } catch { scorePa = 0; }
                     match.ScoreFT.Add(scoreFTh);
                     match.ScoreFT.Add(scoreFTa);
                     match.ScoreMT.Add(scoreMTh);
@@ -201,14 +198,68 @@ namespace QueDuSaleConsole
                     match.ScoreProlongation.Add(scoreETa);
                     match.ScorePenalty.Add(scorePh);
                     match.ScorePenalty.Add(scorePa);
+
+                    for (int s = 0; s < data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Count(); s++)
+                    {
+                        try
+                        {
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][0] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][0] + match.ScoreMT[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][1] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][1] + match.ScoreFT[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][2] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][2] + match.ScoreProlongation[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][3] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][3] + match.ScorePenalty[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][0] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][0] + match.ScoreMT[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][1] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][1] + match.ScoreFT[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][2] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][2] + match.ScoreProlongation[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][3] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][3] + match.ScorePenalty[0];
+
+
+                        }
+                        catch
+                        {
+                            
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][0] = match.ScoreMT[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][1] = match.ScoreFT[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][2] = match.ScoreProlongation[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].ButsSaisons[s][0][3] = match.ScorePenalty[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][0] = match.ScoreMT[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][1] = match.ScoreFT[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][2] = match.ScoreProlongation[0];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][0][3] = match.ScorePenalty[0];
+                        }
+                    }
+
+                    for (int s = 0; s < data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].Saisons.Count(); s++)
+                    {
+                        try
+                        {
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][0] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][0] + match.ScoreMT[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][1] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][1] + match.ScoreFT[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][2] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][2] + match.ScoreProlongation[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][3] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][3] + match.ScorePenalty[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][0] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][0] + match.ScoreMT[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][1] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][1] + match.ScoreFT[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][2] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][2] + match.ScoreProlongation[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][3] = data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][3] + match.ScorePenalty[1];
+                        }
+                        catch
+                        {
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][0] = match.ScoreMT[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][1] = match.ScoreFT[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][2] = match.ScoreProlongation[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0].ButsSaisons[s][1][3] = match.ScorePenalty[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][0] = match.ScoreMT[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][1] = match.ScoreFT[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][2] = match.ScoreProlongation[1];
+                            data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0].Saisons.Where(x => x.Id == Convert.ToInt32(saison.Id)).ToList()[0].ButsSaisons[s][1][3] = match.ScorePenalty[1];
+                        }
+                    }
                     match.Equipes.Add(data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"])).ToList()[0]);
                     match.Equipes.Add(data.Equipes.Where(x => x.Id == Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"])).ToList()[0]);
                     matchs.Add(match);
                 }catch{ }
             }
-            
             return matchs;
-        }
+        }*/
         #endregion
     }
 }
