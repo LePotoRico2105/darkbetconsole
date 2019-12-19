@@ -91,7 +91,6 @@ namespace QueDuSaleConsole
                     competitions.Add(competition);
                 }
             }
-
             return competitions;
         }
 
@@ -104,7 +103,7 @@ namespace QueDuSaleConsole
             List<Saison> saisons = new List<Saison>();
             Saison saison = new Saison();
             Newtonsoft.Json.Linq.JObject objectSaison = GetJsonObject("https://api.football-data.org/v2/competitions/" + competition.Code);
-            //Newtonsoft.Json.Linq.JObject objectMatchs = GetJsonObject("https://api.football-data.org/v2/competitions/" + competition.Code + "/matches?season=" + s);
+            
             for (int i = 0; i < 3; i++)
             {
                 saison = new Saison();
@@ -114,12 +113,8 @@ namespace QueDuSaleConsole
                 saison.Debut = Convert.ToDateTime(objectSaison["seasons"][i]["startDate"]);
                 saison.Fin = Convert.ToDateTime(objectSaison["seasons"][i]["endDate"]);
                 saison.Gagnant = objectSaison["seasons"][i]["winner"].ToString();
-                //CreateEquipes(data, objectEquipes, saison);
-                //saison.Matchs = CreateMatchs(data, objectMatchs, saison);
-                saisons[saisons.Count()-1] = saison;
+                saisons[i] = saison;
             }
-
-
             return saisons;
         }
 
@@ -127,9 +122,11 @@ namespace QueDuSaleConsole
          * <summary> Création d'une liste d'équipes pour une compétition </summary>
          * <returns> Retourne la liste des équipes dans une compétition </returns>
          */
-        public void CreateEquipes(Data data, Newtonsoft.Json.Linq.JObject objectEquipes, Saison saison)
+        public List<Equipe> CreateEquipes(Data data, Saison saison)
         {
-            Equipe equipe = new Equipe();
+            List<Equipe> equipes = new List<Equipe>();
+            Equipe equipe;
+            Newtonsoft.Json.Linq.JObject objectEquipes = GetJsonObject("https://api.football-data.org/v2/competitions/" + data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Code + "/teams?season=" + data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Debut.Year);
             for (int i = 0; i < Convert.ToInt32(objectEquipes["count"]); i++)
             {
 
@@ -151,10 +148,10 @@ namespace QueDuSaleConsole
                     bytes = Encoding.Default.GetBytes(objectEquipes["teams"][i]["venue"].ToString());
                     equipe.Stade = Encoding.UTF8.GetString(bytes);
                     equipe.Maj = Convert.ToDateTime(objectEquipes["teams"][i]["lastUpdated"]);
-                    Console.WriteLine(data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0]);
-                    //.Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes.Add(equipe);
                 }
+                equipes.Add(equipe);
             }
+            return equipes;
         }
         
         /** 
