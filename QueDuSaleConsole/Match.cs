@@ -18,7 +18,6 @@ namespace QueDuSaleConsole
         private List<int> scoreFT;
         private List<int> scoreProlongation;
         private List<int> scorePenalty;
-        private List<Equipe> equipes;
         #endregion
 
         #region Constructeur/Destructeur
@@ -30,8 +29,7 @@ namespace QueDuSaleConsole
             this.id = 0;
             this.idCompetition = 0;
             this.idSaison = 0;
-            this.idEquipes.Add(0);
-            this.idEquipes.Add(0);
+            this.idEquipes = new List<int>();
             this.journee = 0;
             this.laSaison = new Saison();
             this.dateEtHeure = new DateTime();
@@ -46,13 +44,12 @@ namespace QueDuSaleConsole
             // Liste des scores à la fin des penaltys
             scorePenalty = new List<int>();
             // Liste des scores à la fin des penaltys
-            equipes = new List<Equipe>();
         }
 
         /**
          * <summary> Constructeur de la classe Match avec ses paramètres </summary>
          **/
-        public Match(int pId, int pIdCompetition, int pIdSaison, List<int> pIdEquipes, int pJournee, List<int> pScoreMT, List<int> pScoreFT,List<int> pScoreProlongation, List<int> pScorePenalty, Saison pLaSaison, DateTime pDateEtHeure, DateTime pMaj, string pGagnant, List<Equipe> pEquipes)
+        public Match(int pId, int pIdCompetition, int pIdSaison, List<int> pIdEquipes, int pJournee, List<int> pScoreMT, List<int> pScoreFT,List<int> pScoreProlongation, List<int> pScorePenalty, Saison pLaSaison, DateTime pDateEtHeure, DateTime pMaj, string pGagnant)
         {
             this.id = pId;
             this.idCompetition = pIdCompetition;
@@ -72,7 +69,6 @@ namespace QueDuSaleConsole
             // Liste des scores à la fin des penaltys
             scorePenalty = pScorePenalty;
             // Liste des scores à la fin des penaltys
-            equipes = pEquipes;
         }
 
         /**
@@ -294,22 +290,6 @@ namespace QueDuSaleConsole
             set
             {
                 scorePenalty = value;
-            }
-        }
-
-        /**
-         * <summmary> Accesseur/Mutateur de la liste equipes </summmary>
-         **/
-        public List<Equipe> Equipes
-        {
-            get
-            {
-                return equipes;
-            }
-
-            set
-            {
-                equipes = value;
             }
         }
         #endregion
