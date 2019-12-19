@@ -144,13 +144,37 @@ namespace QueDuSaleConsole
         /**
         * <summary> Procédure qui affiche les compétitions </summary>
         */
-        static void AfficherEquipe(Data data, int c, int s, int e)
+        static string AfficherEquipe(Data data, int c, int s, int e)
         {
+            Console.Clear();
+            string choix = "";
+            Console.WriteLine(" _______________________________");
+            Console.WriteLine("|                               |");
+            Console.WriteLine("|      QUEDUSALE PRONOSTICS     |");
+            Console.WriteLine("|_______________________________|\n");
+            Console.WriteLine(" Vous avez selectionné l'équipe suivante : " + data.Competitions[c].Saisons[s].Equipes[e].Nom);
+            Console.WriteLine("\n________________________________");
+            Console.WriteLine("|                               |");
+            Console.WriteLine("|          MENU EQUIPES         |");
+            Console.WriteLine("|_______________________________|");
+            Console.WriteLine("| - 0 : fermer app              |");
+            Console.WriteLine("| - 1 : retour                  |");
+            Console.WriteLine("|_______________________________|");
+            Console.WriteLine("| - 100 : afficher matchs       |");
+            Console.WriteLine("|_______________________________|");
+            Console.WriteLine("\n Ci-dessous les informations de l'équipe :");
+            Console.WriteLine("\tNom du stade : " + data.Competitions[c].Saisons[s].Equipes[e].Stade);
+            Console.Write("\nVotre choix : ");
+            choix = Console.ReadLine();
+            if (choix == "100") Console.WriteLine("Pour les matchs");
+            return choix;
         }
-            /**
-             * <summary> Procédure qui affiche les matchs </summary>
-             */
-            /*static void AfficherMatchs(Data data)
+            
+        /**
+        * <summary> Procédure qui affiche les matchs </summary>
+        */
+        /*
+        static void AfficherMatchs(Data data)
             {
                 Console.WriteLine("\n La liste des matchs :");
                 for (int c = 0; c < data.Competitions.Count(); c++)
@@ -165,7 +189,8 @@ namespace QueDuSaleConsole
                     }
                 }
                 Console.Read();
-            }*/
+            }
+            */
             #endregion
         }
 }
