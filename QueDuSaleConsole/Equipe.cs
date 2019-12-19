@@ -9,9 +9,9 @@ namespace QueDuSaleConsole
     public class Equipe
     {
         #region Variables
-        private int id;
+        private int id, idCompetition, idSaison;
         private Pays unPays;
-        private List<Saison> saisons;
+        private List<List<List<int>>> butsSaisons;
         private List<Match> matchs;
         private string nom, nomCourt, initiale, stade, logo;
         private DateTime maj;
@@ -24,9 +24,43 @@ namespace QueDuSaleConsole
         public Equipe()
         {
             this.id = 0;
+            this.idCompetition = 0;
+            this.idSaison = 0;
             this.unPays = new Pays();
-            this.saisons = new List<Saison>();
             this.matchs = new List<Match>();
+            this.butsSaisons = new List<List<List<int>>>
+            {
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+            };
             this.nom = "";
             this.nomCourt = "";
             this.initiale = "";
@@ -38,12 +72,46 @@ namespace QueDuSaleConsole
         /**
          * <summary> Constructeur de la classe Compétition avec ses paramètres </summary>
          **/
-        public Equipe(int pId, Pays pPUnPays, string pNom, string pNomCourt, string pInitiale, string pStade, string pLogo, DateTime pMaj)
+        public Equipe(int pId, int pIdCompetition, int pIdSaison, Pays pPUnPays, string pNom, string pNomCourt, string pInitiale, string pStade, string pLogo, DateTime pMaj)
         {
             this.id = pId;
+            this.idCompetition = pIdCompetition;
+            this.idSaison = pIdSaison;
             this.unPays = pPUnPays;
-            this.saisons = new List<Saison>();
             this.matchs = new List<Match>();
+            this.butsSaisons = new List<List<List<int>>>
+            {
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+                new List<List<int>>
+                {
+                    new List<int>{ 0, 0, 0, 0},
+                    new List<int>{ 0, 0, 0, 0},
+                },
+            };
             this.nom = pNom;
             this.nomCourt = pNomCourt;
             this.initiale = pInitiale;
@@ -77,6 +145,38 @@ namespace QueDuSaleConsole
             set
             {
                 id = value;
+            }
+        }
+
+        /**
+         * <summary> Accesseur/Mutateur de la variable idCompetition </summary>
+         **/
+        public int IdCompetition
+        {
+            get
+            {
+                return idCompetition;
+            }
+
+            set
+            {
+                idCompetition = value;
+            }
+        }
+
+        /**
+        * <summary> Accesseur/Mutateur de la variable idSaison </summary>
+        **/
+        public int IdSaison
+        {
+            get
+            {
+                return idSaison;
+            }
+
+            set
+            {
+                idSaison = value;
             }
         }
 
@@ -179,22 +279,6 @@ namespace QueDuSaleConsole
         
 
         /**
-         * <summary> Accesseur/Mutateur de la variable saisons </summary>
-         **/
-        public List<Saison> Saisons
-        {
-            get
-            {
-                return saisons;
-            }
-
-            set
-            {
-                saisons = value;
-            }
-        }
-
-        /**
         * <summary> Accesseur/Mutateur de la variable matchs</summary>
         **/
         public List<Match> Matchs
@@ -207,6 +291,22 @@ namespace QueDuSaleConsole
             set
             {
                 matchs = value;
+            }
+        }
+
+        /**
+        * <summary> Accesseur/Mutateur de la variable butsSaisons</summary>
+        **/
+        public List<List<List<int>>> ButsSaisons
+        {
+            get
+            {
+                return butsSaisons;
+            }
+
+            set
+            {
+                butsSaisons = value;
             }
         }
         #endregion

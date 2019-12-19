@@ -20,20 +20,20 @@ namespace QueDuSaleConsole
                 Console.WriteLine("|                               |");
                 Console.WriteLine("|      QUEDUSALE PRONOSTICS     |");
                 Console.WriteLine("|_______________________________|");
+                Console.WriteLine(" _______________________________");
+                Console.WriteLine("|                               |");
+                Console.WriteLine("|         MENU PRINCIPAL        |");
+                Console.WriteLine("|_______________________________|");
                 Console.WriteLine(" _______________________");
                 Console.WriteLine("|                      |");
                 Console.WriteLine("|      LISTE CHOIX     |");
                 Console.WriteLine("|______________________|");
                 Console.WriteLine("| - 1 : competitions   |");
-                Console.WriteLine("| - 2 : equipes        |");
-                Console.WriteLine("| - 3 : matchs         |");
                 Console.WriteLine("| - 0 : fermer app     |");
                 Console.WriteLine("|______________________|");
                 Console.Write("Votre choix : ");
                 choix = Console.ReadLine();
                 if (choix == "1") AfficherCompetitions(data);
-                if (choix == "2") AfficherEquipes(data);
-                if (choix == "3") AfficherMatchs(data);
             }
         }
 
@@ -43,9 +43,20 @@ namespace QueDuSaleConsole
          */
         static void AfficherCompetitions(Data data)
         {
+            Console.Clear();
+            int comp = 0;
+            int sais = 0;
             Console.WriteLine("\n La liste des compétitions :");
-            for (int c = 0; c < data.Competitions.Count(); c++) Console.WriteLine(" - " + data.Competitions[c].Nom + "(id:" + data.Competitions[c].Id + "/code:" + data.Competitions[c].Code + ") - " + data.Competitions[c].UnPays.Nom + "(id:" + data.Competitions[c].UnPays.Id + ") - saison actuelle(id:" + data.Competitions[c].SaisonActuelle.Id + ") : " + data.Competitions[c].SaisonActuelle.Debut.ToShortDateString() + " -> " + data.Competitions[c].SaisonActuelle.Fin.ToShortDateString());
-            Console.Read();
+            for (int c = 0; c < data.Competitions.Count(); c++)
+            {
+                Console.WriteLine("\n" + c +" - " + data.Competitions[c].Nom + " - " + data.Competitions[c].UnPays.Nom);
+                for (int s = 0; s < data.Competitions[c].Saisons.Count(); s++) Console.Write(" | "+ s + ":" + data.Competitions[c].Saisons[s].Debut.Year+ "/" + data.Competitions[c].Saisons[s].Fin.Year);
+                Console.Write(" |");
+            }
+            Console.Write("\nChoisir compétition voulu : ");
+            comp = Convert.ToInt32(Console.Read());
+            Console.Write("Choisir saison voulu : ");
+            sais = Convert.ToInt32(Console.Read());
         }
 
         /**
@@ -54,14 +65,23 @@ namespace QueDuSaleConsole
         static void AfficherEquipes(Data data)
         {
             Console.WriteLine("\n La liste des équipes :");
-            for (int e = 0; e < data.Equipes.Count(); e++) Console.WriteLine(" - " + data.Equipes[e].Nom + "(id:" + data.Equipes[e].Id + "/initiale:" + data.Equipes[e].Initiale + ") - " + data.Equipes[e].Stade);
+            for (int c = 0; c < data.Competitions.Count; c++)
+            {      
+                for (int s = 0; s < data.Competitions[c].Saisons.Count; s++)
+                {
+                    Console.WriteLine(data.Competitions[c].Nom + " (" + data.Competitions[c].Saisons[s].Debut.Year + "/" + +data.Competitions[c].Saisons[s].Fin.Year + ") :");
+                    for (int e = 0; e < data.Competitions[c].Saisons[s].Equipes.Count; e++) Console.WriteLine(" - " + data.Competitions[c].Saisons[s].Equipes[e].Nom + " - " + data.Competitions[c].Saisons[s].Equipes[e].Stade);
+                }
+
+            }
+            
             Console.Read();
         }
 
         /**
          * <summary> Procédure qui affiche les matchs </summary>
          */
-        static void AfficherMatchs(Data data)
+        /*static void AfficherMatchs(Data data)
         {
             Console.WriteLine("\n La liste des matchs :");
             for (int c = 0; c < data.Competitions.Count(); c++)
@@ -76,7 +96,7 @@ namespace QueDuSaleConsole
                 }
             }
             Console.Read();
-        }
+        }*/
         #endregion
     }
 }

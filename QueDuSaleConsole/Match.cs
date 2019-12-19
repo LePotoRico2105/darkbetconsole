@@ -9,7 +9,8 @@ namespace QueDuSaleConsole
     public class Match
     {
         #region Variables
-        private int id, journee;
+        private int id, idCompetition, idSaison, journee;
+        private List<int> idEquipes;
         private Saison laSaison;
         private DateTime dateEtHeure, maj;
         private string gagnant;
@@ -27,6 +28,10 @@ namespace QueDuSaleConsole
         public Match()
         {
             this.id = 0;
+            this.idCompetition = 0;
+            this.idSaison = 0;
+            this.idEquipes.Add(0);
+            this.idEquipes.Add(0);
             this.journee = 0;
             this.laSaison = new Saison();
             this.dateEtHeure = new DateTime();
@@ -47,12 +52,12 @@ namespace QueDuSaleConsole
         /**
          * <summary> Constructeur de la classe Match avec ses paramètres </summary>
          **/
-        public Match(int pId, int pJournee, List<int> pScoreMT, 
-            List<int> pScoreFT,List<int> pScoreProlongation,
-            List<int> pScorePenalty, Saison pLaSaison, DateTime pDateEtHeure, DateTime pMaj, string pGagnant,
-            List<Equipe> pEquipes)
+        public Match(int pId, int pIdCompetition, int pIdSaison, List<int> pIdEquipes, int pJournee, List<int> pScoreMT, List<int> pScoreFT,List<int> pScoreProlongation, List<int> pScorePenalty, Saison pLaSaison, DateTime pDateEtHeure, DateTime pMaj, string pGagnant, List<Equipe> pEquipes)
         {
             this.id = pId;
+            this.idCompetition = pIdCompetition;
+            this.idSaison = pIdSaison;
+            this.idEquipes = pIdEquipes;
             this.journee = pJournee;
             this.laSaison = pLaSaison;
             this.dateEtHeure = pDateEtHeure;
@@ -97,6 +102,54 @@ namespace QueDuSaleConsole
             set
             {
                 id = value;
+            }
+        }
+
+        /**
+         * <summary> Accesseur/Mutateur de la variable idCompetition </summary>
+         **/
+        public int IdCompetition
+        {
+            get
+            {
+                return idCompetition;
+            }
+
+            set
+            {
+                idCompetition = value;
+            }
+        }
+
+        /**
+         * <summary> Accesseur/Mutateur de la variable idSaison </summary>
+         **/
+        public int IdSaison
+        {
+            get
+            {
+                return idSaison;
+            }
+
+            set
+            {
+                idSaison = value;
+            }
+        }
+
+        /**
+         * <summary> Accesseur/Mutateur de la variable idEquipes </summary>
+         **/
+        public List<int> IdEquipes
+        {
+            get
+            {
+                return idEquipes;
+            }
+
+            set
+            {
+                idEquipes = value;
             }
         }
 
