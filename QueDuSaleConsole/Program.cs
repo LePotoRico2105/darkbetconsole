@@ -35,7 +35,18 @@ namespace QueDuSaleConsole
                
                 Console.Write("Votre choix : ");
                 choix = Console.ReadLine();
-                if (choix == "1") choix = AfficherCompetitions(data);
+                switch (choix)
+                {
+                    case "0":
+                        Environment.Exit(0);
+                        break;
+                    case "1":
+                        AfficherCompetitions(data);
+                        break;
+                    default:
+                        Console.WriteLine("Veuillez saisir une information valide");
+                        break;
+                }
             }
         }
 
@@ -95,15 +106,31 @@ namespace QueDuSaleConsole
             Console.WriteLine("|       MENU SAISON      |");
             Console.WriteLine("|________________________|");
             Console.WriteLine("| - 0 : fermer app       |");
-            Console.WriteLine("| - 1 : retour           |");
+            Console.WriteLine("| - 1 : retour / menu    |");
             Console.WriteLine("|________________________|");
             Console.WriteLine("| - 2 : afficher equipes |");
             Console.WriteLine("| - 3 : afficher matchs  |");
             Console.WriteLine("|________________________|");
             Console.Write("Votre choix : ");
             choix = Console.ReadLine();
-            if (choix == "2") choix = AfficherEquipes(data, c, s);
-            if (choix == "3") choix = AfficherMatchs(data, c, s);
+            switch (choix)
+            {
+                case "0":
+                    Environment.Exit(0);
+                    break;
+                case "1":
+                    AfficherCompetitions(data);
+                    break;
+                case "2":
+                    AfficherEquipes(data, c, s);
+                    break;
+                case "3":
+                    AfficherMatchs(data, c, s);
+                    break;
+                default:
+                    Console.WriteLine("Veuillez saisir une information valide");
+                    break;
+            }
             return choix;
         }
 
@@ -134,11 +161,27 @@ namespace QueDuSaleConsole
             Console.WriteLine("|__________________________|");
             Console.WriteLine("| - 0 : fermer app         |");
             Console.WriteLine("| - 1 : retour             |");
+            Console.WriteLine("| - 2 : menu principal     |");
             Console.WriteLine("|__________________________|");
-            for (int e = 2; e < data.Competitions[c].Saisons[s].Equipes.Count() + 2; e++) Console.WriteLine(" " + e + " - " + data.Competitions[c].Saisons[s].Equipes[e - 2].Nom);
+            for (int e = 3; e < data.Competitions[c].Saisons[s].Equipes.Count() + 2; e++) Console.WriteLine(" " + e + " - " + data.Competitions[c].Saisons[s].Equipes[e - 2].Nom);
             Console.Write("\nVotre choix : ");
             choix = Console.ReadLine();
-            if (choix != "0" || choix != "1") AfficherEquipe(data, c, s, Convert.ToInt32(choix)-2);
+            switch (choix)
+            {
+                case "0":
+                    Environment.Exit(0);
+                    break;
+                case "1":
+                    AfficherSaison(data, c, s);
+                    break;
+                case "2":
+                    AfficherCompetitions(data);
+                    break;
+                default:
+                    if (choix != "0" || choix != "1" || choix != "2") AfficherEquipe(data, c, s, Convert.ToInt32(choix) - 2);
+                    else Console.WriteLine("Veuillez saisir une information valide");
+                    break;
+            }
             return choix;
         }
 
@@ -159,15 +202,34 @@ namespace QueDuSaleConsole
             Console.WriteLine("|          MENU EQUIPES         |");
             Console.WriteLine("|_______________________________|");
             Console.WriteLine("| - 0 : fermer app              |");
-            Console.WriteLine("| - 1 : menu principal          |");
+            Console.WriteLine("| - 1 : retour                  |");
+            Console.WriteLine("| - 2 : menu principal          |");
             Console.WriteLine("|_______________________________|");
             Console.WriteLine("| - 100 : afficher matchs       |");
             Console.WriteLine("|_______________________________|");
             Console.WriteLine("\n Ci-dessous les informations de l'équipe :");
+            Console.WriteLine("\tLogo : " + data.Competitions[c].Saisons[s].Equipes[e].Logo);
             Console.WriteLine("\tNom du stade : " + data.Competitions[c].Saisons[s].Equipes[e].Stade);
             Console.Write("\nVotre choix : ");
             choix = Console.ReadLine();
-            if (choix == "100") Console.WriteLine("Pour les matchs");
+            switch (choix)
+            {
+                case "0":
+                    Environment.Exit(0);
+                    break;
+                case "1":
+                    AfficherEquipes(data, c, s);
+                    break;
+                case "2":
+                    AfficherCompetitions(data);
+                    break;
+                case "100":
+                    AfficherMatchs(data, c, s);
+                    break;
+                default:
+                    Console.WriteLine("Veuillez saisir une information valide");
+                    break;
+            }
             return choix;
         }
         /**
@@ -227,7 +289,18 @@ namespace QueDuSaleConsole
             }
             Console.Write("\nVotre choix : ");
             choix = Console.ReadLine();
-            if (choix != "0" || choix != "1") AfficherMatch(data, c, s, Convert.ToInt32(choix) - 2);
+            switch (choix)
+            {
+                case "0":
+                    Environment.Exit(0);
+                    break;
+                case "1":
+                    AfficherSaison(data, c, s);
+                    break;
+                default:
+                    Console.WriteLine("Veuillez saisir une information valide");
+                    break;
+            }
             return choix;
         }
         /**
