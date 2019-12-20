@@ -75,7 +75,6 @@ namespace QueDuSaleConsole
             Console.Clear();
             data.Competitions[c].Saisons[s].Equipes = data._Json.CreateEquipes(data, data.Competitions[c].Saisons[s]);
             data = data._Json.CreateMatchs(data, data.Competitions[c].Saisons[s]);
-            Console.WriteLine(data.Competitions[c].Saisons[s].Equipes[0].Matchs.Count());
             string choix = "";
             int nb_c = data.Competitions[c].Nom.Count() + 12 ;
             Console.WriteLine(" _______________________________");
@@ -160,7 +159,7 @@ namespace QueDuSaleConsole
             Console.WriteLine("|          MENU EQUIPES         |");
             Console.WriteLine("|_______________________________|");
             Console.WriteLine("| - 0 : fermer app              |");
-            Console.WriteLine("| - 1 : retour                  |");
+            Console.WriteLine("| - 1 : menu principal          |");
             Console.WriteLine("|_______________________________|");
             Console.WriteLine("| - 100 : afficher matchs       |");
             Console.WriteLine("|_______________________________|");
