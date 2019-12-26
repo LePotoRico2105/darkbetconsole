@@ -75,7 +75,6 @@ namespace QueDuSaleConsole
             Console.Clear();
             data.Competitions[c].Saisons[s].Equipes = data._Json.CreateEquipes(data, data.Competitions[c].Saisons[s]);
             data = data._Json.CreateMatchs(data, data.Competitions[c].Saisons[s]);
-            Console.WriteLine(data.Competitions[c].Saisons[s].Equipes[0].Matchs.Count());
             string choix = "";
             int nb_c = data.Competitions[c].Nom.Count() + 12 ;
             Console.WriteLine(" _______________________________");
@@ -139,12 +138,12 @@ namespace QueDuSaleConsole
             for (int e = 2; e < data.Competitions[c].Saisons[s].Equipes.Count() + 2; e++) Console.WriteLine(" " + e + " - " + data.Competitions[c].Saisons[s].Equipes[e - 2].Nom);
             Console.Write("\nVotre choix : ");
             choix = Console.ReadLine();
-            if (choix != "0" || choix != "1") AfficherEquipe(data, c, s, Convert.ToInt32(choix)-2);
+            if (choix != "0" && choix != "1") AfficherEquipe(data, c, s, Convert.ToInt32(choix)-2);
             return choix;
         }
 
         /**
-        * <summary> Procédure qui affiche les compétitions </summary>
+        * <summary> Procédure qui affiche une équipe </summary>
         */
         static string AfficherEquipe(Data data, int c, int s, int e)
         {
@@ -171,28 +170,9 @@ namespace QueDuSaleConsole
             if (choix == "100") Console.WriteLine("Pour les matchs");
             return choix;
         }
-        /**
-         * <summary> Procédure qui affiche les matchs </summary>
-         */
-        /*static void AfficherMatchs(Data data)
-        {
-            Console.WriteLine("\n La liste des matchs :");
-            for (int c = 0; c < data.Competitions.Count(); c++)
-            {
-                for (int s = 0; s < data.Competitions[c].Saisons.Count(); s++)
-                {
-                    Console.WriteLine("(" +data.Competitions[c].Nom + " - " + data.Competitions[c].Saisons[s].Debut.Year + ") :");
-                    for (int m = 0; m < data.Competitions[c].Saisons[s].Matchs.Count(); m++)
-                    {
-                        Console.WriteLine(" - j:" + data.Competitions[c].Saisons[s].Matchs[m].Journee + " | " + data.Competitions[c].Saisons[s].Matchs[m].Equipes[0].Nom + " - " + data.Competitions[c].Saisons[s].Matchs[m].Equipes[1].Nom + " (" + data.Competitions[c].Saisons[s].Matchs[m].ScoreFT[0] + "-" + data.Competitions[c].Saisons[s].Matchs[m].ScoreFT[1] + ")");
-                    }
-                }
-            }
-            Console.Read();
-        }*/
 
         /**
-         * <summary> Procédure qui affiche les équipes d'une saison </summary>
+         * <summary> Procédure qui affiche les matchs d'une saison </summary>
          */
         static string AfficherMatchs(Data data, int c, int s)
         {
@@ -214,25 +194,32 @@ namespace QueDuSaleConsole
             Console.WriteLine("|");
             Console.WriteLine(" __________________________");
             Console.WriteLine("|                          |");
-            Console.WriteLine("|       MENU MATCHS       |");
+            Console.WriteLine("|        MENU MATCHS       |");
             Console.WriteLine("|__________________________|");
             Console.WriteLine("| - 0 : fermer app         |");
             Console.WriteLine("| - 1 : retour             |");
             Console.WriteLine("|__________________________|");
+            List<Match> matchs = new List<Match>();
             for (int e = 0; e < data.Competitions[c].Saisons[s].Equipes.Count(); e++)
             {
-                for (int m = 2; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count() + 2; m++)
+                for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
                 {
-                    Console.WriteLine(data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == data.Competitions[c].Saisons[s].Equipes[e].Matchs[m - 2].IdEquipes[0]) + " - " + data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == data.Competitions[c].Saisons[s].Equipes[e].Matchs[m - 2].IdEquipes[1]));
+                    matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
                 }
+            }
+            IEnumerable<Match> query = matchs.OrderByDescending(x => x.DateEtHeure);
+            foreach (Match m in query)
+            {
+                if (m.DateEtHeure > DateTime.Today) Console.WriteLine(m.DateEtHeure.ToShortDateString() + " : " + data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[0]).ToList()[0].Nom + " - " + data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[1]).ToList()[0].Nom + " (en prevision)");
+                else Console.WriteLine(m.DateEtHeure.ToShortDateString() + " : " + data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[0]).ToList()[0].Nom + " - " + data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[1]).ToList()[0].Nom + " (" + m.ScoreFT[0] + "|" + m.ScoreFT[1] + ")");
             }
             Console.Write("\nVotre choix : ");
             choix = Console.ReadLine();
-            if (choix != "0" || choix != "1") AfficherMatch(data, c, s, Convert.ToInt32(choix) - 2);
+            if (choix != "0" && choix != "1") AfficherMatch(data, c, s, Convert.ToInt32(choix) - 2);
             return choix;
         }
         /**
-        * <summary> Procédure qui affiche les compétitions </summary>
+        * <summary> Procédure qui affiche un match </summary>
         */
         static void AfficherMatch(Data data, int c, int s, int m)
         {

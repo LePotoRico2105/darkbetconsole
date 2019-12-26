@@ -174,10 +174,11 @@ namespace QueDuSaleConsole
                         match = new Match();
                         match.Id = Convert.ToInt32(objectMatchs["matches"][i]["id"]);
                         match.LaSaison = saison;
-                        match.IdEquipes[0] = Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"].ToList()[0]);
-                        match.IdEquipes[1] = Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"].ToList()[0]);
-                        match.Journee = Convert.ToInt32(objectMatchs["matches"][i]["matchday"]);
+                        match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"]));
+                        match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"]));
+                        try { match.Journee = Convert.ToInt32(objectMatchs["matches"][i]["matchday"]); } catch { match.Journee = 0; }
                         match.Maj = Convert.ToDateTime(objectMatchs["matches"][i]["lastUpdated"]);
+                        match.DateEtHeure = Convert.ToDateTime(objectMatchs["matches"][i]["utcDate"]);
                         int scoreFTh = 0;
                         int scoreFTa = 0;
                         int scoreMTh = 0;
@@ -186,14 +187,14 @@ namespace QueDuSaleConsole
                         int scoreETa = 0;
                         int scorePh = 0;
                         int scorePa = 0;
-                        try { scoreFTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["homeTeam"]); } catch { scoreFTh = 0; }
-                        try { scoreFTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["awayTeam"]); } catch { scoreFTa = 0; }
-                        try { scoreMTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["homeTeam"]); } catch { scoreMTh = 0; }
-                        try { scoreMTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["awayTeam"]); } catch { scoreMTa = 0; }
-                        try { scoreETh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["homeTeam"]); } catch { scoreETh = 0; }
-                        try { scoreETa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["awayTeam"]); } catch { scoreETa = 0; }
-                        try { scorePh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["homeTeam"]); } catch { scorePh = 0; }
-                        try { scorePa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["awayTeam"]); } catch { scorePa = 0; }
+                        try { scoreFTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["homeTeam"]); } catch {  }
+                        try { scoreFTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["awayTeam"]); } catch {  }
+                        try { scoreMTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["homeTeam"]); } catch {  }
+                        try { scoreMTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["awayTeam"]); } catch {  }
+                        try { scoreETh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["homeTeam"]); } catch {  }
+                        try { scoreETa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["awayTeam"]); } catch {  }
+                        try { scorePh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["homeTeam"]); } catch {  }
+                        try { scorePa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["awayTeam"]); } catch {  }
                         match.ScoreFT.Add(scoreFTh);
                         match.ScoreFT.Add(scoreFTa);
                         match.ScoreMT.Add(scoreMTh);
@@ -202,11 +203,10 @@ namespace QueDuSaleConsole
                         match.ScoreProlongation.Add(scoreETa);
                         match.ScorePenalty.Add(scorePh);
                         match.ScorePenalty.Add(scorePa);
-                        matchs.Add(match);
+                        data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes[e].Matchs.Add(match);
                     }
-                    catch { }
+                    catch(Exception a) { Console.WriteLine(a);Console.Read(); }
                 }
-                data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes[e].Matchs = matchs;
             }
             return data;
         }
