@@ -84,8 +84,11 @@ namespace QueDuSaleConsole
         static string AfficherSaison(Data data, int c, int s)
         {
             Console.Clear();
-            data.Competitions[c].Saisons[s].Equipes = data._Json.CreateEquipes(data, data.Competitions[c].Saisons[s]);
-            data = data._Json.CreateMatchs(data, data.Competitions[c].Saisons[s]);
+            if (data.Competitions[c].Saisons[s].Equipes.Count() == 0)
+            { 
+                data = data._Json.CreateEquipes(data, data.Competitions[c].Saisons[s]);
+                data = data._Json.CreateMatchs(data, data.Competitions[c].Saisons[s]);
+            }
             string choix = "";
             int nb_c = data.Competitions[c].Nom.Count() + 12 ;
             Console.WriteLine(" _______________________________");
@@ -101,6 +104,7 @@ namespace QueDuSaleConsole
             Console.Write("|");
             for (int i = 0; i < nb_c; i++) Console.Write("_");
             Console.WriteLine("|");
+            Console.WriteLine("Nombre équipes : " + data.Competitions[c].Saisons[s].Equipes.Count());
             Console.WriteLine(" ________________________");
             Console.WriteLine("|                        |");
             Console.WriteLine("|       MENU SAISON      |");
@@ -269,11 +273,13 @@ namespace QueDuSaleConsole
                     matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
                 }
             }
-            IEnumerable<Match> query = matchs.OrderByDescending(x => x.DateEtHeure);
-            foreach (Match m in query)
+            IEnumerable<Match> ms = matchs.OrderBy(x => x.DateEtHeure);
+            foreach (Match m in ms)
             {
-                if (m.DateEtHeure > DateTime.Today) Console.WriteLine(m.DateEtHeure.ToShortDateString() + " : " + data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[0]).ToList()[0].Nom + " - " + data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[1]).ToList()[0].Nom + " (en prevision)");
-                else Console.WriteLine(m.DateEtHeure.ToShortDateString() + " : " + data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[0]).ToList()[0].Nom + " - " + data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[1]).ToList()[0].Nom + " (" + m.ScoreFT[0] + "|" + m.ScoreFT[1] + ")");
+                Equipe e1 = data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[0]).ToList()[0];
+                Equipe e2 = data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[1]).ToList()[0];
+                if (m.DateEtHeure > DateTime.Today) Console.WriteLine(m.DateEtHeure.ToShortDateString() + " : " + e1.Nom + " - " + e2.Nom + " (en prevision)");
+                else Console.WriteLine(m.DateEtHeure.ToShortDateString() + " : " + e1.Nom + " - " + e2.Nom + " (" + m.ScoreFT[0] + "|" + m.ScoreFT[1] + ")");
             }
             Console.Write("\nVotre choix : ");
             choix = Console.ReadLine();
