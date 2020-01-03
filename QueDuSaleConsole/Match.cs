@@ -31,7 +31,6 @@ namespace QueDuSaleConsole
             this.idSaison = 0;
             this.idEquipes = new List<int>();
             this.journee = 0;
-            this.laSaison = new Saison();
             this.dateEtHeure = new DateTime();
             this.maj = new DateTime();
             this.gagnant = "";
@@ -49,14 +48,13 @@ namespace QueDuSaleConsole
         /**
          * <summary> Constructeur de la classe Match avec ses paramètres </summary>
          **/
-        public Match(int pId, int pIdCompetition, int pIdSaison, List<int> pIdEquipes, int pJournee, List<int> pScoreMT, List<int> pScoreFT,List<int> pScoreProlongation, List<int> pScorePenalty, Saison pLaSaison, DateTime pDateEtHeure, DateTime pMaj, string pGagnant)
+        public Match(int pId, int pIdCompetition, int pIdSaison, List<int> pIdEquipes, int pJournee, List<int> pScoreMT, List<int> pScoreFT,List<int> pScoreProlongation, List<int> pScorePenalty, DateTime pDateEtHeure, DateTime pMaj, string pGagnant)
         {
             this.id = pId;
             this.idCompetition = pIdCompetition;
             this.idSaison = pIdSaison;
             this.idEquipes = pIdEquipes;
             this.journee = pJournee;
-            this.laSaison = pLaSaison;
             this.dateEtHeure = pDateEtHeure;
             this.maj = pMaj;
             this.gagnant = pGagnant;
@@ -162,22 +160,6 @@ namespace QueDuSaleConsole
             set
             {
                 journee = value;
-            }
-        }
-
-        /**
-         * <summary> Accesseur/Mutateur de la variable laSaison </summary>
-         **/
-        public Saison LaSaison
-        {
-            get
-            {
-                return laSaison;
-            }
-
-            set
-            {
-                laSaison = value;
             }
         }
 

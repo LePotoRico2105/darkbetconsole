@@ -10,6 +10,7 @@ namespace QueDuSaleConsole
     {
         #region Variables
         private List<Competition> competitions;
+        private List<Equipe> equipes;
         private Json json;
         #endregion
 
@@ -20,6 +21,7 @@ namespace QueDuSaleConsole
         public Data()
         {
             json = new Json();
+            equipes = new List<Equipe>();
             competitions = json.CreateCompetitions(this);
             competitions = competitions.OrderBy(x => x.Nom).ToList();
         }
@@ -47,6 +49,22 @@ namespace QueDuSaleConsole
             set
             {
                 competitions = value;
+            }
+        }
+
+        /**
+         *  <summary> Accesseur/Mutateur de la variable equipes </summary>
+         **/
+        public List<Equipe> Equipes
+        {
+            get
+            {
+                return equipes;
+            }
+
+            set
+            {
+                equipes = value;
             }
         }
 

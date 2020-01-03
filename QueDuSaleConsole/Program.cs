@@ -11,8 +11,14 @@ namespace QueDuSaleConsole
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("DOWNLOAD DATA...");
             Data data = new Data();
+            try
+            {
+                Console.WriteLine("DOWNLOAD DATA...");
+                data = data._Json.CreateEquipes(data, data.Competitions[9].Saisons[0]);
+                data = data._Json.CreateEquipes(data, data.Competitions[9].Saisons[1]);
+                data = data._Json.CreateEquipes(data, data.Competitions[9].Saisons[2]);
+            }catch{ Console.WriteLine("Nombre d'appels API trop important, merci de relancer l'app et d'attendre 1 minute"); Console.Read(); Environment.Exit(0); }
             string choix = "";
             while (choix != "0")
             {
@@ -74,7 +80,8 @@ namespace QueDuSaleConsole
             Console.Write("Choisir saison voulu : ");
             choix = Console.ReadLine();
             sais = Convert.ToInt32(choix);
-            choix = AfficherSaison(data, comp, sais);
+            try { choix = AfficherSaison(data, comp, sais); }
+            catch { AfficherCompetitions(data); }
             return choix;
         }
 
@@ -84,11 +91,17 @@ namespace QueDuSaleConsole
         static string AfficherSaison(Data data, int c, int s)
         {
             Console.Clear();
-            if (data.Competitions[c].Saisons[s].Equipes.Count() == 0)
-            { 
-                data = data._Json.CreateEquipes(data, data.Competitions[c].Saisons[s]);
-                data = data._Json.CreateMatchs(data, data.Competitions[c].Saisons[s]);
+            try
+            {
+                if (data.Competitions[c].Saisons[s].Equipes.Count() == 0)
+                {
+                    Console.WriteLine("DOWNLOAD DATA...");
+                    data = data._Json.CreateEquipes(data, data.Competitions[c].Saisons[s]);
+                    data = data._Json.CreateMatchs(data, data.Competitions[c].Saisons[s]);
+                    Console.Clear();
+                }
             }
+            catch { Console.WriteLine("Nombre d'appels API trop important, merci de relancer l'app et d'attendre 1 minute"); Console.Read(); Environment.Exit(0); }
             string choix = "";
             int nb_c = data.Competitions[c].Nom.Count() + 12 ;
             Console.WriteLine(" _______________________________");
@@ -159,15 +172,15 @@ namespace QueDuSaleConsole
             Console.Write("|");
             for (int i = 0; i < nb_c; i++) Console.Write("_");
             Console.WriteLine("|");
-            Console.WriteLine(" __________________________");
-            Console.WriteLine("|                          |");
-            Console.WriteLine("|       MENU EQUIPES       |");
-            Console.WriteLine("|__________________________|");
-            Console.WriteLine("| - 0 : fermer app         |");
-            Console.WriteLine("| - 1 : retour             |");
-            Console.WriteLine("| - 2 : menu principal     |");
-            Console.WriteLine("|__________________________|");
-            for (int e = 3; e < data.Competitions[c].Saisons[s].Equipes.Count() + 2; e++) Console.WriteLine(" " + e + " - " + data.Competitions[c].Saisons[s].Equipes[e - 2].Nom);
+            Console.WriteLine(" ____________________________");
+            Console.WriteLine("|                            |");
+            Console.WriteLine("|        MENU EQUIPES        |");
+            Console.WriteLine("|____________________________|");
+            Console.WriteLine("| - 0 : fermer app           |");
+            Console.WriteLine("| - 1 : retour sur la saison |");
+            Console.WriteLine("| - 2 : menu principal       |");
+            Console.WriteLine("|____________________________|");
+            for (int e = 3; e < data.Competitions[c].Saisons[s].Equipes.Count() + 3; e++) Console.WriteLine(" " + e + " - " + data.Competitions[c].Saisons[s].Equipes[e - 3].Nom);
             Console.Write("\nVotre choix : ");
             choix = Console.ReadLine();
             switch (choix)
@@ -182,8 +195,8 @@ namespace QueDuSaleConsole
                     AfficherCompetitions(data);
                     break;
                 default:
-                    if (choix != "0" || choix != "1" || choix != "2") AfficherEquipe(data, c, s, Convert.ToInt32(choix) - 2);
-                    else Console.WriteLine("Veuillez saisir une information valide");
+                    try { AfficherEquipe(choix, data, c, s); }
+                    catch { AfficherEquipes(data, c, s); }
                     break;
             }
             return choix;
@@ -192,29 +205,57 @@ namespace QueDuSaleConsole
         /**
         * <summary> Procédure qui affiche une équipe </summary>
         */
-        static string AfficherEquipe(Data data, int c, int s, int e)
+        static string AfficherEquipe(string choix, Data data, int c, int s)
         {
             Console.Clear();
-            string choix = "";
+            int e = Convert.ToInt32(choix) - 3;
+            data = data._Json.CreateMatchs(data, data.Competitions[c].Saisons[s], data.Competitions[c].Saisons[s].Equipes[e]);
             Console.WriteLine(" _______________________________");
             Console.WriteLine("|                               |");
             Console.WriteLine("|      QUEDUSALE PRONOSTICS     |");
             Console.WriteLine("|_______________________________|\n");
             Console.WriteLine(" Vous avez selectionné l'équipe suivante : " + data.Competitions[c].Saisons[s].Equipes[e].Nom);
-            Console.WriteLine("\n________________________________");
+            Console.WriteLine(" ________________________________");
             Console.WriteLine("|                               |");
             Console.WriteLine("|          MENU EQUIPES         |");
             Console.WriteLine("|_______________________________|");
             Console.WriteLine("| - 0 : fermer app              |");
-            Console.WriteLine("| - 1 : retour                  |");
+            Console.WriteLine("| - 1 : retour aux equipes      |");
             Console.WriteLine("| - 2 : menu principal          |");
             Console.WriteLine("|_______________________________|");
-            Console.WriteLine("| - 100 : afficher matchs       |");
-            Console.WriteLine("|_______________________________|");
-            Console.WriteLine("\n Ci-dessous les informations de l'équipe :");
-            Console.WriteLine("\tLogo : " + data.Competitions[c].Saisons[s].Equipes[e].Logo);
-            Console.WriteLine("\tNom du stade : " + data.Competitions[c].Saisons[s].Equipes[e].Stade);
-            Console.Write("\nVotre choix : ");
+            Console.WriteLine(" Logo : " + data.Competitions[c].Saisons[s].Equipes[e].Logo);
+            Console.WriteLine(" Nom du stade : " + data.Competitions[c].Saisons[s].Equipes[e].Stade);
+            Console.WriteLine(" Matchs finis : ");
+            List<Match> matchs = new List<Match>();
+            for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
+            {
+                    matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
+            }
+            IEnumerable<Match> ms = matchs.OrderBy(x => x.DateEtHeure);
+            data.Competitions[c].Saisons[s].Equipes[e].Matchs = ms.ToList();
+            int i = 3;
+            foreach (Match m in ms)
+            {
+                Equipe e1 = data.Equipes.Where(x => x.Id == m.IdEquipes[0]).ToList()[0];
+                Equipe e2 = data.Equipes.Where(x => x.Id == m.IdEquipes[1]).ToList()[0];
+                if (m.DateEtHeure < DateTime.Today)
+                {
+                    Console.WriteLine(" " + i + " - " + m.DateEtHeure.ToShortDateString() + " : " + e1.Nom + " - " + e2.Nom + " (" + m.ScoreFT[0] + "|" + m.ScoreFT[1] + ")");
+                    i++;
+                }
+            }
+            Console.WriteLine("\n Matchs en prevision : ");
+            foreach (Match m in ms)
+            {
+                Equipe e1 = data.Equipes.Where(x => x.Id == m.IdEquipes[0]).ToList()[0];
+                Equipe e2 = data.Equipes.Where(x => x.Id == m.IdEquipes[1]).ToList()[0];
+                if (m.DateEtHeure > DateTime.Today)
+                {
+                    Console.WriteLine(" " + i + " - " + m.DateEtHeure.ToShortDateString() + " : " + e1.Nom + " - " + e2.Nom);
+                    i++;
+                }
+            }
+            Console.Write("\n Votre choix : ");
             choix = Console.ReadLine();
             switch (choix)
             {
@@ -227,11 +268,9 @@ namespace QueDuSaleConsole
                 case "2":
                     AfficherCompetitions(data);
                     break;
-                case "100":
-                    AfficherMatchs(data, c, s);
-                    break;
                 default:
-                    Console.WriteLine("Veuillez saisir une information valide");
+                    try { AfficherMatch(choix, data, c, s, data.Competitions[c].Saisons[s].Equipes[e].Matchs[Convert.ToInt32(choix) - 3]); }
+                    catch { AfficherEquipe(Convert.ToString(e+3), data, c, s); }
                     break;
             }
             return choix;
@@ -258,28 +297,33 @@ namespace QueDuSaleConsole
             Console.Write("|");
             for (int i = 0; i < nb_c; i++) Console.Write("_");
             Console.WriteLine("|");
-            Console.WriteLine(" __________________________");
-            Console.WriteLine("|                          |");
-            Console.WriteLine("|        MENU MATCHS       |");
-            Console.WriteLine("|__________________________|");
-            Console.WriteLine("| - 0 : fermer app         |");
-            Console.WriteLine("| - 1 : retour             |");
-            Console.WriteLine("|__________________________|");
+            Console.WriteLine(" ____________________________");
+            Console.WriteLine("|                            |");
+            Console.WriteLine("|         MENU MATCHS        |");
+            Console.WriteLine("|____________________________|");
+            Console.WriteLine("| - 0 : fermer app           |");
+            Console.WriteLine("| - 1 : retour sur la saison |");
+            Console.WriteLine("| - 2 : menu principal       |");
+            Console.WriteLine("|____________________________|");
             List<Match> matchs = new List<Match>();
             for (int e = 0; e < data.Competitions[c].Saisons[s].Equipes.Count(); e++)
             {
                 for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
                 {
-                    matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
+                    if (!matchs.Contains(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]))matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
                 }
             }
+            int j = 3;
             IEnumerable<Match> ms = matchs.OrderBy(x => x.DateEtHeure);
+            matchs = ms.ToList();
             foreach (Match m in ms)
             {
                 Equipe e1 = data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[0]).ToList()[0];
                 Equipe e2 = data.Competitions[c].Saisons[s].Equipes.Where(x => x.Id == m.IdEquipes[1]).ToList()[0];
+                Console.Write(" " + j + " - ");
                 if (m.DateEtHeure > DateTime.Today) Console.WriteLine(m.DateEtHeure.ToShortDateString() + " : " + e1.Nom + " - " + e2.Nom + " (en prevision)");
                 else Console.WriteLine(m.DateEtHeure.ToShortDateString() + " : " + e1.Nom + " - " + e2.Nom + " (" + m.ScoreFT[0] + "|" + m.ScoreFT[1] + ")");
+                j++;
             }
             Console.Write("\nVotre choix : ");
             choix = Console.ReadLine();
@@ -291,8 +335,12 @@ namespace QueDuSaleConsole
                 case "1":
                     AfficherSaison(data, c, s);
                     break;
+                case "2":
+                    AfficherCompetitions(data);
+                    break;
                 default:
-                    Console.WriteLine("Veuillez saisir une information valide");
+                    try { AfficherMatch(data, c, s, matchs[Convert.ToInt32(choix) - 3]); }
+                    catch {AfficherMatchs(data, c, s); }
                     break;
             }
             return choix;
@@ -300,8 +348,92 @@ namespace QueDuSaleConsole
         /**
         * <summary> Procédure qui affiche un match </summary>
         */
-        static void AfficherMatch(Data data, int c, int s, int m)
+        static string AfficherMatch(string choix, Data data, int c, int s, Match m)
         {
+            Console.Clear();
+            Equipe e1 = data.Equipes.Where(x => x.Id == m.IdEquipes[0]).ToList()[0];
+            Equipe e2 = data.Equipes.Where(x => x.Id == m.IdEquipes[1]).ToList()[0];
+            Console.WriteLine(" _______________________________");
+            Console.WriteLine("|                               |");
+            Console.WriteLine("|      QUEDUSALE PRONOSTICS     |");
+            Console.WriteLine("|_______________________________|\n");
+            Console.WriteLine(" ________________________________");
+            Console.WriteLine("|                               |");
+            Console.WriteLine("|          MENU MATCH           |");
+            Console.WriteLine("|_______________________________|");
+            Console.WriteLine("| - 0 : fermer app              |");
+            Console.WriteLine("| - 1 : retour sur l'equipe     |");
+            Console.WriteLine("| - 2 : menu principal          |");
+            Console.WriteLine("|_______________________________|");
+            Console.WriteLine("\n | " + m.DateEtHeure.ToShortDateString() + " |");
+            Console.WriteLine(" | J" + m.Journee + " |");
+            Console.WriteLine(" " + e1.Nom + " - " + e2.Nom);
+            if (m.DateEtHeure < DateTime.Today) Console.WriteLine(" " + m.ScoreFT[0] + "(" + m.ScoreMT[0] + ")" + " - " + m.ScoreFT[1] + "(" + m.ScoreMT[1] + ")");
+            
+            Console.Write("\n Votre choix : ");
+            choix = Console.ReadLine();
+            switch (choix)
+            {
+                case "0":
+                    Environment.Exit(0);
+                    break;
+                case "1":
+                    AfficherEquipe(choix, data, c, s);
+                    break;
+                case "2":
+                    AfficherCompetitions(data);
+                    break;
+                default:
+                    Console.WriteLine("Veuillez saisir une information valide");
+                    break;
+            }
+            return choix;
+        }
+
+        /**
+        * <summary> Procédure qui affiche un match </summary>
+        */
+        static string AfficherMatch(Data data, int c, int s, Match match)
+        {
+            Console.Clear();
+            Equipe e1 = data.Equipes.Where(x => x.Id == match.IdEquipes[0]).ToList()[0];
+            Equipe e2 = data.Equipes.Where(x => x.Id == match.IdEquipes[1]).ToList()[0];
+            string choix = "";
+            Console.WriteLine(" _______________________________");
+            Console.WriteLine("|                               |");
+            Console.WriteLine("|      QUEDUSALE PRONOSTICS     |");
+            Console.WriteLine("|_______________________________|\n");
+            Console.WriteLine(" ________________________________");
+            Console.WriteLine("|                               |");
+            Console.WriteLine("|          MENU MATCH           |");
+            Console.WriteLine("|_______________________________|");
+            Console.WriteLine("| - 0 : fermer app              |");
+            Console.WriteLine("| - 1 : retour aux matchs       |");
+            Console.WriteLine("| - 2 : menu principal          |");
+            Console.WriteLine("|_______________________________|");
+            Console.WriteLine("\n | " + match.DateEtHeure.ToShortDateString() + " |");
+            Console.WriteLine(" | J" + match.Journee + " |");
+            Console.WriteLine(" " + e1.Nom + " - " + e2.Nom);
+            if (match.DateEtHeure < DateTime.Today) Console.WriteLine(" " + match.ScoreFT[0] + "(" + match.ScoreMT[0] + ")" + " - " + match.ScoreFT[1] + "(" + match.ScoreMT[1] + ")");
+
+            Console.Write("\n Votre choix : ");
+            choix = Console.ReadLine();
+            switch (choix)
+            {
+                case "0":
+                    Environment.Exit(0);
+                    break;
+                case "1":
+                    AfficherMatchs(data, c, s);
+                    break;
+                case "2":
+                    AfficherCompetitions(data);
+                    break;
+                default:
+                    Console.WriteLine("Veuillez saisir une information valide");
+                    break;
+            }
+            return choix;
         }
         #endregion
     }
