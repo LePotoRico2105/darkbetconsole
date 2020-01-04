@@ -11,6 +11,7 @@ namespace QueDuSaleConsole
     {
         static void Main(string[] args)
         {
+            /*======================================================================== PARTIE AFFICHAGE +=======================================================================*/
             Data data = new Data();
             try
             {
@@ -18,7 +19,8 @@ namespace QueDuSaleConsole
                 data = data._Json.CreateEquipes(data, data.Competitions[9].Saisons[0]);
                 data = data._Json.CreateEquipes(data, data.Competitions[9].Saisons[1]);
                 data = data._Json.CreateEquipes(data, data.Competitions[9].Saisons[2]);
-            }catch{ Console.WriteLine("Nombre d'appels API trop important, merci de relancer l'app et d'attendre 1 minute"); Console.Read(); Environment.Exit(0); }
+            }
+            catch { Console.WriteLine("Nombre d'appels API trop important, merci de relancer l'app et d'attendre 1 minute"); Console.Read(); Environment.Exit(0); }
             string choix = "";
             while (choix != "0")
             {
@@ -38,7 +40,7 @@ namespace QueDuSaleConsole
                 Console.WriteLine("|                             |");
                 Console.WriteLine("|          LISTE CHOIX        |");
                 Console.WriteLine("|_____________________________|");
-               
+
                 Console.Write("Votre choix : ");
                 choix = Console.ReadLine();
                 switch (choix)
@@ -58,7 +60,7 @@ namespace QueDuSaleConsole
 
         #region
         /**
-         * <summary> Procédure qui affiche les compétitions </summary>
+         * <summary> Fonction qui affiche les compétitions </summary>
          */
         static string AfficherCompetitions(Data data)
         {
@@ -69,8 +71,8 @@ namespace QueDuSaleConsole
             Console.WriteLine("\n La liste des compétitions :");
             for (int c = 0; c < data.Competitions.Count(); c++)
             {
-                Console.WriteLine("\n " + c +" - " + data.Competitions[c].Nom + " - " + data.Competitions[c].UnPays.Nom);
-                for (int s = 0; s < data.Competitions[c].Saisons.Count(); s++) Console.Write(" | "+ s + ":" + data.Competitions[c].Saisons[s].Debut.Year+ "/" + data.Competitions[c].Saisons[s].Fin.Year);
+                Console.WriteLine("\n " + c + " - " + data.Competitions[c].Nom + " - " + data.Competitions[c].UnPays.Nom);
+                for (int s = 0; s < data.Competitions[c].Saisons.Count(); s++) Console.Write(" | " + s + ":" + data.Competitions[c].Saisons[s].Debut.Year + "/" + data.Competitions[c].Saisons[s].Fin.Year);
                 Console.WriteLine(" |");
             }
             Console.Write("\nChoisir compétition voulu : ");
@@ -86,7 +88,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Procédure qui affiche la saison </summary>
+         * <summary> Fonction qui affiche la saison </summary>
          */
         static string AfficherSaison(Data data, int c, int s)
         {
@@ -103,7 +105,7 @@ namespace QueDuSaleConsole
             }
             catch { Console.WriteLine("Nombre d'appels API trop important, merci de relancer l'app et d'attendre 1 minute"); Console.Read(); Environment.Exit(0); }
             string choix = "";
-            int nb_c = data.Competitions[c].Nom.Count() + 12 ;
+            int nb_c = data.Competitions[c].Nom.Count() + 12;
             Console.WriteLine(" _______________________________");
             Console.WriteLine("|                               |");
             Console.WriteLine("|      QUEDUSALE PRONOSTICS     |");
@@ -152,7 +154,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-         * <summary> Procédure qui affiche les équipes d'une saison </summary>
+         * <summary> Fonction qui affiche les équipes d'une saison </summary>
          */
         static string AfficherEquipes(Data data, int c, int s)
         {
@@ -203,7 +205,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-        * <summary> Procédure qui affiche une équipe </summary>
+        * <summary> Fonction qui affiche une équipe </summary>
         */
         static string AfficherEquipe(string choix, Data data, int c, int s)
         {
@@ -229,7 +231,7 @@ namespace QueDuSaleConsole
             List<Match> matchs = new List<Match>();
             for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
             {
-                    matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
+                matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
             }
             IEnumerable<Match> ms = matchs.OrderBy(x => x.DateEtHeure);
             data.Competitions[c].Saisons[s].Equipes[e].Matchs = ms.ToList();
@@ -238,6 +240,7 @@ namespace QueDuSaleConsole
             {
                 Equipe e1 = data.Equipes.Where(x => x.Id == m.IdEquipes[0]).ToList()[0];
                 Equipe e2 = data.Equipes.Where(x => x.Id == m.IdEquipes[1]).ToList()[0];
+
                 if (m.DateEtHeure < DateTime.Today)
                 {
                     Console.WriteLine(" " + i + " - " + m.DateEtHeure.ToShortDateString() + " : " + e1.Nom + " - " + e2.Nom + " (" + m.ScoreFT[0] + "|" + m.ScoreFT[1] + ")");
@@ -270,14 +273,14 @@ namespace QueDuSaleConsole
                     break;
                 default:
                     try { AfficherMatch(choix, data, c, s, data.Competitions[c].Saisons[s].Equipes[e].Matchs[Convert.ToInt32(choix) - 3]); }
-                    catch { AfficherEquipe(Convert.ToString(e+3), data, c, s); }
+                    catch { AfficherEquipe(Convert.ToString(e + 3), data, c, s); }
                     break;
             }
             return choix;
         }
 
         /**
-         * <summary> Procédure qui affiche les matchs d'une saison </summary>
+         * <summary> Fonction qui affiche les matchs d'une saison </summary>
          */
         static string AfficherMatchs(Data data, int c, int s)
         {
@@ -310,7 +313,7 @@ namespace QueDuSaleConsole
             {
                 for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
                 {
-                    if (!matchs.Contains(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]))matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
+                    if (!matchs.Contains(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m])) matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
                 }
             }
             int j = 3;
@@ -340,13 +343,14 @@ namespace QueDuSaleConsole
                     break;
                 default:
                     try { AfficherMatch(data, c, s, matchs[Convert.ToInt32(choix) - 3]); }
-                    catch {AfficherMatchs(data, c, s); }
+                    catch { AfficherMatchs(data, c, s); }
                     break;
             }
             return choix;
         }
+
         /**
-        * <summary> Procédure qui affiche un match </summary>
+        * <summary> Fonction qui affiche un match selon la liste des matchs </summary>
         */
         static string AfficherMatch(string choix, Data data, int c, int s, Match m)
         {
@@ -369,7 +373,13 @@ namespace QueDuSaleConsole
             Console.WriteLine(" | J" + m.Journee + " |");
             Console.WriteLine(" " + e1.Nom + " - " + e2.Nom);
             if (m.DateEtHeure < DateTime.Today) Console.WriteLine(" " + m.ScoreFT[0] + "(" + m.ScoreMT[0] + ")" + " - " + m.ScoreFT[1] + "(" + m.ScoreMT[1] + ")");
-            
+
+            List<List<List<int>>> Buts = RecuperationsButs(data, c, s, m);
+            Console.WriteLine("Nombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0]);
+            Console.WriteLine("Nombre de buts marqué au total à domicile, fin de match : " + Buts[0][0][1]);
+            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, mi-temps : " + Buts[0][1][0]);
+            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, fin de match : " + Buts[0][1][1]);
+
             Console.Write("\n Votre choix : ");
             choix = Console.ReadLine();
             switch (choix)
@@ -391,7 +401,7 @@ namespace QueDuSaleConsole
         }
 
         /**
-        * <summary> Procédure qui affiche un match </summary>
+        * <summary> Fonction qui affiche un match selon une équipe </summary>
         */
         static string AfficherMatch(Data data, int c, int s, Match match)
         {
@@ -416,6 +426,12 @@ namespace QueDuSaleConsole
             Console.WriteLine(" " + e1.Nom + " - " + e2.Nom);
             if (match.DateEtHeure < DateTime.Today) Console.WriteLine(" " + match.ScoreFT[0] + "(" + match.ScoreMT[0] + ")" + " - " + match.ScoreFT[1] + "(" + match.ScoreMT[1] + ")");
 
+            List<List<List<int>>> Buts = RecuperationsButs(data, c, s, match);
+            Console.WriteLine("Nombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0]);
+            Console.WriteLine("Nombre de buts marqué au total à domicile, fin de match : " + Buts[0][0][1]);
+            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, mi-temps : " + Buts[0][1][0]);
+            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, fin de match : " + Buts[0][1][1]);
+
             Console.Write("\n Votre choix : ");
             choix = Console.ReadLine();
             switch (choix)
@@ -435,6 +451,43 @@ namespace QueDuSaleConsole
             }
             return choix;
         }
+
+        /*============================================================================ PARTIE CALCUL ============================================================================*/
+
+        /**
+        * <summary> Fonction qui récupère les nombres de buts de la saison </summary>
+        **/
+        static List<List<List<int>>> RecuperationsButs(Data data, int c, int s, Match match)
+        {
+            List<List<List<int>>> Buts = new List<List<List<int>>>
+            {
+                new List<List<int>>
+                {
+                    new List<int>{0, 0},
+                    new List<int>{0, 0},
+                },
+            };
+            for (int e = 0; e < data.Competitions[c].Saisons[s].Equipes.Count(); e++)
+            {
+                for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
+                {
+                    {
+                        Buts[0][0][0] = Buts[0][0][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[0]; // Nombre de buts marqué au total à domicile, mi-temps
+                        Buts[0][0][1] = Buts[0][0][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[0]; // Nombre de buts marqué au total à domicile, fin de match
+                        Buts[0][1][0] = Buts[0][1][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[1]; // Nombre de buts marqué au total à l'extérieur, mi-temps
+                        Buts[0][1][1] = Buts[0][1][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[1]; // Nombre de buts marqué au total à l'extérieur, fin de match
+                    }
+                }
+            }
+            return Buts;
+        }
+
+        /* 
+          int MoyenneButMarqueEquipeDomicile, MoyenneButMarqueEquipeExterieure
+          LoiPoisson = (MoyenneButMarqueEquipeDomicile^ButSouhaite x Exp
+         */
+        
+
         #endregion
     }
 }
