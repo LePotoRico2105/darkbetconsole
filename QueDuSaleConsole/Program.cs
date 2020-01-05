@@ -374,11 +374,23 @@ namespace QueDuSaleConsole
             Console.WriteLine(" " + e1.Nom + " - " + e2.Nom);
             if (m.DateEtHeure < DateTime.Today) Console.WriteLine(" " + m.ScoreFT[0] + "(" + m.ScoreMT[0] + ")" + " - " + m.ScoreFT[1] + "(" + m.ScoreMT[1] + ")");
 
-            List<List<List<int>>> Buts = RecuperationsButs(data, c, s, m);
-            Console.WriteLine("Nombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0]);
-            Console.WriteLine("Nombre de buts marqué au total à domicile, fin de match : " + Buts[0][0][1]);
-            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, mi-temps : " + Buts[0][1][0]);
-            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, fin de match : " + Buts[0][1][1]);
+            List<List<List<List<int>>>> Buts = RecuperationButs(data, c, s, m);
+            Console.WriteLine("\nNombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0][0]);
+            Console.WriteLine("Nombre de buts marqué au total à domicile, fin de match : " + Buts[0][0][0][1]);
+            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, mi-temps : " + Buts[0][0][1][0]);
+            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, fin de match : " + Buts[0][0][1][1]);
+            Console.WriteLine("\nNombre de buts concédé au total à domicile, mi-temps : " + Buts[0][1][0][0]);
+            Console.WriteLine("Nombre de buts concédé au total à domicile, fin de match : " + Buts[0][1][0][1]);
+            Console.WriteLine("Nombre de buts concédé au total à l'extérieur, mi-temps : " + Buts[0][1][1][0]);
+            Console.WriteLine("Nombre de buts concédé au total à l'extérieur, fin de match : " + Buts[0][1][1][1]);
+            Console.WriteLine("\nNombre de buts marqué par l'équipe à domicile, mi-temps : " + Buts[1][0][0][0]);
+            Console.WriteLine("Nombre de buts marqué par l'équipe à domicile, fin de match : " + Buts[1][0][0][1]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, mi-temps : " + Buts[1][1][1][0]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, fin de match : " + Buts[1][1][1][1]);
+            Console.WriteLine("\nNombre de buts concédé par l'équipe à l'extérieur, mi-temps : " + Buts[2][1][0][0]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, fin de match : " + Buts[2][1][0][1]);
+            Console.WriteLine("Nombre de buts marqué par l'équipe à l'extérieur, mi-temps : " + Buts[2][0][1][0]);
+            Console.WriteLine("Nombre de buts marqué par l'équipe à l'extérieur, fin de match : " + Buts[2][0][1][1]);
 
             Console.Write("\n Votre choix : ");
             choix = Console.ReadLine();
@@ -426,11 +438,23 @@ namespace QueDuSaleConsole
             Console.WriteLine(" " + e1.Nom + " - " + e2.Nom);
             if (match.DateEtHeure < DateTime.Today) Console.WriteLine(" " + match.ScoreFT[0] + "(" + match.ScoreMT[0] + ")" + " - " + match.ScoreFT[1] + "(" + match.ScoreMT[1] + ")");
 
-            List<List<List<int>>> Buts = RecuperationsButs(data, c, s, match);
-            Console.WriteLine("Nombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0]);
-            Console.WriteLine("Nombre de buts marqué au total à domicile, fin de match : " + Buts[0][0][1]);
-            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, mi-temps : " + Buts[0][1][0]);
-            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, fin de match : " + Buts[0][1][1]);
+            List<List<List<List<int>>>> Buts = RecuperationButs(data, c, s, match);
+            Console.WriteLine("\nNombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0][0]);
+            Console.WriteLine("Nombre de buts marqué au total à domicile, fin de match : " + Buts[0][0][0][1]);
+            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, mi-temps : " + Buts[0][0][1][0]);
+            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, fin de match : " + Buts[0][0][1][1]);
+            Console.WriteLine("\nNombre de buts concédé au total à domicile, mi-temps : " + Buts[0][1][0][0]);
+            Console.WriteLine("Nombre de buts concédé au total à domicile, fin de match : " + Buts[0][1][0][1]);
+            Console.WriteLine("Nombre de buts concédé au total à l'extérieur, mi-temps : " + Buts[0][1][1][0]);
+            Console.WriteLine("Nombre de buts concédé au total à l'extérieur, fin de match : " + Buts[0][1][1][1]);
+            Console.WriteLine("\nNombre de buts marqué par l'équipe à domicile, mi-temps : " + Buts[1][0][0][0]);
+            Console.WriteLine("Nombre de buts marqué par l'équipe à domicile, fin de match : " + Buts[1][0][0][1]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, mi-temps : " + Buts[1][1][1][0]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, fin de match : " + Buts[1][1][1][1]);
+            Console.WriteLine("\nNombre de buts concédé par l'équipe à l'extérieur, mi-temps : " + Buts[2][1][0][0]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, fin de match : " + Buts[2][1][0][1]);
+            Console.WriteLine("Nombre de buts marqué par l'équipe à l'extérieur, mi-temps : " + Buts[2][0][1][0]);
+            Console.WriteLine("Nombre de buts marqué par l'équipe à l'extérieur, fin de match : " + Buts[2][0][1][1]);
 
             Console.Write("\n Votre choix : ");
             choix = Console.ReadLine();
@@ -456,15 +480,55 @@ namespace QueDuSaleConsole
 
         /**
         * <summary> Fonction qui récupère les nombres de buts de la saison </summary>
+        * <remarks> 
+        * Le premier   : Correspond à la saison [0], à l'équipe locale [1] ou à l'équipe visiteuse [2]
+        * Le second    : Correspond aux buts, si les buts sont marqués [0] ou concédés [1]
+        * Le troisième : Correspond à une équipe, l'équipe à domicile [0] ou l'équipe à l'extérieur [1]
+        * Le quatrième : Correspond à la durée, la première mi-temps [0] ou la fin du match [1]
+        * </remarks>
         **/
-        static List<List<List<int>>> RecuperationsButs(Data data, int c, int s, Match match)
+        static List<List<List<List<int>>>> RecuperationButs(Data data, int c, int s, Match match)
         {
-            List<List<List<int>>> Buts = new List<List<List<int>>>
+            List<List<List<List<int>>>> Buts = new List<List<List<List<int>>>>
             {
-                new List<List<int>>
+                new List<List<List<int>>>
                 {
-                    new List<int>{0, 0},
-                    new List<int>{0, 0},
+                    new List<List<int>>
+                    {
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
+                    },
+                    new List<List<int>>
+                    {
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
+                    }
+                },
+                new List<List<List<int>>>
+                {
+                    new List<List<int>>
+                    {
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
+                    },
+                    new List<List<int>>
+                    {
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
+                    }
+                },
+                new List<List<List<int>>>
+                {
+                    new List<List<int>>
+                    {
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
+                    },
+                    new List<List<int>>
+                    {
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
+                    }
                 },
             };
             for (int e = 0; e < data.Competitions[c].Saisons[s].Equipes.Count(); e++)
@@ -472,22 +536,142 @@ namespace QueDuSaleConsole
                 for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
                 {
                     {
-                        Buts[0][0][0] = Buts[0][0][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[0]; // Nombre de buts marqué au total à domicile, mi-temps
-                        Buts[0][0][1] = Buts[0][0][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[0]; // Nombre de buts marqué au total à domicile, fin de match
-                        Buts[0][1][0] = Buts[0][1][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[1]; // Nombre de buts marqué au total à l'extérieur, mi-temps
-                        Buts[0][1][1] = Buts[0][1][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[1]; // Nombre de buts marqué au total à l'extérieur, fin de match
+                        Buts[0][0][0][0] = Buts[0][0][0][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[0]; // Nombre de buts marqué au total à domicile, mi-temps
+                        Buts[0][0][0][1] = Buts[0][0][0][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[0]; // Nombre de buts marqué au total à domicile, fin de match
+                        Buts[0][0][1][0] = Buts[0][0][1][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[1]; // Nombre de buts marqué au total à l'extérieur, mi-temps
+                        Buts[0][0][1][1] = Buts[0][0][1][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[1]; // Nombre de buts marqué au total à l'extérieur, fin de match
+                        Buts[0][1][0][0] = Buts[0][1][0][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[0]; // Nombre de buts concédé au total à domicile, mi-temps
+                        Buts[0][1][0][1] = Buts[0][1][0][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[0]; // Nombre de buts concédé au total à domicile, fin de match
+                        Buts[0][1][1][0] = Buts[0][1][1][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[1]; // Nombre de buts concédé au total à l'extérieur, mi-temps
+                        Buts[0][1][1][1] = Buts[0][1][1][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[1]; // Nombre de buts concédé au total à l'extérieur, fin de match
+
+                        if (data.Competitions[c].Saisons[s].Equipes[e].Id == match.IdEquipes[0])
+                        {
+                            Buts[1][0][0][0] = Buts[1][0][0][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[0]; // Nombre de buts marqué par l'équipe à domicile, mi-temps
+                            Buts[1][0][0][1] = Buts[1][0][0][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[0]; // Nombre de buts marqué par l'équipe à domicile, fin de match
+                            Buts[1][1][1][0] = Buts[1][1][1][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[1]; // Nombre de buts concédé par l'équipe à domicile, mi-temps
+                            Buts[1][1][1][1] = Buts[1][1][1][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[1]; // Nombre de buts concédé par l'équipe à domicile, fin de match
+                        }
+                        else if (data.Competitions[c].Saisons[s].Equipes[e].Id == match.IdEquipes[1])
+                        {
+                            Buts[2][1][0][0] = Buts[2][1][0][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, mi-temps
+                            Buts[2][1][0][1] = Buts[2][1][0][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, fin de match
+                            Buts[2][0][1][0] = Buts[2][0][1][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[1]; // Nombre de buts marqué par l'équipe à l'extérieur, mi-temps
+                            Buts[2][0][1][1] = Buts[2][0][1][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[1]; // Nombre de buts marqué par l'équipe à l'extérieur, fin de match
+                        }
                     }
                 }
             }
             return Buts;
         }
-
-        /* 
-          int MoyenneButMarqueEquipeDomicile, MoyenneButMarqueEquipeExterieure
-          LoiPoisson = (MoyenneButMarqueEquipeDomicile^ButSouhaite x Exp
-         */
-        
-
         #endregion
     }
 }
+
+/*============================================================================ RESTANT A FAIRE ============================================================================*/
+// Tout découle de la fonction RecuperationButs et les fonctions sont mises dans l'ordre, chaque sous-fonction, dépend de la fonction du-dessus
+// Si fonction RecuperationButs OK, le reste découle tout seul
+
+/*
+ * Débeuguer la fonction RecuperationButs... (résultat faussé, peut-être dû à la non-différence entre Domicile/Extérieur ou beug de l'API...) 
+ * 
+ * Calculer les moyennes : (Grâce à la fonction RecuperationButs -> Retourne un nombre décimal)
+ *             ¤ MoyenneButMarque :
+ *                 ° Mi-temps :
+ *                      SaisonDomicile => 1er cas général / Nbr match joué à domicile toute équipe confondue
+ *                      SaisonExtérieur => 3ème cas général / Nbr match joué à l'extérieur toute équipe confondue
+ *                      EquipeDomicile => 1er cas du 1er IF / Nbr match joué de l'équipe à domicile
+ *                      EquipeExterieur => 1er cas du 2nd IF / Nbr match joué de l'équipe à l'extérieur
+ *                 ° FinMatch :
+ *                      SaisonDomicile => 2nd cas général / Nbr match joué à domicile toute équipe confondue
+ *                      SaisonExtérieur => 4ème cas général / Nbr match joué à l'extérieur toute équipe confondue
+ *                      EquipeDomicile => 2nd cas du 1er IF / Nbr match joué à domicile
+ *                      EquipeExterieur  => 2nd cas du 2nd IF / Nbr match joué à l'extérieur
+ *             ¤ MoyenneButConcede :
+ *                 ° Mi-temps :
+ *                      SaisonDomicile => 5ème cas général / Nbr match joué à domicile toute équipe confondue
+ *                      SaisonExterieur => 7ème cas général / Nbr match joué à l'extérieur toute équipe confondue
+ *                      EquipeDomicile => 3ème cas du 1er IF / Nbr match joué à domicile
+ *                      EquipeExterieur => 3ème cas du 2nd IF / Nbr match joué à l'extérieur
+ *                 ° FinMatch :
+ *                      SaisonDomicile => 6ème cas général / Nbr match joué à domicile toute équipe confondue
+ *                      SaisonExterieur => 8ème cas général / Nbr match joué à l'extérieur toute équipe confondue
+ *                      EquipeDomicile => 4ème cas du 1er IF / Nbr match joué à domicile
+ *                      EquipeExterieur  => 4ème cas du 2nd IF / Nbr match joué à l'extérieur
+ *
+ * Calculer la force d'attaque des équipes : (Grâce aux moyennes -> Retourne un décimal)
+ *              ¤ EquipeDomicile :
+ *                 ° MiTemps : (MoyenneButMarque -> Mi-temps -> EquipeDomicile) / (MoyenneButMarque -> Mi-Temps -> SaisonDomicile)
+ *                 ° FinMatch : (MoyenneButMarque -> FinMatch -> EquipeDomicile) / (MoyenneButMarque -> FinMatch -> SaisonDomicile)
+ *              ¤ EquipeExterieur :
+ *                 ° MiTemps : (MoyenneButMarque -> Mi-temps -> EquipeExterieur) / (MoyenneButMarque -> Mi-Temps -> SaisonExterieur)
+ *                 ° FinMatch : (MoyenneButMarque -> FinMatch -> EquipeExterieur) / (MoyenneButMarque -> FinMatch -> SaisonExterieur) 
+ *                               
+ * Calculer le potentiel de défense des équipes : (Grâce aux moyennes -> Retourne un décimal)
+ *              ¤ EquipeDomicile :
+ *                 ° MiTemps : (MoyenneButConcede -> Mi-temps -> EquipeDomicile) / (MoyenneButConcede -> Mi-Temps -> SaisonDomicile)
+ *                 ° FinMatch : (MoyenneButConcede -> FinMatch -> EquipeDomicile) / (MoyenneButConcede -> FinMatch -> SaisonDomicile)
+ *              ¤ EquipeExterieur :
+ *                 ° MiTemps : (MoyenneButConcede -> Mi-temps -> EquipeExterieur) / (MoyenneButConcede -> Mi-Temps -> SaisonExterieur)
+ *                 ° FinMatch : (MoyenneButConcede -> FinMatch -> EquipeExterieur) / (MoyenneButConcede -> FinMatch -> SaisonExterieur) 
+ * 
+ * Calculer les espérances de buts : (Grâce aux moyennes, force d'attaque et potentiel de défense calculer -> Retourne un décimal)
+ *              ¤ EquipeDomicile :
+ *                 ° MiTemps : (ForceAttaque -> EquipeDomicile -> Mitemps) * (PotentielDefense -> EquipeExterieur -> MiTemps) * (MoyenneButDomicile -> MiTemps -> SaisonDomicile)
+ *                 ° FinMatch : (ForceAttaque -> EquipeDomicile -> FinMatch) * (PotentielDefense -> EquipeExterieur -> FinMatch) * (MoyenneButDomicile -> FinMatch -> SaisonDomicile)
+ *              ¤ EquipeExterieur :
+ *                 ° MiTemps : (ForceAttaque -> EquipeExterieur -> Mitemps) * (PotentielDefense -> EquipeDomicile -> MiTemps) * (MoyenneButExterieur -> MiTemps -> SaisonDomicile)
+ *                 ° FinMatch : (ForceAttaque -> EquipeExterieur -> FinMatch) * (PotentielDefense -> EquipeDomicile -> FinMatch) * (MoyenneButExterieur -> FinMatch -> SaisonDomicile)
+ *
+ * Créer deux tableaux (mi-temps, fin de match) de nombre de buts esperer pour l'équipe à domicile puis calculer dans une boucle la probabilité que l'équipe marque X but(s) en incrémentant X (X compris entre 0 et 10 ?)
+ * Faire de même pour l'équipe à l'extérieur -> Retourne des probabilités
+ * 
+ *              LoiPoisson en "Français" = (((((EsperanceButEquipe)^ButEspere) * e(-EsperanceButEquipe)) / (ButEspere!)) * 100)
+ *              
+ *              En C# : LoiPoisson = ((((Math.Pow(EsperanceButEquipe, ButEspere)) * (Math.Exp(-EsperanceButEquipe))) / Math.Fact(ButEspere)) * 100)
+ *              Pas sûr pour la factorielle...
+ *  
+ *  Créer deux "matrices" (mi-temps, fin de match) des scores probables : (0-0, 0-1, 1-0, ... 9-10, 10-9, 10-10) et additionner les deux équipes pour obtenir le résultat de la probabilité de chaque score -> Retourne des probabilités
+ *  
+ *  Les pronostics : (Retourne des probabilités)
+ *              ¤ Score Exact :
+ *                 ° MiTemps => Probabilité donné directement dans le premier tableau à 2 dimensions / matrice
+ *                 ° FinMatch => Probabilité donné directement dans le second tableau à 2 dimensions / matrice
+ *              ¤ Victoire :
+ *                 ° MiTemps :
+ *                      EquipeDomicileMT => Additionner les différentes probabilités que l'équipe locale gagne à la mi-temps 
+ *                      NulMT => Additionner les différentes probabilités que les deux équipes fassent match nul à la mi-temps    
+ *                      EquipeExterieurMT =>  Additionner les différentes probabilités que l'équipe visiteuse gagne à la mi-temps
+ *                 ° FinMatch :
+ *                      EquipeDomicileFT => Additionner les différentes probabilités que l'équipe locale gagne à la fin du match 
+ *                      NulFT => Additionner les différentes probabilités que les deux équipes fassent match nul à la fin du match    
+ *                      EquipeExterieurFT =>  Additionner les différentes probabilités que l'équipe visiteuse gagne à la fin du match
+ *              ¤ Nbre de buts :
+ *                 ° MiTemps :
+ *                      moins0.5butMT => Additionner les différentes probabilités qu'il y ait moins de 1 but à la mi-temps 
+ *                      plus0.5butMT => Additionner les différentes probabilités qu'il y ait au moins 1 but à la mi-temps
+ *                      moins1.5butsMT => Additionner les différentes probabilités qu'il y ait moins de 2 buts à la mi-temps 
+ *                      plus1.5butsMT => Additionner les différentes probabilités qu'il y ait au moins 2 but à la mi-temps
+ *                      moins2.5butsMT => Additionner les différentes probabilités qu'il y ait moins de 3 but à la mi-temps 
+ *                      plus2.5butsMT => Additionner les différentes probabilités qu'il y ait au moins 3 but à la mi-temps
+ *                      moins3.5butsMT => Additionner les différentes probabilités qu'il y ait moins de 4 buts à la mi-temps 
+ *                      plus3.5butsMT => Additionner les différentes probabilités qu'il y ait au moins 4 but à la mi-temps  
+ *                 ° FinMatch :
+ *                     moins0.5butFT => Additionner les différentes probabilités qu'il y ait moins de 1 but à la fin du match 
+ *                     plus0.5butFT => Additionner les différentes probabilités qu'il y ait au moins 1 but à la fin du match
+ *                     moins1.5butsFT => Additionner les différentes probabilités qu'il y ait moins de 2 buts à la fin du match 
+ *                     plus1.5butsFT => Additionner les différentes probabilités qu'il y ait au moins 2 but à la fin du match
+ *                     moins2.5butsFT => Additionner les différentes probabilités qu'il y ait moins de 3 but à la fin du match
+ *                     plus2.5butsFT => Additionner les différentes probabilités qu'il y ait au moins 3 but à la fin du match
+ *                     moins3.5butsFT => Additionner les différentes probabilités qu'il y ait moins de 4 buts à la fin du match
+ *                     plus3.5butsFT => Additionner les différentes probabilités qu'il y ait au moins 4 but à la fin du match
+ *               ¤ BTTS :
+ *                 ° MiTemps :
+ *                      OuiMT => Additionner les différentes probabilités que les deux équipes marquent lors de la première mi-temps
+ *                      NonMT => Additionner les différentes probabilités que les deux équipes ne marquent pas lors de la première mi-temps
+ *                 ° FinMatch :
+ *                      OuiFT => Additionner les différentes probabilités que les deux équipes marquent lors du match
+ *                      NonFT => Additionner les différentes probabilités que les deux équipes ne marquent pas lors du match
+ *                      
+ * Afficher les différents types de paris sur les matchs
+ */
