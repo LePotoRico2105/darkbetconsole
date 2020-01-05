@@ -441,20 +441,21 @@ namespace QueDuSaleConsole
             List<List<List<List<int>>>> Buts = RecuperationButs(data, c, s, match);
             Console.WriteLine("\nNombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0][0]);
             Console.WriteLine("Nombre de buts marqué au total à domicile, fin de match : " + Buts[0][0][0][1]);
-            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, mi-temps : " + Buts[0][0][1][0]);
-            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, fin de match : " + Buts[0][0][1][1]);
-            Console.WriteLine("\nNombre de buts concédé au total à domicile, mi-temps : " + Buts[0][1][0][0]);
+            Console.WriteLine("Nombre de buts concédé au total à domicile, mi-temps : " + Buts[0][1][0][0]);
             Console.WriteLine("Nombre de buts concédé au total à domicile, fin de match : " + Buts[0][1][0][1]);
+            Console.WriteLine("\nNombre de buts marqué au total à l'extérieur, mi-temps : " + Buts[0][0][1][0]);
+            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, fin de match : " + Buts[0][0][1][1]);
             Console.WriteLine("Nombre de buts concédé au total à l'extérieur, mi-temps : " + Buts[0][1][1][0]);
             Console.WriteLine("Nombre de buts concédé au total à l'extérieur, fin de match : " + Buts[0][1][1][1]);
             Console.WriteLine("\nNombre de buts marqué par l'équipe à domicile, mi-temps : " + Buts[1][0][0][0]);
             Console.WriteLine("Nombre de buts marqué par l'équipe à domicile, fin de match : " + Buts[1][0][0][1]);
             Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, mi-temps : " + Buts[1][1][1][0]);
             Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, fin de match : " + Buts[1][1][1][1]);
-            Console.WriteLine("\nNombre de buts concédé par l'équipe à l'extérieur, mi-temps : " + Buts[2][1][0][0]);
-            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, fin de match : " + Buts[2][1][0][1]);
-            Console.WriteLine("Nombre de buts marqué par l'équipe à l'extérieur, mi-temps : " + Buts[2][0][1][0]);
+            Console.WriteLine("\nNombre de buts marqué par l'équipe à l'extérieur, mi-temps : " + Buts[2][0][1][0]);
             Console.WriteLine("Nombre de buts marqué par l'équipe à l'extérieur, fin de match : " + Buts[2][0][1][1]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, mi-temps : " + Buts[2][1][0][0]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, fin de match : " + Buts[2][1][0][1]);
+            
 
             Console.Write("\n Votre choix : ");
             choix = Console.ReadLine();
@@ -531,37 +532,41 @@ namespace QueDuSaleConsole
                     }
                 },
             };
+            List<Match> matchs = new List<Match>();
             for (int e = 0; e < data.Competitions[c].Saisons[s].Equipes.Count(); e++)
             {
                 for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
                 {
-                    {
-                        Buts[0][0][0][0] = Buts[0][0][0][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[0]; // Nombre de buts marqué au total à domicile, mi-temps
-                        Buts[0][0][0][1] = Buts[0][0][0][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[0]; // Nombre de buts marqué au total à domicile, fin de match
-                        Buts[0][0][1][0] = Buts[0][0][1][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[1]; // Nombre de buts marqué au total à l'extérieur, mi-temps
-                        Buts[0][0][1][1] = Buts[0][0][1][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[1]; // Nombre de buts marqué au total à l'extérieur, fin de match
-                        Buts[0][1][0][0] = Buts[0][1][0][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[0]; // Nombre de buts concédé au total à domicile, mi-temps
-                        Buts[0][1][0][1] = Buts[0][1][0][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[0]; // Nombre de buts concédé au total à domicile, fin de match
-                        Buts[0][1][1][0] = Buts[0][1][1][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[1]; // Nombre de buts concédé au total à l'extérieur, mi-temps
-                        Buts[0][1][1][1] = Buts[0][1][1][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[1]; // Nombre de buts concédé au total à l'extérieur, fin de match
-
-                        if (data.Competitions[c].Saisons[s].Equipes[e].Id == match.IdEquipes[0])
-                        {
-                            Buts[1][0][0][0] = Buts[1][0][0][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[0]; // Nombre de buts marqué par l'équipe à domicile, mi-temps
-                            Buts[1][0][0][1] = Buts[1][0][0][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[0]; // Nombre de buts marqué par l'équipe à domicile, fin de match
-                            Buts[1][1][1][0] = Buts[1][1][1][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[1]; // Nombre de buts concédé par l'équipe à domicile, mi-temps
-                            Buts[1][1][1][1] = Buts[1][1][1][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[1]; // Nombre de buts concédé par l'équipe à domicile, fin de match
-                        }
-                        else if (data.Competitions[c].Saisons[s].Equipes[e].Id == match.IdEquipes[1])
-                        {
-                            Buts[2][1][0][0] = Buts[2][1][0][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, mi-temps
-                            Buts[2][1][0][1] = Buts[2][1][0][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, fin de match
-                            Buts[2][0][1][0] = Buts[2][0][1][0] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreMT[1]; // Nombre de buts marqué par l'équipe à l'extérieur, mi-temps
-                            Buts[2][0][1][1] = Buts[2][0][1][1] + data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].ScoreFT[1]; // Nombre de buts marqué par l'équipe à l'extérieur, fin de match
-                        }
-                    }
+                    if (!matchs.Contains(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m])) matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
                 }
             }
+            foreach (Match m in matchs)
+            {
+                Buts[0][0][0][0] = Buts[0][0][0][0] + m.ScoreMT[0]; // Nombre de buts marqué au total à domicile, mi-temps
+                Buts[0][0][0][1] = Buts[0][0][0][1] + m.ScoreFT[0]; // Nombre de buts marqué au total à domicile, fin de match
+                Buts[0][0][1][0] = Buts[0][0][1][0] + m.ScoreMT[1]; // Nombre de buts marqué au total à l'extérieur, mi-temps
+                Buts[0][0][1][1] = Buts[0][0][1][1] + m.ScoreFT[1]; // Nombre de buts marqué au total à l'extérieur, fin de match
+                Buts[0][1][0][0] = Buts[0][1][0][0] + m.ScoreMT[1]; // Nombre de buts concédé au total à domicile, mi-temps
+                Buts[0][1][0][1] = Buts[0][1][0][1] + m.ScoreFT[1]; // Nombre de buts concédé au total à domicile, fin de match
+                Buts[0][1][1][0] = Buts[0][1][1][0] + m.ScoreMT[0]; // Nombre de buts concédé au total à l'extérieur, mi-temps
+                Buts[0][1][1][1] = Buts[0][1][1][1] + m.ScoreFT[0]; // Nombre de buts concédé au total à l'extérieur, fin de match
+
+                if (m.IdEquipes[0] == match.IdEquipes[0])
+                {
+                    Buts[1][0][0][0] = Buts[1][0][0][0] + m.ScoreMT[0]; // Nombre de buts marqué par l'équipe à domicile, mi-temps
+                    Buts[1][0][0][1] = Buts[1][0][0][1] + m.ScoreFT[0]; // Nombre de buts marqué par l'équipe à domicile, fin de match
+                    Buts[1][1][1][0] = Buts[1][1][1][0] + m.ScoreMT[1]; // Nombre de buts concédé par l'équipe à domicile, mi-temps
+                    Buts[1][1][1][1] = Buts[1][1][1][1] + m.ScoreFT[1]; // Nombre de buts concédé par l'équipe à domicile, fin de match
+                }
+                else if (m.IdEquipes[1] == match.IdEquipes[1])
+                {
+                    Buts[2][0][1][0] = Buts[2][0][1][0] + m.ScoreMT[1]; // Nombre de buts marqué par l'équipe à l'extérieur, mi-temps
+                    Buts[2][0][1][1] = Buts[2][0][1][1] + m.ScoreFT[1]; // Nombre de buts marqué par l'équipe à l'extérieur, fin de match
+                    Buts[2][1][0][0] = Buts[2][1][0][0] + m.ScoreMT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, mi-temps
+                    Buts[2][1][0][1] = Buts[2][1][0][1] + m.ScoreFT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, fin de match
+                }
+            }
+            
             return Buts;
         }
         #endregion
