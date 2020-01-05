@@ -93,13 +93,13 @@ namespace QueDuSaleConsole
             Console.Clear();
             try
             {
+                Console.WriteLine("DOWNLOAD DATA...");
                 if (data.Competitions[c].Saisons[s].Equipes.Count() == 0)
                 {
-                    Console.WriteLine("DOWNLOAD DATA...");
-                    data = data._Json.CreateEquipes(data, data.Competitions[c].Saisons[s]);
-                    data = data._Json.CreateMatchs(data, data.Competitions[c].Saisons[s]);
-                    Console.Clear();
+                        data = data._Json.CreateEquipes(data, data.Competitions[c].Saisons[s]);
                 }
+                data = data._Json.CreateMatchs(data, data.Competitions[c].Saisons[s]);
+                Console.Clear();
             }
             catch { Console.WriteLine("Nombre d'appels API trop important, merci de relancer l'app et d'attendre 1 minute"); Console.Read(); Environment.Exit(0); }
             string choix = "";
