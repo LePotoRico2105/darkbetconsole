@@ -11,7 +11,6 @@ namespace QueDuSaleConsole
         #region Variables
         private int id, idCompetition, idSaison, journee;
         private List<int> idEquipes;
-        private Saison laSaison;
         private DateTime dateEtHeure, maj;
         private string gagnant;
         private List<int> scoreMT;

@@ -352,11 +352,11 @@ namespace QueDuSaleConsole
         /**
         * <summary> Fonction qui affiche un match selon la liste des matchs </summary>
         */
-        static string AfficherMatch(string choix, Data data, int c, int s, Match m)
+        static string AfficherMatch(string choix, Data data, int c, int s, Match match)
         {
             Console.Clear();
-            Equipe e1 = data.Equipes.Where(x => x.Id == m.IdEquipes[0]).ToList()[0];
-            Equipe e2 = data.Equipes.Where(x => x.Id == m.IdEquipes[1]).ToList()[0];
+            Equipe e1 = data.Equipes.Where(x => x.Id == match.IdEquipes[0]).ToList()[0];
+            Equipe e2 = data.Equipes.Where(x => x.Id == match.IdEquipes[1]).ToList()[0];
             Console.WriteLine(" _______________________________");
             Console.WriteLine("|                               |");
             Console.WriteLine("|      QUEDUSALE PRONOSTICS     |");
@@ -369,28 +369,56 @@ namespace QueDuSaleConsole
             Console.WriteLine("| - 1 : retour sur l'equipe     |");
             Console.WriteLine("| - 2 : menu principal          |");
             Console.WriteLine("|_______________________________|");
-            Console.WriteLine("\n | " + m.DateEtHeure.ToShortDateString() + " |");
-            Console.WriteLine(" | J" + m.Journee + " |");
+            Console.WriteLine("\n | " + match.DateEtHeure.ToShortDateString() + " |");
+            Console.WriteLine(" | J" + match.Journee + " |");
             Console.WriteLine(" " + e1.Nom + " - " + e2.Nom);
-            if (m.DateEtHeure < DateTime.Today) Console.WriteLine(" " + m.ScoreFT[0] + "(" + m.ScoreMT[0] + ")" + " - " + m.ScoreFT[1] + "(" + m.ScoreMT[1] + ")");
+            if (match.DateEtHeure < DateTime.Today) Console.WriteLine(" " + match.ScoreFT[0] + "(" + match.ScoreMT[0] + ")" + " - " + match.ScoreFT[1] + "(" + match.ScoreMT[1] + ")");
 
-            List<List<List<List<int>>>> Buts = RecuperationButs(data, c, s, m);
+            Double matchsSaisons = 0;
+            Double matchsSaisonsE1 = 0;
+            Double matchsSaisonsE2 = 0;
+            for (int e = 0; e < data.Competitions[c].Saisons[s].Equipes.Count(); e++)
+            {
+                for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
+                {
+                    matchsSaisons++;
+                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[0] == e1.Id) { matchsSaisonsE1++; }
+                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[1] == e2.Id) { matchsSaisonsE2++; }
+                }
+            }
+            matchsSaisons = matchsSaisons / 2;
+            List<List<List<List<Double>>>> Buts = RecuperationButs(data, c, s, match);
             Console.WriteLine("\nNombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0][0]);
             Console.WriteLine("Nombre de buts marqué au total à domicile, fin de match : " + Buts[0][0][0][1]);
-            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, mi-temps : " + Buts[0][0][1][0]);
-            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, fin de match : " + Buts[0][0][1][1]);
-            Console.WriteLine("\nNombre de buts concédé au total à domicile, mi-temps : " + Buts[0][1][0][0]);
+            Console.WriteLine("Nombre de buts concédé au total à domicile, mi-temps : " + Buts[0][1][0][0]);
             Console.WriteLine("Nombre de buts concédé au total à domicile, fin de match : " + Buts[0][1][0][1]);
+            Console.WriteLine("\nNombre de buts marqué au total à l'extérieur, mi-temps : " + Buts[0][0][1][0]);
+            Console.WriteLine("Nombre de buts marqué au total à l'extérieur, fin de match : " + Buts[0][0][1][1]);
             Console.WriteLine("Nombre de buts concédé au total à l'extérieur, mi-temps : " + Buts[0][1][1][0]);
             Console.WriteLine("Nombre de buts concédé au total à l'extérieur, fin de match : " + Buts[0][1][1][1]);
             Console.WriteLine("\nNombre de buts marqué par l'équipe à domicile, mi-temps : " + Buts[1][0][0][0]);
             Console.WriteLine("Nombre de buts marqué par l'équipe à domicile, fin de match : " + Buts[1][0][0][1]);
             Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, mi-temps : " + Buts[1][1][1][0]);
             Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, fin de match : " + Buts[1][1][1][1]);
-            Console.WriteLine("\nNombre de buts concédé par l'équipe à l'extérieur, mi-temps : " + Buts[2][1][0][0]);
-            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, fin de match : " + Buts[2][1][0][1]);
-            Console.WriteLine("Nombre de buts marqué par l'équipe à l'extérieur, mi-temps : " + Buts[2][0][1][0]);
+            Console.WriteLine("\nNombre de buts marqué par l'équipe à l'extérieur, mi-temps : " + Buts[2][0][1][0]);
             Console.WriteLine("Nombre de buts marqué par l'équipe à l'extérieur, fin de match : " + Buts[2][0][1][1]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, mi-temps : " + Buts[2][1][0][0]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, fin de match : " + Buts[2][1][0][1]);
+            Console.WriteLine("\n\n -TOTAL- ");
+            Console.WriteLine("Moyenne de but marqué à domicile, fin de match : " + Math.Round(Buts[0][0][0][1] / matchsSaisons, 2));
+            Console.WriteLine("Moyenne de but concédé à domicile, fin de match : " + Math.Round(Buts[0][1][0][1] / matchsSaisons, 2));
+            Console.WriteLine("Moyenne de but marqué à l'exterieur, fin de match : " + Math.Round(Buts[0][0][1][1] / matchsSaisons, 2));
+            Console.WriteLine("Moyenne de but concédé à l'exterieur, fin de match : " + Math.Round(Buts[0][1][1][1] / matchsSaisons, 2));
+            Console.WriteLine("\n -" + e1.Nom + "- ");
+            Console.WriteLine("Moyenne de but marqué à domicile, mi-temps : " + Math.Round(Buts[1][0][0][0] / matchsSaisonsE1, 2));
+            Console.WriteLine("Moyenne de but concédé à domicile, mi-temps : " + Math.Round(Buts[1][1][1][0] / matchsSaisonsE1, 2));
+            Console.WriteLine("Moyenne de but marqué à domicile, fin de match : " + Math.Round(Buts[1][0][0][1] / matchsSaisonsE1, 2));
+            Console.WriteLine("Moyenne de but concédé à domicile, fin de match : " + Math.Round(Buts[1][1][1][1] / matchsSaisonsE1, 2));
+            Console.WriteLine("\n -" + e2.Nom + "- ");
+            Console.WriteLine("Moyenne de but marqué à l'exterieur, mi-temps : " + Math.Round(Buts[2][0][1][0] / matchsSaisonsE2, 2));
+            Console.WriteLine("Moyenne de but concédé à l'exterieur, mi-temps : " + Math.Round(Buts[2][1][0][0] / matchsSaisonsE2, 2));
+            Console.WriteLine("Moyenne de but marqué à l'exterieur, fin de match : " + Math.Round(Buts[2][0][1][1] / matchsSaisonsE2, 2));
+            Console.WriteLine("Moyenne de but concédé à l'exterieur, fin de match : " + Math.Round(Buts[2][1][0][1] / matchsSaisonsE2, 2));
 
             Console.Write("\n Votre choix : ");
             choix = Console.ReadLine();
@@ -438,7 +466,20 @@ namespace QueDuSaleConsole
             Console.WriteLine(" " + e1.Nom + " - " + e2.Nom);
             if (match.DateEtHeure < DateTime.Today) Console.WriteLine(" " + match.ScoreFT[0] + "(" + match.ScoreMT[0] + ")" + " - " + match.ScoreFT[1] + "(" + match.ScoreMT[1] + ")");
 
-            List<List<List<List<int>>>> Buts = RecuperationButs(data, c, s, match);
+            Double matchsSaisons = 0;
+            Double matchsSaisonsE1 = 0;
+            Double matchsSaisonsE2 = 0;
+            for (int e = 0; e < data.Competitions[c].Saisons[s].Equipes.Count(); e++)
+            {
+                for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
+                {
+                    matchsSaisons++;
+                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[0] == e1.Id) { matchsSaisonsE1++; }
+                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[1] == e2.Id) { matchsSaisonsE2++; }
+                }
+            }
+            matchsSaisons = matchsSaisons / 2;
+            List<List<List<List<Double>>>> Buts = RecuperationButs(data, c, s, match);
             Console.WriteLine("\nNombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0][0]);
             Console.WriteLine("Nombre de buts marqué au total à domicile, fin de match : " + Buts[0][0][0][1]);
             Console.WriteLine("Nombre de buts concédé au total à domicile, mi-temps : " + Buts[0][1][0][0]);
@@ -455,7 +496,21 @@ namespace QueDuSaleConsole
             Console.WriteLine("Nombre de buts marqué par l'équipe à l'extérieur, fin de match : " + Buts[2][0][1][1]);
             Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, mi-temps : " + Buts[2][1][0][0]);
             Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, fin de match : " + Buts[2][1][0][1]);
-            
+            Console.WriteLine("\n\n -TOTAL- ");
+            Console.WriteLine("Moyenne de but marqué à domicile, fin de match : " + Math.Round(Buts[0][0][0][1] / matchsSaisons, 2));
+            Console.WriteLine("Moyenne de but concédé à domicile, fin de match : " + Math.Round(Buts[0][1][0][1] / matchsSaisons, 2));
+            Console.WriteLine("Moyenne de but marqué à l'exterieur, fin de match : " + Math.Round(Buts[0][0][1][1] / matchsSaisons, 2));
+            Console.WriteLine("Moyenne de but concédé à l'exterieur, fin de match : " + Math.Round(Buts[0][1][1][1] / matchsSaisons, 2));
+            Console.WriteLine("\n -" + e1.Nom + "- ");
+            Console.WriteLine("Moyenne de but marqué à domicile, mi-temps : " + Math.Round(Buts[1][0][0][0] / matchsSaisonsE1, 2));
+            Console.WriteLine("Moyenne de but concédé à domicile, mi-temps : " + Math.Round(Buts[1][1][1][0] / matchsSaisonsE1, 2));
+            Console.WriteLine("Moyenne de but marqué à domicile, fin de match : " + Math.Round(Buts[1][0][0][1] / matchsSaisonsE1, 2));
+            Console.WriteLine("Moyenne de but concédé à domicile, fin de match : " + Math.Round(Buts[1][1][1][1] / matchsSaisonsE1, 2));
+            Console.WriteLine("\n -" + e2.Nom + "- ");
+            Console.WriteLine("Moyenne de but marqué à l'exterieur, mi-temps : " + Math.Round(Buts[2][0][1][0] / matchsSaisonsE2, 2));
+            Console.WriteLine("Moyenne de but concédé à l'exterieur, mi-temps : " + Math.Round(Buts[2][1][0][0] / matchsSaisonsE2, 2));
+            Console.WriteLine("Moyenne de but marqué à l'exterieur, fin de match : " + Math.Round(Buts[2][0][1][1] / matchsSaisonsE2, 2));
+            Console.WriteLine("Moyenne de but concédé à l'exterieur, fin de match : " + Math.Round(Buts[2][1][0][1] / matchsSaisonsE2, 2));
 
             Console.Write("\n Votre choix : ");
             choix = Console.ReadLine();
@@ -488,47 +543,47 @@ namespace QueDuSaleConsole
         * Le quatrième : Correspond à la durée, la première mi-temps [0] ou la fin du match [1]
         * </remarks>
         **/
-        static List<List<List<List<int>>>> RecuperationButs(Data data, int c, int s, Match match)
+        static List<List<List<List<Double>>>> RecuperationButs(Data data, int c, int s, Match match)
         {
-            List<List<List<List<int>>>> Buts = new List<List<List<List<int>>>>
+            List<List<List<List<Double>>>> Buts = new List<List<List<List<Double>>>>
             {
-                new List<List<List<int>>>
+                new List<List<List<Double>>>
                 {
-                    new List<List<int>>
+                    new List<List<Double>>
                     {
-                        new List<int>{0, 0},
-                        new List<int>{0, 0},
+                        new List<Double>{0, 0},
+                        new List<Double>{0, 0},
                     },
-                    new List<List<int>>
+                    new List<List<Double>>
                     {
-                        new List<int>{0, 0},
-                        new List<int>{0, 0},
+                        new List<Double>{0, 0},
+                        new List<Double>{0, 0},
                     }
                 },
-                new List<List<List<int>>>
+                new List<List<List<Double>>>
                 {
-                    new List<List<int>>
+                    new List<List<Double>>
                     {
-                        new List<int>{0, 0},
-                        new List<int>{0, 0},
+                        new List<Double>{0, 0},
+                        new List<Double>{0, 0},
                     },
-                    new List<List<int>>
+                    new List<List<Double>>
                     {
-                        new List<int>{0, 0},
-                        new List<int>{0, 0},
+                        new List<Double>{0, 0},
+                        new List<Double>{0, 0},
                     }
                 },
-                new List<List<List<int>>>
+                new List<List<List<Double>>>
                 {
-                    new List<List<int>>
+                    new List<List<Double>>
                     {
-                        new List<int>{0, 0},
-                        new List<int>{0, 0},
+                        new List<Double>{0, 0},
+                        new List<Double>{0, 0},
                     },
-                    new List<List<int>>
+                    new List<List<Double>>
                     {
-                        new List<int>{0, 0},
-                        new List<int>{0, 0},
+                        new List<Double>{0, 0},
+                        new List<Double>{0, 0},
                     }
                 },
             };
