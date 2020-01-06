@@ -260,7 +260,6 @@ namespace QueDuSaleConsole
                     match.ScorePenalty.Add(scorePh);
                     match.ScorePenalty.Add(scorePa);
                     data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes.Where(x => x.Id == equipe.Id).ToList()[0].Matchs.Add(match);
-
                 }
                 catch (Exception a) { Console.WriteLine(a); Console.Read(); }
             }

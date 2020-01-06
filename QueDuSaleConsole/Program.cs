@@ -381,14 +381,19 @@ namespace QueDuSaleConsole
             {
                 for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
                 {
-                    matchsSaisons++;
-                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[0] == e1.Id) { matchsSaisonsE1++; }
-                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[1] == e2.Id) { matchsSaisonsE2++; }
+                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].DateEtHeure < DateTime.Today)
+                    {
+                        matchsSaisons++;
+                        if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[0] == e1.Id) { matchsSaisonsE1++; }
+                        if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[1] == e2.Id) { matchsSaisonsE2++; }
+                    }
                 }
             }
             matchsSaisons = matchsSaisons / 2;
-            List<List<List<List<Double>>>> Buts = RecuperationButs(data, c, s, match);
-            Console.WriteLine("\nNombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0][0]);
+            matchsSaisonsE1 = matchsSaisonsE1 / 2;
+            matchsSaisonsE2 = matchsSaisonsE2 / 2;
+            List<List<List<List<int>>>> Buts = RecuperationButs(data, c, s, match);
+            /*Console.WriteLine("\nNombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0][0]);
             Console.WriteLine("Nombre de buts marqué au total à domicile, fin de match : " + Buts[0][0][0][1]);
             Console.WriteLine("Nombre de buts concédé au total à domicile, mi-temps : " + Buts[0][1][0][0]);
             Console.WriteLine("Nombre de buts concédé au total à domicile, fin de match : " + Buts[0][1][0][1]);
@@ -398,29 +403,93 @@ namespace QueDuSaleConsole
             Console.WriteLine("Nombre de buts concédé au total à l'extérieur, fin de match : " + Buts[0][1][1][1]);
             Console.WriteLine("\nNombre de buts marqué par l'équipe à domicile, mi-temps : " + Buts[1][0][0][0]);
             Console.WriteLine("Nombre de buts marqué par l'équipe à domicile, fin de match : " + Buts[1][0][0][1]);
-            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, mi-temps : " + Buts[1][1][1][0]);
-            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, fin de match : " + Buts[1][1][1][1]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, mi-temps : " + Buts[1][1][0][0]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, fin de match : " + Buts[1][1][0][1]);
             Console.WriteLine("\nNombre de buts marqué par l'équipe à l'extérieur, mi-temps : " + Buts[2][0][1][0]);
             Console.WriteLine("Nombre de buts marqué par l'équipe à l'extérieur, fin de match : " + Buts[2][0][1][1]);
-            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, mi-temps : " + Buts[2][1][0][0]);
-            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, fin de match : " + Buts[2][1][0][1]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, mi-temps : " + Buts[2][1][1][0]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, fin de match : " + Buts[2][1][1][1]);
             Console.WriteLine("\n\n -TOTAL- ");
             Console.WriteLine("Moyenne de but marqué à domicile, fin de match : " + Math.Round(Buts[0][0][0][1] / matchsSaisons, 2));
             Console.WriteLine("Moyenne de but concédé à domicile, fin de match : " + Math.Round(Buts[0][1][0][1] / matchsSaisons, 2));
             Console.WriteLine("Moyenne de but marqué à l'exterieur, fin de match : " + Math.Round(Buts[0][0][1][1] / matchsSaisons, 2));
             Console.WriteLine("Moyenne de but concédé à l'exterieur, fin de match : " + Math.Round(Buts[0][1][1][1] / matchsSaisons, 2));
-            Console.WriteLine("\n -" + e1.Nom + "- ");
-            Console.WriteLine("Moyenne de but marqué à domicile, mi-temps : " + Math.Round(Buts[1][0][0][0] / matchsSaisonsE1, 2));
-            Console.WriteLine("Moyenne de but concédé à domicile, mi-temps : " + Math.Round(Buts[1][1][1][0] / matchsSaisonsE1, 2));
-            Console.WriteLine("Moyenne de but marqué à domicile, fin de match : " + Math.Round(Buts[1][0][0][1] / matchsSaisonsE1, 2));
-            Console.WriteLine("Moyenne de but concédé à domicile, fin de match : " + Math.Round(Buts[1][1][1][1] / matchsSaisonsE1, 2));
-            Console.WriteLine("\n -" + e2.Nom + "- ");
-            Console.WriteLine("Moyenne de but marqué à l'exterieur, mi-temps : " + Math.Round(Buts[2][0][1][0] / matchsSaisonsE2, 2));
-            Console.WriteLine("Moyenne de but concédé à l'exterieur, mi-temps : " + Math.Round(Buts[2][1][0][0] / matchsSaisonsE2, 2));
-            Console.WriteLine("Moyenne de but marqué à l'exterieur, fin de match : " + Math.Round(Buts[2][0][1][1] / matchsSaisonsE2, 2));
-            Console.WriteLine("Moyenne de but concédé à l'exterieur, fin de match : " + Math.Round(Buts[2][1][0][1] / matchsSaisonsE2, 2));
+            Console.WriteLine("\n\n -" + e1.Nom + "- ");
+            Console.WriteLine("Force d'attaque à domicile, mi-temps : " + Math.Round((Buts[1][0][0][0] / matchsSaisonsE1) / (Buts[0][0][0][0] / matchsSaisons), 2));
+            Console.WriteLine("Potentiel de défense à domicile, mi-temps : " + Math.Round((Buts[1][1][0][0] / matchsSaisonsE1) / (Buts[0][1][0][0] / matchsSaisons), 2));
+            Console.WriteLine("Force d'attaque à domicile, fin de match : " + Math.Round((Buts[1][0][0][1] / matchsSaisonsE1) / (Buts[0][0][0][1] / matchsSaisons), 2));
+            Console.WriteLine("Potentiel de défense à domicile, fin de match : " + Math.Round((Buts[1][1][0][1] / matchsSaisonsE1) / (Buts[0][1][0][1] / matchsSaisons), 2));
+            
+            Console.WriteLine("Espérance de but à domicile, mi-temps : " + Math.Round(ES1MT, 2));
+            Console.WriteLine("Espérance de but à domicile, fin du match : " + Math.Round(ES1FT, 2));
+            
+            Console.WriteLine("\n\n -" + e2.Nom + "- ");
+            Console.WriteLine("Force d'attaque à l'exterieur, mi-temps : " + Math.Round((Buts[2][0][1][0] / matchsSaisonsE2) / (Buts[0][0][1][0] / matchsSaisons), 2));
+            Console.WriteLine("Potentiel de défense à l'exterieur, mi-temps : " + Math.Round((Buts[2][1][1][0] / matchsSaisonsE2) / (Buts[0][1][1][0] / matchsSaisons), 2));
+            Console.WriteLine("Force d'attaque à l'exterieur, fin de match : " + Math.Round((Buts[2][0][1][1] / matchsSaisonsE2) / (Buts[0][0][1][1] / matchsSaisons), 2));
+            Console.WriteLine("Potentiel de défense à l'exterieur, fin de match : " + Math.Round((Buts[2][1][1][1] / matchsSaisonsE2) / (Buts[0][1][1][1] / matchsSaisons), 2));     
+            Console.WriteLine("Espérance de but à l'extérieur, mi-temps : " + Math.Round(ES2MT, 2));
+            Console.WriteLine("Espérance de but à l'extérieur, fin du match : " + Math.Round(ES2FT, 2));*/
+            double ES1MT = ((Buts[1][0][0][0] / matchsSaisonsE1) / (Buts[0][0][0][0] / matchsSaisons)) * ((Buts[2][1][1][0] / matchsSaisonsE1) / (Buts[0][1][1][0] / matchsSaisons)) * (Buts[0][0][0][0] / matchsSaisons);
+            double ES1FT = ((Buts[1][0][0][1] / matchsSaisonsE1) / (Buts[0][0][0][1] / matchsSaisons)) * ((Buts[2][1][1][1] / matchsSaisonsE1) / (Buts[0][1][1][1] / matchsSaisons)) * (Buts[0][0][0][1] / matchsSaisons);
+            double ES2MT = ((Buts[2][0][1][0] / matchsSaisonsE2) / (Buts[0][0][1][0] / matchsSaisons)) * ((Buts[1][1][0][0] / matchsSaisonsE2) / (Buts[0][1][0][0] / matchsSaisons)) * (Buts[0][0][1][0] / matchsSaisons);
+            double ES2FT = ((Buts[2][0][1][1] / matchsSaisonsE2) / (Buts[0][0][1][1] / matchsSaisons)) * ((Buts[1][1][0][1] / matchsSaisonsE2) / (Buts[0][1][0][1] / matchsSaisons)) * (Buts[0][0][1][1] / matchsSaisons);
+            Console.WriteLine("Pourcentage de chance nombre de buts " + e1.Nom + ", mi-temps : ");
+            for (int i = 0; i <= 9; i++) Console.Write(" " + i + " = " + Math.Round(((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i)) * 100, 1) + "%");
+            Console.WriteLine("\nPourcentage de chance nombre de buts " + e1.Nom + ", fin de match : ");
+            for (int i = 0; i <= 9; i++) Console.Write(" " + i + " = " + Math.Round(((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i)) * 100, 1) + "%");
+            Console.WriteLine("\nPourcentage de chance nombre de buts " + e2.Nom + ", mi-temps : ");
+            for (int i = 0; i <= 9; i++) Console.Write(" " + i + " = " + Math.Round(((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i)) * 100, 1) + "%");
+            Console.WriteLine("\nPourcentage de chance nombre de buts " + e2.Nom + ", fin du match : ");
+            for (int i = 0; i <= 9; i++) Console.Write(" " + i + " = " + Math.Round(((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i)) * 100, 1) + "%");
+            double V1MT = 0;
+            double V2MT = 0;
+            double V1FT = 0;
+            double V2FT = 0;
+            double BTTS = 0;
+            double V1FTplus2 = 0;
+            double V2FTplus2 = 0;
+            double V1FTplus3 = 0;
+            double V2FTplus3 = 0;
+            double scoreExact = 0;
+            int scoreExactE1 = 0;
+            int scoreExactE2 = 0;
 
-            Console.Write("\n Votre choix : ");
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V1MT = (((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i))) * (((Math.Pow(ES2MT, j) * Math.Exp(-ES2MT)) / factorial(j))) * 100 + V1MT;
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V2MT = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + V2MT;
+            Console.WriteLine("\n\nVainqueur mi-temps : " + Math.Round(V1MT, 1) + "|" + Math.Round(100 - V1MT - V2MT, 1) + "|" + Math.Round(V2MT, 1));
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V1FT = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FT;
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V2FT = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FT;
+            Console.WriteLine("Vainqueur final : " + Math.Round(V1FT, 1) + "|" + Math.Round(100 - V1FT - V2FT, 1) + "|" + Math.Round(V2FT, 1));
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > 0 && j > 0) BTTS = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + BTTS;
+            Console.WriteLine("\nBTTS : OUI = " + Math.Round(BTTS, 1) + " | NON = " + Math.Round(100 - BTTS, 1));
+            if (V1FT > V2FT)
+            {
+                for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 1.5)) V1FTplus2 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus2;
+                Console.WriteLine("\n" + e1.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V1FTplus2, 1) + "%");
+                for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 2.5)) V1FTplus3 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus3;
+                Console.WriteLine(e1.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V1FTplus3, 1) + "%");
+            }
+            if (V2FT > V1FT)
+            {
+                for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 1.5)) V2FTplus2 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus2;
+                Console.WriteLine("\n" + e2.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V2FTplus2, 1) + "%");
+                for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 2.5)) V2FTplus3 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus3;
+                Console.WriteLine(e2.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V2FTplus3, 1) + "%");
+            }
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++)
+                {
+                    double pourcent = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100;
+                    if (pourcent > scoreExact)
+                    {
+                        scoreExactE1 = i;
+                        scoreExactE2 = j;
+                        scoreExact = pourcent;
+                    }
+                }
+            Console.WriteLine("\nScore exact le plus probable : " + scoreExactE1 + "-" + scoreExactE2 + " = " + Math.Round(scoreExact, 1));
+
+            Console.Write("\n\nVotre choix : ");
             choix = Console.ReadLine();
             switch (choix)
             {
@@ -473,14 +542,19 @@ namespace QueDuSaleConsole
             {
                 for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
                 {
-                    matchsSaisons++;
-                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[0] == e1.Id) { matchsSaisonsE1++; }
-                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[1] == e2.Id) { matchsSaisonsE2++; }
+                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].DateEtHeure < DateTime.Today)
+                    {
+                        matchsSaisons++;
+                        if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[0] == e1.Id) { matchsSaisonsE1++; }
+                        if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[1] == e2.Id) { matchsSaisonsE2++; }
+                    }
                 }
             }
             matchsSaisons = matchsSaisons / 2;
-            List<List<List<List<Double>>>> Buts = RecuperationButs(data, c, s, match);
-            Console.WriteLine("\nNombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0][0]);
+            matchsSaisonsE1 = matchsSaisonsE1 / 2;
+            matchsSaisonsE2 = matchsSaisonsE2 / 2;
+            List<List<List<List<int>>>> Buts = RecuperationButs(data, c, s, match);
+            /*Console.WriteLine("\nNombre de buts marqué au total à domicile, mi-temps : " + Buts[0][0][0][0]);
             Console.WriteLine("Nombre de buts marqué au total à domicile, fin de match : " + Buts[0][0][0][1]);
             Console.WriteLine("Nombre de buts concédé au total à domicile, mi-temps : " + Buts[0][1][0][0]);
             Console.WriteLine("Nombre de buts concédé au total à domicile, fin de match : " + Buts[0][1][0][1]);
@@ -490,29 +564,92 @@ namespace QueDuSaleConsole
             Console.WriteLine("Nombre de buts concédé au total à l'extérieur, fin de match : " + Buts[0][1][1][1]);
             Console.WriteLine("\nNombre de buts marqué par l'équipe à domicile, mi-temps : " + Buts[1][0][0][0]);
             Console.WriteLine("Nombre de buts marqué par l'équipe à domicile, fin de match : " + Buts[1][0][0][1]);
-            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, mi-temps : " + Buts[1][1][1][0]);
-            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, fin de match : " + Buts[1][1][1][1]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, mi-temps : " + Buts[1][1][0][0]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à domicile, fin de match : " + Buts[1][1][0][1]);
             Console.WriteLine("\nNombre de buts marqué par l'équipe à l'extérieur, mi-temps : " + Buts[2][0][1][0]);
             Console.WriteLine("Nombre de buts marqué par l'équipe à l'extérieur, fin de match : " + Buts[2][0][1][1]);
-            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, mi-temps : " + Buts[2][1][0][0]);
-            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, fin de match : " + Buts[2][1][0][1]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, mi-temps : " + Buts[2][1][1][0]);
+            Console.WriteLine("Nombre de buts concédé par l'équipe à l'extérieur, fin de match : " + Buts[2][1][1][1]);
             Console.WriteLine("\n\n -TOTAL- ");
             Console.WriteLine("Moyenne de but marqué à domicile, fin de match : " + Math.Round(Buts[0][0][0][1] / matchsSaisons, 2));
             Console.WriteLine("Moyenne de but concédé à domicile, fin de match : " + Math.Round(Buts[0][1][0][1] / matchsSaisons, 2));
             Console.WriteLine("Moyenne de but marqué à l'exterieur, fin de match : " + Math.Round(Buts[0][0][1][1] / matchsSaisons, 2));
             Console.WriteLine("Moyenne de but concédé à l'exterieur, fin de match : " + Math.Round(Buts[0][1][1][1] / matchsSaisons, 2));
-            Console.WriteLine("\n -" + e1.Nom + "- ");
-            Console.WriteLine("Moyenne de but marqué à domicile, mi-temps : " + Math.Round(Buts[1][0][0][0] / matchsSaisonsE1, 2));
-            Console.WriteLine("Moyenne de but concédé à domicile, mi-temps : " + Math.Round(Buts[1][1][1][0] / matchsSaisonsE1, 2));
-            Console.WriteLine("Moyenne de but marqué à domicile, fin de match : " + Math.Round(Buts[1][0][0][1] / matchsSaisonsE1, 2));
-            Console.WriteLine("Moyenne de but concédé à domicile, fin de match : " + Math.Round(Buts[1][1][1][1] / matchsSaisonsE1, 2));
-            Console.WriteLine("\n -" + e2.Nom + "- ");
-            Console.WriteLine("Moyenne de but marqué à l'exterieur, mi-temps : " + Math.Round(Buts[2][0][1][0] / matchsSaisonsE2, 2));
-            Console.WriteLine("Moyenne de but concédé à l'exterieur, mi-temps : " + Math.Round(Buts[2][1][0][0] / matchsSaisonsE2, 2));
-            Console.WriteLine("Moyenne de but marqué à l'exterieur, fin de match : " + Math.Round(Buts[2][0][1][1] / matchsSaisonsE2, 2));
-            Console.WriteLine("Moyenne de but concédé à l'exterieur, fin de match : " + Math.Round(Buts[2][1][0][1] / matchsSaisonsE2, 2));
+            Console.WriteLine("\n\n -" + e1.Nom + "- ");
+            Console.WriteLine("Force d'attaque à domicile, mi-temps : " + Math.Round((Buts[1][0][0][0] / matchsSaisonsE1) / (Buts[0][0][0][0] / matchsSaisons), 2));
+            Console.WriteLine("Potentiel de défense à domicile, mi-temps : " + Math.Round((Buts[1][1][0][0] / matchsSaisonsE1) / (Buts[0][1][0][0] / matchsSaisons), 2));
+            Console.WriteLine("Force d'attaque à domicile, fin de match : " + Math.Round((Buts[1][0][0][1] / matchsSaisonsE1) / (Buts[0][0][0][1] / matchsSaisons), 2));
+            Console.WriteLine("Potentiel de défense à domicile, fin de match : " + Math.Round((Buts[1][1][0][1] / matchsSaisonsE1) / (Buts[0][1][0][1] / matchsSaisons), 2));
+            
+            Console.WriteLine("Espérance de but à domicile, mi-temps : " + Math.Round(ES1MT, 2));
+            Console.WriteLine("Espérance de but à domicile, fin du match : " + Math.Round(ES1FT, 2));
+            Console.WriteLine("\n\n -" + e2.Nom + "- ");
+            Console.WriteLine("Force d'attaque à l'exterieur, mi-temps : " + Math.Round((Buts[2][0][1][0] / matchsSaisonsE2) / (Buts[0][0][1][0] / matchsSaisons), 2));
+            Console.WriteLine("Potentiel de défense à l'exterieur, mi-temps : " + Math.Round((Buts[2][1][1][0] / matchsSaisonsE2) / (Buts[0][1][1][0] / matchsSaisons), 2));
+            Console.WriteLine("Force d'attaque à l'exterieur, fin de match : " + Math.Round((Buts[2][0][1][1] / matchsSaisonsE2) / (Buts[0][0][1][1] / matchsSaisons), 2));
+            Console.WriteLine("Potentiel de défense à l'exterieur, fin de match : " + Math.Round((Buts[2][1][1][1] / matchsSaisonsE2) / (Buts[0][1][1][1] / matchsSaisons), 2));       
+            Console.WriteLine("Espérance de but à l'extérieur, mi-temps : " + Math.Round(ES2MT, 2));
+            Console.WriteLine("Espérance de but à l'extérieur, fin du match : " + Math.Round(ES2FT, 2));*/
+            double ES1MT = ((Buts[1][0][0][0] / matchsSaisonsE1) / (Buts[0][0][0][0] / matchsSaisons)) * ((Buts[2][1][1][0] / matchsSaisonsE1) / (Buts[0][1][1][0] / matchsSaisons)) * (Buts[0][0][0][0] / matchsSaisons);
+            double ES1FT = ((Buts[1][0][0][1] / matchsSaisonsE1) / (Buts[0][0][0][1] / matchsSaisons)) * ((Buts[2][1][1][1] / matchsSaisonsE1) / (Buts[0][1][1][1] / matchsSaisons)) * (Buts[0][0][0][1] / matchsSaisons);
+            double ES2MT = ((Buts[2][0][1][0] / matchsSaisonsE2) / (Buts[0][0][1][0] / matchsSaisons)) * ((Buts[1][1][0][0] / matchsSaisonsE2) / (Buts[0][1][0][0] / matchsSaisons)) * (Buts[0][0][1][0] / matchsSaisons);
+            double ES2FT = ((Buts[2][0][1][1] / matchsSaisonsE2) / (Buts[0][0][1][1] / matchsSaisons)) * ((Buts[1][1][0][1] / matchsSaisonsE2) / (Buts[0][1][0][1] / matchsSaisons)) * (Buts[0][0][1][1] / matchsSaisons);
+            Console.WriteLine("\nPourcentage de chance nombre de buts " + e1.Nom + ", mi-temps : ");
+            for (int i = 0; i <= 9; i++) Console.Write(" " + i + " = " + Math.Round(((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i)) * 100, 1) + "%");
+            Console.WriteLine("\nPourcentage de chance nombre de buts " + e1.Nom + ", fin de match : ");
+            for (int i = 0; i <= 9; i++) Console.Write(" " + i + " = " + Math.Round(((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i)) * 100, 1) + "%");
+            Console.WriteLine("\nPourcentage de chance nombre de buts " + e2.Nom + ", mi-temps : ");
+            for (int i = 0; i <= 9; i++) Console.Write(" " + i + " = " + Math.Round(((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i)) * 100, 1) + "%");
+            Console.WriteLine("\nPourcentage de chance nombre de buts " + e2.Nom + ", fin du match : ");
+            for (int i = 0; i <= 9; i++) Console.Write(" " + i + " = " + Math.Round(((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i)) * 100, 1) + "%");
+            double V1MT = 0;
+            double V2MT = 0;
+            double V1FT = 0;
+            double V2FT = 0;
+            double BTTS = 0;
+            double V1FTplus2 = 0;
+            double V2FTplus2 = 0;
+            double V1FTplus3 = 0;
+            double V2FTplus3 = 0;
+            double scoreExact = 0;
+            int scoreExactE1 = 0;
+            int scoreExactE2 = 0;
 
-            Console.Write("\n Votre choix : ");
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V1MT = (((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i))) * (((Math.Pow(ES2MT, j) * Math.Exp(-ES2MT)) / factorial(j))) * 100 + V1MT;
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V2MT = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + V2MT;
+            Console.WriteLine("\n\nVainqueur mi-temps : " + Math.Round(V1MT, 1) + "|" + Math.Round(100 - V1MT - V2MT, 1) + "|" + Math.Round(V2MT, 1));
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V1FT = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FT;
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V2FT = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FT;
+            Console.WriteLine("Vainqueur final : " + Math.Round(V1FT, 1) + "|" + Math.Round(100 - V1FT - V2FT, 1) + "|" + Math.Round(V2FT, 1));
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > 0 && j > 0) BTTS = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + BTTS;
+            Console.WriteLine("\nBTTS : OUI = " + Math.Round(BTTS, 1) + " | NON = " + Math.Round(100 - BTTS, 1));
+            if (V1FT > V2FT)
+            {
+                for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 1.5)) V1FTplus2 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus2;
+                Console.WriteLine("\n" +e1.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V1FTplus2, 1) + "%");
+                for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 2.5)) V1FTplus3 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus3;
+                Console.WriteLine(e1.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V1FTplus3, 1) + "%");
+            }
+            if (V2FT > V1FT)
+            {
+                for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 1.5)) V2FTplus2 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus2;
+                Console.WriteLine("\n" +e2.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V2FTplus2, 1) + "%");
+                for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 2.5)) V2FTplus3 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus3;
+                Console.WriteLine(e2.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V2FTplus3, 1) + "%");
+            }
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) {
+                    double pourcent = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100;
+                    if (pourcent > scoreExact)
+                    {
+                        scoreExactE1 = i;
+                        scoreExactE2 = j;
+                        scoreExact = pourcent;
+                    }
+                }
+            Console.WriteLine("\nScore exact le plus probable : " + scoreExactE1 + "-" + scoreExactE2 + " = " + Math.Round(scoreExact,1));
+
+
+            Console.Write("\n\nVotre choix : ");
             choix = Console.ReadLine();
             switch (choix)
             {
@@ -534,6 +671,15 @@ namespace QueDuSaleConsole
 
         /*============================================================================ PARTIE CALCUL ============================================================================*/
 
+
+        static double factorial(int number)
+        {
+            if (number == 1 || number == 0)
+                return 1;
+            else
+                return number * factorial(number - 1);
+        }
+
         /**
         * <summary> Fonction qui récupère les nombres de buts de la saison </summary>
         * <remarks> 
@@ -543,47 +689,49 @@ namespace QueDuSaleConsole
         * Le quatrième : Correspond à la durée, la première mi-temps [0] ou la fin du match [1]
         * </remarks>
         **/
-        static List<List<List<List<Double>>>> RecuperationButs(Data data, int c, int s, Match match)
+
+
+        static List<List<List<List<int>>>> RecuperationButs(Data data, int c, int s, Match match)
         {
-            List<List<List<List<Double>>>> Buts = new List<List<List<List<Double>>>>
+            List<List<List<List<int>>>> Buts = new List<List<List<List<int>>>>
             {
-                new List<List<List<Double>>>
+                new List<List<List<int>>>
                 {
-                    new List<List<Double>>
+                    new List<List<int>>
                     {
-                        new List<Double>{0, 0},
-                        new List<Double>{0, 0},
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
                     },
-                    new List<List<Double>>
+                    new List<List<int>>
                     {
-                        new List<Double>{0, 0},
-                        new List<Double>{0, 0},
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
                     }
                 },
-                new List<List<List<Double>>>
+                new List<List<List<int>>>
                 {
-                    new List<List<Double>>
+                    new List<List<int>>
                     {
-                        new List<Double>{0, 0},
-                        new List<Double>{0, 0},
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
                     },
-                    new List<List<Double>>
+                    new List<List<int>>
                     {
-                        new List<Double>{0, 0},
-                        new List<Double>{0, 0},
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
                     }
                 },
-                new List<List<List<Double>>>
+                new List<List<List<int>>>
                 {
-                    new List<List<Double>>
+                    new List<List<int>>
                     {
-                        new List<Double>{0, 0},
-                        new List<Double>{0, 0},
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
                     },
-                    new List<List<Double>>
+                    new List<List<int>>
                     {
-                        new List<Double>{0, 0},
-                        new List<Double>{0, 0},
+                        new List<int>{0, 0},
+                        new List<int>{0, 0},
                     }
                 },
             };
@@ -610,15 +758,15 @@ namespace QueDuSaleConsole
                 {
                     Buts[1][0][0][0] = Buts[1][0][0][0] + m.ScoreMT[0]; // Nombre de buts marqué par l'équipe à domicile, mi-temps
                     Buts[1][0][0][1] = Buts[1][0][0][1] + m.ScoreFT[0]; // Nombre de buts marqué par l'équipe à domicile, fin de match
-                    Buts[1][1][1][0] = Buts[1][1][1][0] + m.ScoreMT[1]; // Nombre de buts concédé par l'équipe à domicile, mi-temps
-                    Buts[1][1][1][1] = Buts[1][1][1][1] + m.ScoreFT[1]; // Nombre de buts concédé par l'équipe à domicile, fin de match
+                    Buts[1][1][0][0] = Buts[1][1][0][0] + m.ScoreMT[1]; // Nombre de buts concédé par l'équipe à domicile, mi-temps
+                    Buts[1][1][0][1] = Buts[1][1][0][1] + m.ScoreFT[1]; // Nombre de buts concédé par l'équipe à domicile, fin de match
                 }
                 else if (m.IdEquipes[1] == match.IdEquipes[1])
                 {
                     Buts[2][0][1][0] = Buts[2][0][1][0] + m.ScoreMT[1]; // Nombre de buts marqué par l'équipe à l'extérieur, mi-temps
                     Buts[2][0][1][1] = Buts[2][0][1][1] + m.ScoreFT[1]; // Nombre de buts marqué par l'équipe à l'extérieur, fin de match
-                    Buts[2][1][0][0] = Buts[2][1][0][0] + m.ScoreMT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, mi-temps
-                    Buts[2][1][0][1] = Buts[2][1][0][1] + m.ScoreFT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, fin de match
+                    Buts[2][1][1][0] = Buts[2][1][1][0] + m.ScoreMT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, mi-temps
+                    Buts[2][1][1][1] = Buts[2][1][1][1] + m.ScoreFT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, fin de match
                 }
             }
             
