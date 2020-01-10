@@ -482,7 +482,7 @@ namespace QueDuSaleConsole
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V2FT = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FT;
             NFT = 100 - V1FT - V2FT;
             Console.WriteLine("\tVainqueur final : " + Math.Round(V1FT, 1) + "|" + Math.Round(NFT, 1) + "|" + Math.Round(V2FT, 1));
-            Console.WriteLine("\tVainqueur double chance final : " + (100 - Math.Round(V2FT, 1)) + "|" + (100 - Math.Round(NMT, 1)) + "|" + (100 - Math.Round(V1FT, 1)));
+            Console.WriteLine("\tVainqueur double chance final : " + (100 - Math.Round(V2FT, 1)) + "|" + (100 - Math.Round(NFT, 1)) + "|" + (100 - Math.Round(V1FT, 1)));
 
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i != 0 && j != 0) BTTSMT = (((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i))) * (((Math.Pow(ES2MT, j) * Math.Exp(-ES2MT)) / factorial(j))) * 100 + BTTSMT;
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i != 0 && j != 0) BTTSFT = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + BTTSFT;
@@ -720,7 +720,7 @@ namespace QueDuSaleConsole
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V2FT = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FT;
             NFT = 100 - V1FT - V2FT;
             Console.WriteLine("\tVainqueur final : " + Math.Round(V1FT, 1) + "|" + Math.Round(NFT, 1) + "|" + Math.Round(V2FT, 1));
-            Console.WriteLine("\tVainqueur double chance final : " + (100 - Math.Round(V2FT, 1)) + "|" + (100 - Math.Round(NMT, 1)) + "|" + (100 - Math.Round(V1FT, 1)));
+            Console.WriteLine("\tVainqueur double chance final : " + (100 - Math.Round(V2FT, 1)) + "|" + (100 - Math.Round(NFT, 1)) + "|" + (100 - Math.Round(V1FT, 1)));
 
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i != 0 && j != 0) BTTSMT = (((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i))) * (((Math.Pow(ES2MT, j) * Math.Exp(-ES2MT)) / factorial(j))) * 100 + BTTSMT;
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i != 0 && j != 0) BTTSFT = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + BTTSFT;
