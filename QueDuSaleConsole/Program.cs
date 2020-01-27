@@ -563,8 +563,6 @@ namespace QueDuSaleConsole
                         scoreExactFT = pourcent;
                     }
                 }
-            Console.WriteLine("\n\n _SCORE EXACT FULL-TIME_");
-            Console.WriteLine("\nScore le plus probable : " + scoreExactE1 + "-" + scoreExactE2 + " = " + Math.Round(scoreExact, 1));
             Console.WriteLine("\n\n _LES MEILLEURS PRONOSTICS_");
             if ((V1MT > 57) && (cotes[1][0] * V1MT > 90)) Console.WriteLine("Vainqueur mi-temps : " + e1.Nom + " (" + cotes[1][0] + ")");
             else if ((100 - V1MT - V2MT > 56) && (cotes[1][1] * (100 - V1MT - V2MT) > 90)) Console.WriteLine("Vainqueur mi-temps : NUL (" + cotes[1][1] + ")");
@@ -572,8 +570,8 @@ namespace QueDuSaleConsole
             if ((V1FT > 57) && (cotes[0][0] * V1FT > 90)) Console.WriteLine("Vainqueur final : " + e1.Nom + " (" + cotes[0][0] + ")");
             else if ((100 - V1FT - V2FT > 57) && (cotes[0][1] * (100 - V1FT - V2FT) > 90)) Console.WriteLine("Vainqueur final : NUL (" + cotes[0][1] + ")");
             else if ((V2FT > 57) && (cotes[0][2] * V2FT > 90)) Console.WriteLine("Vainqueur final : " + e2.Nom + " (" + cotes[0][2] + ")");
-            if ((BTTS > 57) && (cotes[2][0] * BTTS > 90)) Console.WriteLine("BTTS Oui : " + "(" + cotes[2][0] + ")");
-            else if ((100 - BTTS > 57) && (cotes[2][1] * (100 - BTTS) > 90)) Console.WriteLine("BTTS Non : " + "(" + cotes[2][1] + ")");
+            if ((BTTSFT > 57) && (cotes[2][0] * BTTSFT > 90)) Console.WriteLine("BTTS Oui : " + "(" + cotes[2][0] + ")");
+            else if ((100 - BTTSFT > 57) && (cotes[2][1] * (100 - BTTSFT) > 90)) Console.WriteLine("BTTS Non : " + "(" + cotes[2][1] + ")");
             Console.WriteLine("\n _SCORE EXACT_");
             Console.WriteLine("\tScore exact le plus probable à la mi-temps du match : " + scoreExactE1MT + "-" + scoreExactE2MT + " = " + Math.Round(scoreExactMT, 1) + "%");
             Console.WriteLine("\tScore exact le plus probable à la fin du match : " + scoreExactE1FT + "-" + scoreExactE2FT + " = " + Math.Round(scoreExactFT, 1) + "%");
@@ -690,7 +688,7 @@ namespace QueDuSaleConsole
             double ES1FT = ((Buts[1][0][0][1] / matchsSaisonsE1) / (Buts[0][0][0][1] / matchsSaisons)) * ((Buts[2][1][1][1] / matchsSaisonsE2) / (Buts[0][1][1][1] / matchsSaisons)) * (Buts[0][0][0][1] / matchsSaisons);
             double ES2MT = ((Buts[2][0][1][0] / matchsSaisonsE2) / (Buts[0][0][1][0] / matchsSaisons)) * ((Buts[1][1][0][0] / matchsSaisonsE1) / (Buts[0][1][0][0] / matchsSaisons)) * (Buts[0][0][1][0] / matchsSaisons);
             double ES2FT = ((Buts[2][0][1][1] / matchsSaisonsE2) / (Buts[0][0][1][1] / matchsSaisons)) * ((Buts[1][1][0][1] / matchsSaisonsE1) / (Buts[0][1][0][1] / matchsSaisons)) * (Buts[0][0][1][1] / matchsSaisons);
-          
+
             double V1MT = 0;
             double NMT = 0;
             double V2MT = 0;
@@ -754,7 +752,7 @@ namespace QueDuSaleConsole
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 2.5)) V2FTplus3 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus3;
                 Console.WriteLine("\t" + e2.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V2FTplus3, 1) + "%");
             }
-            Console.WriteLine("\n _VICTOIRE & NOMBRE DE BUTS D'ECART FIN DU MATCH_");
+            Console.WriteLine("\n _VICTOIRE & NOMBRE DE BUTS D'ECART FULL-TIME_");
             if (V1FT > V2FT)
             {
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i > j + 1.5)) V1FTplus2E2 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus2E2;
@@ -812,8 +810,6 @@ namespace QueDuSaleConsole
                         scoreExactFT = pourcent;
                     }
                 }
-            Console.WriteLine("\n\n _SCORE EXACT FULL-TIME_");
-            Console.WriteLine("\nScore le plus probable : " + scoreExactE1 + "-" + scoreExactE2 + " = " + Math.Round(scoreExact, 1));
             Console.WriteLine("\n\n _LES MEILLEURS PRONOSTICS_");
             if ((V1MT > 57) && (cotes[1][0] * V1MT > 90)) Console.WriteLine("Vainqueur mi-temps : " + e1.Nom + " (" + cotes[1][0] + ")");
             else if ((100 - V1MT - V2MT > 56) && (cotes[1][1] * (100 - V1MT - V2MT) > 90)) Console.WriteLine("Vainqueur mi-temps : NUL (" + cotes[1][1] + ")");
@@ -821,13 +817,12 @@ namespace QueDuSaleConsole
             if ((V1FT > 57) && (cotes[0][0] * V1FT > 90)) Console.WriteLine("Vainqueur final : " + e1.Nom + " (" + cotes[0][0] + ")");
             else if ((100 - V1FT - V2FT > 57) && (cotes[0][1] * (100 - V1FT - V2FT) > 90)) Console.WriteLine("Vainqueur final : NUL (" + cotes[0][1] + ")");
             else if ((V2FT > 57) && (cotes[0][2] * V2FT > 90)) Console.WriteLine("Vainqueur final : " + e2.Nom + " (" + cotes[0][2] + ")");
-            if ((BTTS > 57) && (cotes[2][0] * BTTS > 90)) Console.WriteLine("BTTS Oui : " + "(" + cotes[2][0] + ")");
-            else if ((100 - BTTS > 57) && (cotes[2][1] * (100 - BTTS) > 90)) Console.WriteLine("BTTS Non : " + "(" + cotes[2][1] + ")");
-
+            if ((BTTSFT > 57) && (cotes[2][0] * BTTSFT > 90)) Console.WriteLine("BTTS Oui : " + "(" + cotes[2][0] + ")");
+            else if ((100 - BTTSFT > 57) && (cotes[2][1] * (100 - BTTSFT) > 90)) Console.WriteLine("BTTS Non : " + "(" + cotes[2][1] + ")");
             Console.WriteLine("\n _SCORE EXACT_");
             Console.WriteLine("\tScore exact le plus probable à la mi-temps du match : " + scoreExactE1MT + "-" + scoreExactE2MT + " = " + Math.Round(scoreExactMT, 1) + "%");
             Console.WriteLine("\tScore exact le plus probable à la fin du match : " + scoreExactE1FT + "-" + scoreExactE2FT + " = " + Math.Round(scoreExactFT, 1) + "%");
-           
+
             Console.Write("\n\nVotre choix : ");
             choix = Console.ReadLine();
             switch (choix)
