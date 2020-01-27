@@ -441,11 +441,15 @@ namespace QueDuSaleConsole
             double ES1FT = ((Buts[1][0][0][1] / matchsSaisonsE1) / (Buts[0][0][0][1] / matchsSaisons)) * ((Buts[2][1][1][1] / matchsSaisonsE2) / (Buts[0][1][1][1] / matchsSaisons)) * (Buts[0][0][0][1] / matchsSaisons);
             double ES2MT = ((Buts[2][0][1][0] / matchsSaisonsE2) / (Buts[0][0][1][0] / matchsSaisons)) * ((Buts[1][1][0][0] / matchsSaisonsE1) / (Buts[0][1][0][0] / matchsSaisons)) * (Buts[0][0][1][0] / matchsSaisons);
             double ES2FT = ((Buts[2][0][1][1] / matchsSaisonsE2) / (Buts[0][0][1][1] / matchsSaisons)) * ((Buts[1][1][0][1] / matchsSaisonsE1) / (Buts[0][1][0][1] / matchsSaisons)) * (Buts[0][0][1][1] / matchsSaisons);
+
             double V1MT = 0;
+            double NMT = 0;
             double V2MT = 0;
             double V1FT = 0;
+            double NFT = 0;
             double V2FT = 0;
-            double BTTS = 0;
+            double BTTSMT = 0;
+            double BTTSFT = 0;
             double V1FTplus2 = 0;
             double V2FTplus2 = 0;
             double V1FTplus3 = 0;
@@ -460,77 +464,103 @@ namespace QueDuSaleConsole
             double MTplus1 = 0;
             double MTplus2 = 0;
             double MTplus3 = 0;
-            double scoreExact = 0;
-            int scoreExactE1 = 0;
-            int scoreExactE2 = 0;
-            Console.WriteLine("\n\n _VICTOIRE_");
+            double scoreExactMT = 0;
+            double scoreExactFT = 0;
+            int scoreExactE1MT = 0;
+            int scoreExactE2MT = 0;
+            int scoreExactE1FT = 0;
+            int scoreExactE2FT = 0;
+
+            Console.WriteLine("\n_VICTOIRE_");
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V1MT = (((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i))) * (((Math.Pow(ES2MT, j) * Math.Exp(-ES2MT)) / factorial(j))) * 100 + V1MT;
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V2MT = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + V2MT;
-            Console.WriteLine("\n\nVainqueur mi-temps : " + Math.Round(V1MT, 1) + "%|" + Math.Round(100 - V1MT - V2MT, 1) + "%|" + Math.Round(V2MT, 1) + "%");
+            NMT = 100 - V1MT - V2MT;
+            Console.WriteLine("\tVainqueur mi-temps : " + Math.Round(V1MT, 1) + "|" + Math.Round(NMT, 1) + "|" + Math.Round(V2MT, 1));
+            Console.WriteLine("\tVainqueur double chance mi-temps : " + (100 - Math.Round(V2MT, 1)) + "|" + (100 - Math.Round(NMT, 1)) + "|" + (100 - Math.Round(V1MT, 1)));
+
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V1FT = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FT;
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V2FT = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FT;
-            Console.WriteLine("Vainqueur final : " + Math.Round(V1FT, 1) + "%|" + Math.Round(100 - V1FT - V2FT, 1) + "%|" + Math.Round(V2FT, 1) + "%");
-            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i != 0 && j != 0) BTTS = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + BTTS;
-            Console.WriteLine("\n\n _LES DEUX EQUIPES MARQUENT_");
-            Console.WriteLine("\nBTTS : OUI = " + Math.Round(BTTS, 1) + "% | NON = " + Math.Round(100 - BTTS, 1) + "%");
-            Console.WriteLine("\n\n _VICTOIRE & NOMBRE DE BUTS FULL-TIME_");
+            NFT = 100 - V1FT - V2FT;
+            Console.WriteLine("\tVainqueur final : " + Math.Round(V1FT, 1) + "|" + Math.Round(NFT, 1) + "|" + Math.Round(V2FT, 1));
+            Console.WriteLine("\tVainqueur double chance final : " + (100 - Math.Round(V2FT, 1)) + "|" + (100 - Math.Round(NFT, 1)) + "|" + (100 - Math.Round(V1FT, 1)));
+
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i != 0 && j != 0) BTTSMT = (((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i))) * (((Math.Pow(ES2MT, j) * Math.Exp(-ES2MT)) / factorial(j))) * 100 + BTTSMT;
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i != 0 && j != 0) BTTSFT = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + BTTSFT;
+            Console.WriteLine("\n _LES DEUX EQUIPES MARQUENT_");
+            Console.WriteLine("\tBTTS mi-temps : OUI = " + Math.Round(BTTSMT, 1) + " | NON = " + Math.Round(100 - BTTSMT, 1));
+            Console.WriteLine("\tBTTS fin de match : OUI = " + Math.Round(BTTSFT, 1) + " | NON = " + Math.Round(100 - BTTSFT, 1));
+
+            Console.WriteLine("\n _VICTOIRE & NOMBRE DE BUTS FULL-TIME_");
             if (V1FT > V2FT)
             {
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 1.5)) V1FTplus2 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus2;
-                Console.WriteLine("\n" + e1.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V1FTplus2, 1) + "%");
+                Console.WriteLine("\t" + e1.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V1FTplus2, 1) + "%");
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 2.5)) V1FTplus3 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus3;
-                Console.WriteLine(e1.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V1FTplus3, 1) + "%");
+                Console.WriteLine("\t" + e1.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V1FTplus3, 1) + "%");
             }
             if (V2FT > V1FT)
             {
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 1.5)) V2FTplus2 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus2;
-                Console.WriteLine("\n" + e2.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V2FTplus2, 1) + "%");
+                Console.WriteLine("\t" + e2.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V2FTplus2, 1) + "%");
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 2.5)) V2FTplus3 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus3;
-                Console.WriteLine(e2.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V2FTplus3, 1) + "%");
+                Console.WriteLine("\t" + e2.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V2FTplus3, 1) + "%");
             }
-            Console.WriteLine("\n\n _VICTOIRE & NOMBRE DE BUTS D'ECART FULL-TIME_");
+            Console.WriteLine("\n _VICTOIRE & NOMBRE DE BUTS D'ECART FULL-TIME_");
             if (V1FT > V2FT)
             {
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i > j + 1.5)) V1FTplus2E2 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus2E2;
-                Console.WriteLine("\n" + e1.Nom + " vainqueur & plus de 1.5 buts d'écart dans le match : " + Math.Round(V1FTplus2E2, 1) + "%");
+                Console.WriteLine("\t" + e1.Nom + " vainqueur & plus de 1.5 buts d'écart dans le match : " + Math.Round(V1FTplus2E2, 1) + "%");
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i > j + 2.5)) V1FTplus3E2 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus3E2;
-                Console.WriteLine(e1.Nom + " vainqueur & plus de 2.5 buts d'écart dans le match : " + Math.Round(V1FTplus3E2, 1) + "%");
+                Console.WriteLine("\t" + e1.Nom + " vainqueur & plus de 2.5 buts d'écart dans le match : " + Math.Round(V1FTplus3E2, 1) + "%");
             }
             if (V2FT > V1FT)
             {
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 1.5)) V2FTplus2E1 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus2E1;
-                Console.WriteLine("\n" + e2.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V2FTplus2E1, 1) + "%");
+                Console.WriteLine("\t" + e2.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V2FTplus2E1, 1) + "%");
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 2.5)) V2FTplus3E1 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus3E1;
-                Console.WriteLine(e2.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V2FTplus3E1, 1) + "%");
+                Console.WriteLine("\t" + e2.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V2FTplus3E1, 1) + "%");
             }
-            Console.WriteLine("\n\n _NOMBRE DE BUTS_");
-            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 0.5) MTplus1 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus1;
-            Console.WriteLine("\nPlus de 0.5 buts dans la première période : " + Math.Round(MTplus1, 1) + "%");
-            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 1.5) MTplus2 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus2;
-            Console.WriteLine("Plus de 1.5 buts dans la première période : " + Math.Round(MTplus2, 1) + "%");
-            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 2.5) MTplus3 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus3;
-            Console.WriteLine("Plus de 2.5 buts dans la première période : " + Math.Round(MTplus3, 1) + "%");
-            Console.WriteLine("\nMoins de 0.5 buts dans la première période : " + Math.Round(100 - MTplus1, 1) + "%");
-            Console.WriteLine("Moins de 1.5 buts dans la première période : " + Math.Round(100 - MTplus2, 1) + "%");
-            Console.WriteLine("Moins de 2.5 buts dans la première période : " + Math.Round(100 - MTplus3, 1) + "%");
 
+            Console.WriteLine("\n _NOMBRE DE BUTS_");
+            Console.WriteLine("\t _MI-TEMPS_");
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 0.5) MTplus1 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus1;
+            Console.WriteLine("\t\tPlus de 0.5 buts dans la première période : " + Math.Round(MTplus1, 1) + "%");
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 1.5) MTplus2 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus2;
+            Console.WriteLine("\t\tPlus de 1.5 buts dans la première période : " + Math.Round(MTplus2, 1) + "%");
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 2.5) MTplus3 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus3;
+            Console.WriteLine("\t\tPlus de 2.5 buts dans la première période : " + Math.Round(MTplus3, 1) + "%");
+            Console.WriteLine("\n\t\tMoins de 0.5 buts dans la première période : " + Math.Round(100 - MTplus1, 1) + "%");
+            Console.WriteLine("\t\tMoins de 1.5 buts dans la première période : " + Math.Round(100 - MTplus2, 1) + "%");
+            Console.WriteLine("\t\tMoins de 2.5 buts dans la première période : " + Math.Round(100 - MTplus3, 1) + "%");
+            Console.WriteLine("\t _FIN DU MATCH_");
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 0.5) FTplus1 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + FTplus1;
-            Console.WriteLine("\nPlus de 0.5 buts dans le match : " + Math.Round(FTplus1, 1) + "%");
+            Console.WriteLine("\t\tPlus de 0.5 buts dans le match : " + Math.Round(FTplus1, 1) + "%");
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 1.5) FTplus2 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + FTplus2;
-            Console.WriteLine("Plus de 1.5 buts dans le match : " + Math.Round(FTplus2, 1) + "%");
+            Console.WriteLine("\t\tPlus de 1.5 buts dans le match : " + Math.Round(FTplus2, 1) + "%");
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 2.5) FTplus3 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + FTplus3;
-            Console.WriteLine("Plus de 2.5 buts dans le match : " + Math.Round(FTplus3, 1) + "%");
-            Console.WriteLine("\nMoins de 0.5 buts dans le match : " + Math.Round(100 - FTplus1, 1) + "%");
-            Console.WriteLine("Moins de 1.5 buts dans le match : " + Math.Round(100 - FTplus2, 1) + "%");
-            Console.WriteLine("Moins de 2.5 buts dans le match : " + Math.Round(100 - FTplus3, 1) + "%");
+            Console.WriteLine("\t\tPlus de 2.5 buts dans le match : " + Math.Round(FTplus3, 1) + "%");
+            Console.WriteLine("\n\t\tMoins de 0.5 buts dans le match : " + Math.Round(100 - FTplus1, 1) + "%");
+            Console.WriteLine("\t\tMoins de 1.5 buts dans le match : " + Math.Round(100 - FTplus2, 1) + "%");
+            Console.WriteLine("\t\tMoins de 2.5 buts dans le match : " + Math.Round(100 - FTplus3, 1) + "%");
+
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++)
+                {
+                    double pourcent = (((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i))) * (((Math.Pow(ES2MT, j) * Math.Exp(-ES2MT)) / factorial(j))) * 100;
+                    if (pourcent > scoreExactMT)
+                    {
+                        scoreExactE1MT = i;
+                        scoreExactE2MT = j;
+                        scoreExactMT = pourcent;
+                    }
+                }
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++)
                 {
                     double pourcent = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100;
-                    if (pourcent > scoreExact)
+                    if (pourcent > scoreExactFT)
                     {
-                        scoreExactE1 = i;
-                        scoreExactE2 = j;
-                        scoreExact = pourcent;
+                        scoreExactE1FT = i;
+                        scoreExactE2FT = j;
+                        scoreExactFT = pourcent;
                     }
                 }
             Console.WriteLine("\n\n _SCORE EXACT FULL-TIME_");
@@ -544,6 +574,9 @@ namespace QueDuSaleConsole
             else if ((V2FT > 57) && (cotes[0][2] * V2FT > 90)) Console.WriteLine("Vainqueur final : " + e2.Nom + " (" + cotes[0][2] + ")");
             if ((BTTS > 57) && (cotes[2][0] * BTTS > 90)) Console.WriteLine("BTTS Oui : " + "(" + cotes[2][0] + ")");
             else if ((100 - BTTS > 57) && (cotes[2][1] * (100 - BTTS) > 90)) Console.WriteLine("BTTS Non : " + "(" + cotes[2][1] + ")");
+            Console.WriteLine("\n _SCORE EXACT_");
+            Console.WriteLine("\tScore exact le plus probable à la mi-temps du match : " + scoreExactE1MT + "-" + scoreExactE2MT + " = " + Math.Round(scoreExactMT, 1) + "%");
+            Console.WriteLine("\tScore exact le plus probable à la fin du match : " + scoreExactE1FT + "-" + scoreExactE2FT + " = " + Math.Round(scoreExactFT, 1) + "%");
 
             Console.Write("\n\nVotre choix : ");
             choix = Console.ReadLine();
@@ -657,11 +690,15 @@ namespace QueDuSaleConsole
             double ES1FT = ((Buts[1][0][0][1] / matchsSaisonsE1) / (Buts[0][0][0][1] / matchsSaisons)) * ((Buts[2][1][1][1] / matchsSaisonsE2) / (Buts[0][1][1][1] / matchsSaisons)) * (Buts[0][0][0][1] / matchsSaisons);
             double ES2MT = ((Buts[2][0][1][0] / matchsSaisonsE2) / (Buts[0][0][1][0] / matchsSaisons)) * ((Buts[1][1][0][0] / matchsSaisonsE1) / (Buts[0][1][0][0] / matchsSaisons)) * (Buts[0][0][1][0] / matchsSaisons);
             double ES2FT = ((Buts[2][0][1][1] / matchsSaisonsE2) / (Buts[0][0][1][1] / matchsSaisons)) * ((Buts[1][1][0][1] / matchsSaisonsE1) / (Buts[0][1][0][1] / matchsSaisons)) * (Buts[0][0][1][1] / matchsSaisons);
+          
             double V1MT = 0;
+            double NMT = 0;
             double V2MT = 0;
             double V1FT = 0;
+            double NFT = 0;
             double V2FT = 0;
-            double BTTS = 0;
+            double BTTSMT = 0;
+            double BTTSFT = 0;
             double V1FTplus2 = 0;
             double V2FTplus2 = 0;
             double V1FTplus3 = 0;
@@ -676,77 +713,103 @@ namespace QueDuSaleConsole
             double MTplus1 = 0;
             double MTplus2 = 0;
             double MTplus3 = 0;
-            double scoreExact = 0;
-            int scoreExactE1 = 0;
-            int scoreExactE2 = 0;
-            Console.WriteLine("\n\n _VICTOIRE_");
+            double scoreExactMT = 0;
+            double scoreExactFT = 0;
+            int scoreExactE1MT = 0;
+            int scoreExactE2MT = 0;
+            int scoreExactE1FT = 0;
+            int scoreExactE2FT = 0;
+
+            Console.WriteLine("\n_VICTOIRE_");
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V1MT = (((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i))) * (((Math.Pow(ES2MT, j) * Math.Exp(-ES2MT)) / factorial(j))) * 100 + V1MT;
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V2MT = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + V2MT;
-            Console.WriteLine("\n\nVainqueur mi-temps : " + Math.Round(V1MT, 1) + "%|" + Math.Round(100 - V1MT - V2MT, 1) + "%|" + Math.Round(V2MT, 1) + "%");
+            NMT = 100 - V1MT - V2MT;
+            Console.WriteLine("\tVainqueur mi-temps : " + Math.Round(V1MT, 1) + "|" + Math.Round(NMT, 1) + "|" + Math.Round(V2MT, 1));
+            Console.WriteLine("\tVainqueur double chance mi-temps : " + (100 - Math.Round(V2MT, 1)) + "|" + (100 - Math.Round(NMT, 1)) + "|" + (100 - Math.Round(V1MT, 1)));
+
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V1FT = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FT;
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i > j) V2FT = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FT;
-            Console.WriteLine("Vainqueur final : " + Math.Round(V1FT, 1) + "%|" + Math.Round(100 - V1FT - V2FT, 1) + "%|" + Math.Round(V2FT, 1) + "%");
-            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i != 0 && j != 0) BTTS = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + BTTS;
-            Console.WriteLine("\n\n _LES DEUX EQUIPES MARQUENT_");
-            Console.WriteLine("\nBTTS : OUI = " + Math.Round(BTTS, 1) + "% | NON = " + Math.Round(100 - BTTS, 1) + "%");
-            Console.WriteLine("\n\n _VICTOIRE & NOMBRE DE BUTS FULL-TIME_");
+            NFT = 100 - V1FT - V2FT;
+            Console.WriteLine("\tVainqueur final : " + Math.Round(V1FT, 1) + "|" + Math.Round(NFT, 1) + "|" + Math.Round(V2FT, 1));
+            Console.WriteLine("\tVainqueur double chance final : " + (100 - Math.Round(V2FT, 1)) + "|" + (100 - Math.Round(NFT, 1)) + "|" + (100 - Math.Round(V1FT, 1)));
+
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i != 0 && j != 0) BTTSMT = (((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i))) * (((Math.Pow(ES2MT, j) * Math.Exp(-ES2MT)) / factorial(j))) * 100 + BTTSMT;
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i != 0 && j != 0) BTTSFT = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + BTTSFT;
+            Console.WriteLine("\n _LES DEUX EQUIPES MARQUENT_");
+            Console.WriteLine("\tBTTS mi-temps : OUI = " + Math.Round(BTTSMT, 1) + " | NON = " + Math.Round(100 - BTTSMT, 1));
+            Console.WriteLine("\tBTTS fin de match : OUI = " + Math.Round(BTTSFT, 1) + " | NON = " + Math.Round(100 - BTTSFT, 1));
+
+            Console.WriteLine("\n _VICTOIRE & NOMBRE DE BUTS FULL-TIME_");
             if (V1FT > V2FT)
             {
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 1.5)) V1FTplus2 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus2;
-                Console.WriteLine("\n" + e1.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V1FTplus2, 1) + "%");
+                Console.WriteLine("\t" + e1.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V1FTplus2, 1) + "%");
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 2.5)) V1FTplus3 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus3;
-                Console.WriteLine(e1.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V1FTplus3, 1) + "%");
+                Console.WriteLine("\t" + e1.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V1FTplus3, 1) + "%");
             }
             if (V2FT > V1FT)
             {
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 1.5)) V2FTplus2 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus2;
-                Console.WriteLine("\n" + e2.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V2FTplus2, 1) + "%");
+                Console.WriteLine("\t" + e2.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V2FTplus2, 1) + "%");
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 2.5)) V2FTplus3 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus3;
-                Console.WriteLine(e2.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V2FTplus3, 1) + "%");
+                Console.WriteLine("\t" + e2.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V2FTplus3, 1) + "%");
             }
-            Console.WriteLine("\n\n _VICTOIRE & NOMBRE DE BUTS D'ECART FULL-TIME_");
+            Console.WriteLine("\n _VICTOIRE & NOMBRE DE BUTS D'ECART FIN DU MATCH_");
             if (V1FT > V2FT)
             {
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i > j + 1.5)) V1FTplus2E2 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus2E2;
-                Console.WriteLine("\n" + e1.Nom + " vainqueur & plus de 1.5 buts d'écart dans le match : " + Math.Round(V1FTplus2E2, 1) + "%");
+                Console.WriteLine("\t" + e1.Nom + " vainqueur & plus de 1.5 buts d'écart dans le match : " + Math.Round(V1FTplus2E2, 1) + "%");
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i > j + 2.5)) V1FTplus3E2 = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100 + V1FTplus3E2;
-                Console.WriteLine(e1.Nom + " vainqueur & plus de 2.5 buts d'écart dans le match : " + Math.Round(V1FTplus3E2, 1) + "%");
+                Console.WriteLine("\t" + e1.Nom + " vainqueur & plus de 2.5 buts d'écart dans le match : " + Math.Round(V1FTplus3E2, 1) + "%");
             }
             if (V2FT > V1FT)
             {
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 1.5)) V2FTplus2E1 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus2E1;
-                Console.WriteLine("\n" + e2.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V2FTplus2E1, 1) + "%");
+                Console.WriteLine("\t" + e2.Nom + " vainqueur & plus de 1.5 buts dans le match : " + Math.Round(V2FTplus2E1, 1) + "%");
                 for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if ((i > j) && (i + j > 2.5)) V2FTplus3E1 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + V2FTplus3E1;
-                Console.WriteLine(e2.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V2FTplus3E1, 1) + "%");
+                Console.WriteLine("\t" + e2.Nom + " vainqueur & plus de 2.5 buts dans le match : " + Math.Round(V2FTplus3E1, 1) + "%");
             }
-            Console.WriteLine("\n\n _NOMBRE DE BUTS_");
-            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 0.5) MTplus1 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus1;
-            Console.WriteLine("\nPlus de 0.5 buts dans la première période : " + Math.Round(MTplus1, 1) + "%");
-            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 1.5) MTplus2 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus2;
-            Console.WriteLine("Plus de 1.5 buts dans la première période : " + Math.Round(MTplus2, 1) + "%");
-            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 2.5) MTplus3 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus3;
-            Console.WriteLine("Plus de 2.5 buts dans la première période : " + Math.Round(MTplus3, 1) + "%");
-            Console.WriteLine("\nMoins de 0.5 buts dans la première période : " + Math.Round(100 - MTplus1, 1) + "%");
-            Console.WriteLine("Moins de 1.5 buts dans la première période : " + Math.Round(100 - MTplus2, 1) + "%");
-            Console.WriteLine("Moins de 2.5 buts dans la première période : " + Math.Round(100 - MTplus3, 1) + "%");
 
+            Console.WriteLine("\n _NOMBRE DE BUTS_");
+            Console.WriteLine("\t _MI-TEMPS_");
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 0.5) MTplus1 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus1;
+            Console.WriteLine("\t\tPlus de 0.5 buts dans la première période : " + Math.Round(MTplus1, 1) + "%");
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 1.5) MTplus2 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus2;
+            Console.WriteLine("\t\tPlus de 1.5 buts dans la première période : " + Math.Round(MTplus2, 1) + "%");
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 2.5) MTplus3 = (((Math.Pow(ES2MT, i) * Math.Exp(-ES2MT)) / factorial(i))) * (((Math.Pow(ES1MT, j) * Math.Exp(-ES1MT)) / factorial(j))) * 100 + MTplus3;
+            Console.WriteLine("\t\tPlus de 2.5 buts dans la première période : " + Math.Round(MTplus3, 1) + "%");
+            Console.WriteLine("\n\t\tMoins de 0.5 buts dans la première période : " + Math.Round(100 - MTplus1, 1) + "%");
+            Console.WriteLine("\t\tMoins de 1.5 buts dans la première période : " + Math.Round(100 - MTplus2, 1) + "%");
+            Console.WriteLine("\t\tMoins de 2.5 buts dans la première période : " + Math.Round(100 - MTplus3, 1) + "%");
+            Console.WriteLine("\t _FIN DU MATCH_");
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 0.5) FTplus1 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + FTplus1;
-            Console.WriteLine("\nPlus de 0.5 buts dans le match : " + Math.Round(FTplus1, 1) + "%");
+            Console.WriteLine("\t\tPlus de 0.5 buts dans le match : " + Math.Round(FTplus1, 1) + "%");
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 1.5) FTplus2 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + FTplus2;
-            Console.WriteLine("Plus de 1.5 buts dans le match : " + Math.Round(FTplus2, 1) + "%");
+            Console.WriteLine("\t\tPlus de 1.5 buts dans le match : " + Math.Round(FTplus2, 1) + "%");
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++) if (i + j > 2.5) FTplus3 = (((Math.Pow(ES2FT, i) * Math.Exp(-ES2FT)) / factorial(i))) * (((Math.Pow(ES1FT, j) * Math.Exp(-ES1FT)) / factorial(j))) * 100 + FTplus3;
-            Console.WriteLine("Plus de 2.5 buts dans le match : " + Math.Round(FTplus3, 1) + "%");
-            Console.WriteLine("\nMoins de 0.5 buts dans le match : " + Math.Round(100 - FTplus1, 1) + "%");
-            Console.WriteLine("Moins de 1.5 buts dans le match : " + Math.Round(100 - FTplus2, 1) + "%");
-            Console.WriteLine("Moins de 2.5 buts dans le match : " + Math.Round(100 - FTplus3, 1) + "%");
+            Console.WriteLine("\t\tPlus de 2.5 buts dans le match : " + Math.Round(FTplus3, 1) + "%");
+            Console.WriteLine("\n\t\tMoins de 0.5 buts dans le match : " + Math.Round(100 - FTplus1, 1) + "%");
+            Console.WriteLine("\t\tMoins de 1.5 buts dans le match : " + Math.Round(100 - FTplus2, 1) + "%");
+            Console.WriteLine("\t\tMoins de 2.5 buts dans le match : " + Math.Round(100 - FTplus3, 1) + "%");
+
+            for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++)
+                {
+                    double pourcent = (((Math.Pow(ES1MT, i) * Math.Exp(-ES1MT)) / factorial(i))) * (((Math.Pow(ES2MT, j) * Math.Exp(-ES2MT)) / factorial(j))) * 100;
+                    if (pourcent > scoreExactMT)
+                    {
+                        scoreExactE1MT = i;
+                        scoreExactE2MT = j;
+                        scoreExactMT = pourcent;
+                    }
+                }
             for (int i = 0; i <= 9; i++) for (int j = 0; j <= 9; j++)
                 {
                     double pourcent = (((Math.Pow(ES1FT, i) * Math.Exp(-ES1FT)) / factorial(i))) * (((Math.Pow(ES2FT, j) * Math.Exp(-ES2FT)) / factorial(j))) * 100;
-                    if (pourcent > scoreExact)
+                    if (pourcent > scoreExactFT)
                     {
-                        scoreExactE1 = i;
-                        scoreExactE2 = j;
-                        scoreExact = pourcent;
+                        scoreExactE1FT = i;
+                        scoreExactE2FT = j;
+                        scoreExactFT = pourcent;
                     }
                 }
             Console.WriteLine("\n\n _SCORE EXACT FULL-TIME_");
@@ -761,6 +824,10 @@ namespace QueDuSaleConsole
             if ((BTTS > 57) && (cotes[2][0] * BTTS > 90)) Console.WriteLine("BTTS Oui : " + "(" + cotes[2][0] + ")");
             else if ((100 - BTTS > 57) && (cotes[2][1] * (100 - BTTS) > 90)) Console.WriteLine("BTTS Non : " + "(" + cotes[2][1] + ")");
 
+            Console.WriteLine("\n _SCORE EXACT_");
+            Console.WriteLine("\tScore exact le plus probable à la mi-temps du match : " + scoreExactE1MT + "-" + scoreExactE2MT + " = " + Math.Round(scoreExactMT, 1) + "%");
+            Console.WriteLine("\tScore exact le plus probable à la fin du match : " + scoreExactE1FT + "-" + scoreExactE2FT + " = " + Math.Round(scoreExactFT, 1) + "%");
+           
             Console.Write("\n\nVotre choix : ");
             choix = Console.ReadLine();
             switch (choix)
@@ -785,7 +852,7 @@ namespace QueDuSaleConsole
         /*============================================================================ PARTIE CALCUL ============================================================================*/
 
 
-        static double factorial(int number)
+            static double factorial(int number)
         {
             if (number == 1 || number == 0)
                 return 1;
