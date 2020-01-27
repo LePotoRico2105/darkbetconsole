@@ -231,7 +231,7 @@ namespace QueDuSaleConsole
             List<Match> matchs = new List<Match>();
             for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
             {
-                matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
+                if (!matchs.Contains(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m])) matchs.Add(data.Competitions[c].Saisons[s].Equipes[e].Matchs[m]);
             }
             IEnumerable<Match> ms = matchs.OrderBy(x => x.DateEtHeure);
             data.Competitions[c].Saisons[s].Equipes[e].Matchs = ms.ToList();
@@ -381,11 +381,14 @@ namespace QueDuSaleConsole
             {
                 for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
                 {
-                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].DateEtHeure < match.DateEtHeure)
+                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdSaison == match.IdSaison)
                     {
-                        matchsSaisons++;
-                        if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[0] == e1.Id) { matchsSaisonsE1++; }
-                        if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[1] == e2.Id) { matchsSaisonsE2++; }
+                        if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].DateEtHeure < match.DateEtHeure)
+                        {
+                            matchsSaisons++;
+                            if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[0] == e1.Id) { matchsSaisonsE1++; }
+                            if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[1] == e2.Id) { matchsSaisonsE2++; }
+                        }
                     }
                 }
             }
@@ -591,7 +594,13 @@ namespace QueDuSaleConsole
                         scoreExactFT = pourcent;
                     }
                 }
-            Console.WriteLine("\n\n _LES MEILLEURS PRONOSTICS_");
+            Console.WriteLine("\n _SCORE EXACT_");
+            Console.WriteLine("\tScore exact le plus probable à la mi-temps du match : " + scoreExactE1MT + "-" + scoreExactE2MT + " = " + Math.Round(scoreExactMT, 1) + "%");
+            Console.WriteLine("\tScore exact le plus probable à la fin du match : " + scoreExactE1FT + "-" + scoreExactE2FT + " = " + Math.Round(scoreExactFT, 1) + "%");
+            Console.WriteLine("\n\n  __________________________");
+            Console.WriteLine(" |                          |");
+            Console.WriteLine(" | LES MEILLEURS PRONOSTICS |");
+            Console.WriteLine(" |__________________________|");
             if ((V1MT > 57) && (cotes[1][0] * V1MT > 90)) Console.WriteLine("Vainqueur mi-temps : " + e1.Nom + " (" + cotes[1][0] + ")");
             else if ((100 - V1MT - V2MT > 56) && (cotes[1][1] * (100 - V1MT - V2MT) > 90)) Console.WriteLine("Vainqueur mi-temps : NUL (" + cotes[1][1] + ")");
             else if ((V2MT > 57) && (cotes[1][2] * V2MT > 90)) Console.WriteLine("Vainqueur mi-temps : " + e2.Nom + " (" + cotes[1][2] + ")");
@@ -600,9 +609,14 @@ namespace QueDuSaleConsole
             else if ((V2FT > 57) && (cotes[0][2] * V2FT > 90)) Console.WriteLine("Vainqueur final : " + e2.Nom + " (" + cotes[0][2] + ")");
             if ((BTTSFT > 57) && (cotes[2][0] * BTTSFT > 90)) Console.WriteLine("BTTS Oui : " + "(" + cotes[2][0] + ")");
             else if ((100 - BTTSFT > 57) && (cotes[2][1] * (100 - BTTSFT) > 90)) Console.WriteLine("BTTS Non : " + "(" + cotes[2][1] + ")");
-            Console.WriteLine("\n _SCORE EXACT_");
-            Console.WriteLine("\tScore exact le plus probable à la mi-temps du match : " + scoreExactE1MT + "-" + scoreExactE2MT + " = " + Math.Round(scoreExactMT, 1) + "%");
-            Console.WriteLine("\tScore exact le plus probable à la fin du match : " + scoreExactE1FT + "-" + scoreExactE2FT + " = " + Math.Round(scoreExactFT, 1) + "%");
+            if ((FTplus1 > 57) && (cotes[3][0] * FTplus2 > 90)) Console.WriteLine("Plus de 0.5 buts dans le match : " + "(" + cotes[3][0] + ")");
+            else if ((FTplus2 > 57) && (cotes[3][1] * FTplus2 > 90)) Console.WriteLine("Plus de 1.5 buts dans le match : " + "(" + cotes[3][1] + ")");
+            else if ((FTplus3 > 57) && (cotes[3][2] * FTplus3 > 90)) Console.WriteLine("Plus de 2.5 buts dans le match : " + "(" + cotes[3][2] + ")");
+            else if ((FTplus4 > 57) && (cotes[3][3] * FTplus4 > 90)) Console.WriteLine("Plus de 3.5 buts dans le match : " + "(" + cotes[3][3] + ")");
+            if ((100 - FTplus2 > 57) && (cotes[4][0] * (100 - FTplus2) > 90)) Console.WriteLine("Moins de 0.5 buts dans le match : " + "(" + cotes[4][0] + ")");
+            else if ((100 - FTplus3 > 57) && (cotes[4][1] * (100 - FTplus3) > 90)) Console.WriteLine("Moins de 1.5 buts dans le match : " + "(" + cotes[4][1] + ")");
+            else if ((100 - FTplus4 > 57) && (cotes[4][2] * (100 - FTplus4) > 90)) Console.WriteLine("Moins de 2.5 buts dans le match : " + "(" + cotes[4][2] + ")");
+            else if ((100 - FTplus5 > 57) && (cotes[4][3] * (100 - FTplus5) > 90)) Console.WriteLine("Moins de 3.5 buts dans le match : " + "(" + cotes[4][3] + ")");
 
             Console.Write("\n\nVotre choix : ");
             choix = Console.ReadLine();
@@ -630,9 +644,9 @@ namespace QueDuSaleConsole
         static string AfficherMatch(Data data, int c, int s, Match match, List<List<double>> cotes)
         {
             Console.Clear();
+            string choix = "";
             Equipe e1 = data.Equipes.Where(x => x.Id == match.IdEquipes[0]).ToList()[0];
             Equipe e2 = data.Equipes.Where(x => x.Id == match.IdEquipes[1]).ToList()[0];
-            string choix = "";
             Console.WriteLine(" _______________________________");
             Console.WriteLine("|                               |");
             Console.WriteLine("|      QUEDUSALE PRONOSTICS     |");
@@ -642,7 +656,7 @@ namespace QueDuSaleConsole
             Console.WriteLine("|          MENU MATCH           |");
             Console.WriteLine("|_______________________________|");
             Console.WriteLine("| - 0 : fermer app              |");
-            Console.WriteLine("| - 1 : retour aux matchs       |");
+            Console.WriteLine("| - 1 : retour sur l'equipe     |");
             Console.WriteLine("| - 2 : menu principal          |");
             Console.WriteLine("|_______________________________|");
             Console.WriteLine("\n | " + match.DateEtHeure.ToShortDateString() + " |");
@@ -657,11 +671,14 @@ namespace QueDuSaleConsole
             {
                 for (int m = 0; m < data.Competitions[c].Saisons[s].Equipes[e].Matchs.Count(); m++)
                 {
-                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].DateEtHeure < match.DateEtHeure)
+                    if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdSaison == match.IdSaison)
                     {
-                        matchsSaisons++;
-                        if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[0] == e1.Id) { matchsSaisonsE1++; }
-                        if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[1] == e2.Id) { matchsSaisonsE2++; }
+                        if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].DateEtHeure < match.DateEtHeure)
+                        {
+                            matchsSaisons++;
+                            if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[0] == e1.Id) { matchsSaisonsE1++; }
+                            if (data.Competitions[c].Saisons[s].Equipes[e].Matchs[m].IdEquipes[1] == e2.Id) { matchsSaisonsE2++; }
+                        }
                     }
                 }
             }
@@ -697,6 +714,7 @@ namespace QueDuSaleConsole
             Console.WriteLine("Potentiel de défense à domicile, fin de match : " + Math.Round((Buts[1][1][0][1] / matchsSaisonsE1) / (Buts[0][1][0][1] / matchsSaisons), 2));
             Console.WriteLine("Espérance de but à domicile, mi-temps : " + Math.Round(ES1MT, 2));
             Console.WriteLine("Espérance de but à domicile, fin du match : " + Math.Round(ES1FT, 2));
+
             Console.WriteLine("\n\n -" + e2.Nom + "- ");
             Console.WriteLine("Force d'attaque à l'exterieur, mi-temps : " + Math.Round((Buts[2][0][1][0] / matchsSaisonsE2) / (Buts[0][0][1][0] / matchsSaisons), 2));
             Console.WriteLine("Potentiel de défense à l'exterieur, mi-temps : " + Math.Round((Buts[2][1][1][0] / matchsSaisonsE2) / (Buts[0][1][1][0] / matchsSaisons), 2));
@@ -866,7 +884,13 @@ namespace QueDuSaleConsole
                         scoreExactFT = pourcent;
                     }
                 }
-            Console.WriteLine("\n\n _LES MEILLEURS PRONOSTICS_");
+            Console.WriteLine("\n _SCORE EXACT_");
+            Console.WriteLine("\tScore exact le plus probable à la mi-temps du match : " + scoreExactE1MT + "-" + scoreExactE2MT + " = " + Math.Round(scoreExactMT, 1) + "%");
+            Console.WriteLine("\tScore exact le plus probable à la fin du match : " + scoreExactE1FT + "-" + scoreExactE2FT + " = " + Math.Round(scoreExactFT, 1) + "%");
+            Console.WriteLine("\n\n  __________________________");
+            Console.WriteLine(" |                          |");
+            Console.WriteLine(" | LES MEILLEURS PRONOSTICS |");
+            Console.WriteLine(" |__________________________|");
             if ((V1MT > 57) && (cotes[1][0] * V1MT > 90)) Console.WriteLine("Vainqueur mi-temps : " + e1.Nom + " (" + cotes[1][0] + ")");
             else if ((100 - V1MT - V2MT > 56) && (cotes[1][1] * (100 - V1MT - V2MT) > 90)) Console.WriteLine("Vainqueur mi-temps : NUL (" + cotes[1][1] + ")");
             else if ((V2MT > 57) && (cotes[1][2] * V2MT > 90)) Console.WriteLine("Vainqueur mi-temps : " + e2.Nom + " (" + cotes[1][2] + ")");
@@ -875,9 +899,14 @@ namespace QueDuSaleConsole
             else if ((V2FT > 57) && (cotes[0][2] * V2FT > 90)) Console.WriteLine("Vainqueur final : " + e2.Nom + " (" + cotes[0][2] + ")");
             if ((BTTSFT > 57) && (cotes[2][0] * BTTSFT > 90)) Console.WriteLine("BTTS Oui : " + "(" + cotes[2][0] + ")");
             else if ((100 - BTTSFT > 57) && (cotes[2][1] * (100 - BTTSFT) > 90)) Console.WriteLine("BTTS Non : " + "(" + cotes[2][1] + ")");
-            Console.WriteLine("\n _SCORE EXACT_");
-            Console.WriteLine("\tScore exact le plus probable à la mi-temps du match : " + scoreExactE1MT + "-" + scoreExactE2MT + " = " + Math.Round(scoreExactMT, 1) + "%");
-            Console.WriteLine("\tScore exact le plus probable à la fin du match : " + scoreExactE1FT + "-" + scoreExactE2FT + " = " + Math.Round(scoreExactFT, 1) + "%");
+            if ((FTplus1 > 57) && (cotes[3][0] * FTplus2 > 90)) Console.WriteLine("Plus de 0.5 buts dans le match : " + "(" + cotes[3][0] + ")");
+            else if ((FTplus2 > 57) && (cotes[3][1] * FTplus2 > 90)) Console.WriteLine("Plus de 1.5 buts dans le match : " + "(" + cotes[3][1] + ")");
+            else if ((FTplus3 > 57) && (cotes[3][2] * FTplus3 > 90)) Console.WriteLine("Plus de 2.5 buts dans le match : " + "(" + cotes[3][2] + ")");
+            else if ((FTplus4 > 57) && (cotes[3][3] * FTplus4 > 90)) Console.WriteLine("Plus de 3.5 buts dans le match : " + "(" + cotes[3][3] + ")");
+            if ((100 - FTplus2 > 57) && (cotes[4][0] * (100 - FTplus2) > 90)) Console.WriteLine("Moins de 0.5 buts dans le match : " + "(" + cotes[4][0] + ")");
+            else if ((100 - FTplus3 > 57) && (cotes[4][1] * (100 - FTplus3) > 90)) Console.WriteLine("Moins de 1.5 buts dans le match : " + "(" + cotes[4][1] + ")");
+            else if ((100 - FTplus4 > 57) && (cotes[4][2] * (100 - FTplus4) > 90)) Console.WriteLine("Moins de 2.5 buts dans le match : " + "(" + cotes[4][2] + ")");
+            else if ((100 - FTplus5 > 57) && (cotes[4][3] * (100 - FTplus5) > 90)) Console.WriteLine("Moins de 3.5 buts dans le match : " + "(" + cotes[4][3] + ")");
 
             Console.Write("\n\nVotre choix : ");
             choix = Console.ReadLine();
@@ -1013,6 +1042,8 @@ namespace QueDuSaleConsole
                 new List<double> {0,0,0}, //victoire final 1X2
                 new List<double> {0,0,0}, //victoire mitemps 1X2
                 new List<double> {0,0}, //btts o/n
+                new List<double> {0,0,0,0}, //nombre buts plus final
+                new List<double> {0,0,0,0}, //nombre buts moins final
             };
             Equipe e1 = data.Equipes.Where(x => x.Id == match.IdEquipes[0]).ToList()[0];
             Equipe e2 = data.Equipes.Where(x => x.Id == match.IdEquipes[1]).ToList()[0];
@@ -1036,6 +1067,23 @@ namespace QueDuSaleConsole
             Cotes[2][0] = Convert.ToDouble(Console.ReadLine());
             Console.Write("\nCôte Non : ");
             Cotes[2][1] = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("\n\n _NOMBRES DE BUTS DANS LE MATCH_");
+            Console.Write("\nCôte plus de 0.5 buts dans le match : ");
+            Cotes[3][0] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte plus de 1.5 buts dans le match : ");
+            Cotes[3][1] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte plus de 2.5 buts dans le match : ");
+            Cotes[3][2] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte plus de 3.5 buts dans le match : ");
+            Cotes[3][3] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte moins de 0.5 buts dans le match : ");
+            Cotes[4][0] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte moins de 1.5 buts dans le match : ");
+            Cotes[4][1] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte moins de 2.5 buts dans le match : ");
+            Cotes[4][2] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte moins de 3.5 buts dans le match : ");
+            Cotes[4][3] = Convert.ToDouble(Console.ReadLine());
             return Cotes;
         }
         #endregion

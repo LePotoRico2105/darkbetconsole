@@ -172,7 +172,7 @@ namespace QueDuSaleConsole
                 {
                     match = new Match();
                     match.Id = Convert.ToInt32(objectMatchs["matches"][i]["id"]);
-                    match.IdSaison = saison.Id;
+                    match.IdSaison = Convert.ToInt32(objectMatchs["matches"][i]["season"]["id"]);
                     match.IdCompetition = saison.IdCompetition;
                     match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"]));
                     match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"]));
@@ -228,7 +228,7 @@ namespace QueDuSaleConsole
                 {
                     match = new Match();
                     match.Id = Convert.ToInt32(objectMatchs["matches"][i]["id"]);
-                    match.IdSaison = saison.Id;
+                    match.IdSaison = Convert.ToInt32(objectMatchs["matches"][i]["season"]["id"]);
                     match.IdCompetition = saison.IdCompetition;
                     match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"]));
                     match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"]));
