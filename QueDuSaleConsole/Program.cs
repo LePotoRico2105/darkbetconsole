@@ -272,7 +272,7 @@ namespace QueDuSaleConsole
                     AfficherCompetitions(data);
                     break;
                 default:
-                    try { AfficherMatch(choix, data, c, s, data.Competitions[c].Saisons[s].Equipes[e].Matchs[Convert.ToInt32(choix) - 3]); }
+                    try {  AfficherMatch(choix, data, c, s, data.Competitions[c].Saisons[s].Equipes[e].Matchs[Convert.ToInt32(choix) - 3], ChargerCotes(data, c, s, data.Competitions[c].Saisons[s].Equipes[e].Matchs[Convert.ToInt32(choix) - 3])); }
                     catch { AfficherEquipe(Convert.ToString(e + 3), data, c, s); }
                     break;
             }
@@ -342,7 +342,7 @@ namespace QueDuSaleConsole
                     AfficherCompetitions(data);
                     break;
                 default:
-                    try { AfficherMatch(data, c, s, matchs[Convert.ToInt32(choix) - 3]); }
+                    try { AfficherMatch(data, c, s, matchs[Convert.ToInt32(choix) - 3], ChargerCotes(data, c, s, matchs[Convert.ToInt32(choix) - 3])); }
                     catch { AfficherMatchs(data, c, s); }
                     break;
             }
@@ -352,7 +352,7 @@ namespace QueDuSaleConsole
         /**
         * <summary> Fonction qui affiche un match selon la liste des matchs </summary>
         */
-        static string AfficherMatch(string choix, Data data, int c, int s, Match match)
+        static string AfficherMatch(string choix, Data data, int c, int s, Match match, List<List<double>> cotes)
         {
             Console.Clear();
             Equipe e1 = data.Equipes.Where(x => x.Id == match.IdEquipes[0]).ToList()[0];
@@ -591,6 +591,17 @@ namespace QueDuSaleConsole
                         scoreExactFT = pourcent;
                     }
                 }
+            Console.WriteLine("\n\n _SCORE EXACT FULL-TIME_");
+            Console.WriteLine("\nScore le plus probable : " + scoreExactE1 + "-" + scoreExactE2 + " = " + Math.Round(scoreExact, 1));
+            Console.WriteLine("\n\n _LES MEILLEURS PRONOSTICS_");
+            if ((V1MT > 57) && (cotes[1][0] * V1MT > 90)) Console.WriteLine("Vainqueur mi-temps : " + e1.Nom + " (" + cotes[1][0] + ")");
+            else if ((100 - V1MT - V2MT > 56) && (cotes[1][1] * (100 - V1MT - V2MT) > 90)) Console.WriteLine("Vainqueur mi-temps : NUL (" + cotes[1][1] + ")");
+            else if ((V2MT > 57) && (cotes[1][2] * V2MT > 90)) Console.WriteLine("Vainqueur mi-temps : " + e2.Nom + " (" + cotes[1][2] + ")");
+            if ((V1FT > 57) && (cotes[0][0] * V1FT > 90)) Console.WriteLine("Vainqueur final : " + e1.Nom + " (" + cotes[0][0] + ")");
+            else if ((100 - V1FT - V2FT > 57) && (cotes[0][1] * (100 - V1FT - V2FT) > 90)) Console.WriteLine("Vainqueur final : NUL (" + cotes[0][1] + ")");
+            else if ((V2FT > 57) && (cotes[0][2] * V2FT > 90)) Console.WriteLine("Vainqueur final : " + e2.Nom + " (" + cotes[0][2] + ")");
+            if ((BTTS > 57) && (cotes[2][0] * BTTS > 90)) Console.WriteLine("BTTS Oui : " + "(" + cotes[2][0] + ")");
+            else if ((100 - BTTS > 57) && (cotes[2][1] * (100 - BTTS) > 90)) Console.WriteLine("BTTS Non : " + "(" + cotes[2][1] + ")");
             Console.WriteLine("\n _SCORE EXACT_");
             Console.WriteLine("\tScore exact le plus probable à la mi-temps du match : " + scoreExactE1MT + "-" + scoreExactE2MT + " = " + Math.Round(scoreExactMT, 1) + "%");
             Console.WriteLine("\tScore exact le plus probable à la fin du match : " + scoreExactE1FT + "-" + scoreExactE2FT + " = " + Math.Round(scoreExactFT, 1) + "%");
@@ -618,7 +629,7 @@ namespace QueDuSaleConsole
         /**
         * <summary> Fonction qui affiche un match selon une équipe </summary>
         */
-        static string AfficherMatch(Data data, int c, int s, Match match)
+        static string AfficherMatch(Data data, int c, int s, Match match, List<List<double>> cotes)
         {
             Console.Clear();
             Equipe e1 = data.Equipes.Where(x => x.Id == match.IdEquipes[0]).ToList()[0];
@@ -857,6 +868,18 @@ namespace QueDuSaleConsole
                         scoreExactFT = pourcent;
                     }
                 }
+            Console.WriteLine("\n\n _SCORE EXACT FULL-TIME_");
+            Console.WriteLine("\nScore le plus probable : " + scoreExactE1 + "-" + scoreExactE2 + " = " + Math.Round(scoreExact, 1));
+            Console.WriteLine("\n\n _LES MEILLEURS PRONOSTICS_");
+            if ((V1MT > 57) && (cotes[1][0] * V1MT > 90)) Console.WriteLine("Vainqueur mi-temps : " + e1.Nom + " (" + cotes[1][0] + ")");
+            else if ((100 - V1MT - V2MT > 56) && (cotes[1][1] * (100 - V1MT - V2MT) > 90)) Console.WriteLine("Vainqueur mi-temps : NUL (" + cotes[1][1] + ")");
+            else if ((V2MT > 57) && (cotes[1][2] * V2MT > 90)) Console.WriteLine("Vainqueur mi-temps : " + e2.Nom + " (" + cotes[1][2] + ")");
+            if ((V1FT > 57) && (cotes[0][0] * V1FT > 90)) Console.WriteLine("Vainqueur final : " + e1.Nom + " (" + cotes[0][0] + ")");
+            else if ((100 - V1FT - V2FT > 57) && (cotes[0][1] * (100 - V1FT - V2FT) > 90)) Console.WriteLine("Vainqueur final : NUL (" + cotes[0][1] + ")");
+            else if ((V2FT > 57) && (cotes[0][2] * V2FT > 90)) Console.WriteLine("Vainqueur final : " + e2.Nom + " (" + cotes[0][2] + ")");
+            if ((BTTS > 57) && (cotes[2][0] * BTTS > 90)) Console.WriteLine("BTTS Oui : " + "(" + cotes[2][0] + ")");
+            else if ((100 - BTTS > 57) && (cotes[2][1] * (100 - BTTS) > 90)) Console.WriteLine("BTTS Non : " + "(" + cotes[2][1] + ")");
+
             Console.WriteLine("\n _SCORE EXACT_");
             Console.WriteLine("\tScore exact le plus probable à la mi-temps du match : " + scoreExactE1MT + "-" + scoreExactE2MT + " = " + Math.Round(scoreExactMT, 1) + "%");
             Console.WriteLine("\tScore exact le plus probable à la fin du match : " + scoreExactE1FT + "-" + scoreExactE2FT + " = " + Math.Round(scoreExactFT, 1) + "%");
@@ -880,6 +903,7 @@ namespace QueDuSaleConsole
             }
             return choix;
         }
+        
 
         /*============================================================================ PARTIE CALCUL ============================================================================*/
 
@@ -986,6 +1010,38 @@ namespace QueDuSaleConsole
             }
             
             return Buts;
+        }
+        static List<List<double>> ChargerCotes(Data data, int c, int s, Match match)
+        {
+            List<List<double>> Cotes = new List<List<double>>
+            {
+                new List<double> {0,0,0}, //victoire final 1X2
+                new List<double> {0,0,0}, //victoire mitemps 1X2
+                new List<double> {0,0}, //btts o/n
+            };
+            Equipe e1 = data.Equipes.Where(x => x.Id == match.IdEquipes[0]).ToList()[0];
+            Equipe e2 = data.Equipes.Where(x => x.Id == match.IdEquipes[1]).ToList()[0];
+            Console.Clear();
+            Console.WriteLine(" _VAINQUEUR FINAL_");
+            Console.Write("\nCôte " + e1.Nom + " : ");
+            Cotes[0][0] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte NUL : ");
+            Cotes[0][1] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte " + e2.Nom + " : ");
+            Cotes[0][2] = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("\n\n _VAINQUEUR MI-TEMPS_");
+            Console.Write("\nCôte " + e1.Nom + " : ");
+            Cotes[1][0] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte NUL : ");
+            Cotes[1][1] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte " + e2.Nom + " : ");
+            Cotes[1][2] = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("\n\n _BTTS_");
+            Console.Write("\nCôte Oui : ");
+            Cotes[2][0] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte Non : ");
+            Cotes[2][1] = Convert.ToDouble(Console.ReadLine());
+            return Cotes;
         }
         #endregion
     }
