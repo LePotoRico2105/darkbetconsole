@@ -617,6 +617,12 @@ namespace QueDuSaleConsole
             else if ((100 - FTplus2 > 57) && (cotes[4][1] * (100 - FTplus2) > 95)) Console.WriteLine("Moins de 1.5 buts dans le match : " + "(" + cotes[4][1] + ")");
             else if ((100 - FTplus3 > 57) && (cotes[4][2] * (100 - FTplus3) > 95)) Console.WriteLine("Moins de 2.5 buts dans le match : " + "(" + cotes[4][2] + ")");
             else if ((100 - FTplus4 > 57) && (cotes[4][3] * (100 - FTplus4) > 95)) Console.WriteLine("Moins de 3.5 buts dans le match : " + "(" + cotes[4][3] + ")");
+            if ((100 - Math.Round(V2MT, 1) > 57) && (cotes[6][0] * (100 - Math.Round(V2MT, 1)) > 95)) Console.WriteLine("Vainqueur double chance à la mi-temps : " + e1.Nom + " ou nul (" + cotes[6][0] + ")");
+            else if ((100 - Math.Round(NMT, 1) > 57) && (cotes[6][1] * (100 - Math.Round(NMT, 1)) > 95)) Console.WriteLine("Vainqueur double chance à la mi-temps : " + e1.Nom + " ou " + e2.Nom + " (" + cotes[6][1] + ")");
+            else if ((100 - Math.Round(V1MT, 1) > 57) && (cotes[6][2] * (100 - Math.Round(V1MT, 1)) > 95)) Console.WriteLine("Vainqueur double chance à la mi-temps : " + e2.Nom + " ou nul (" + cotes[6][2] + ")");
+            if ((100 - Math.Round(V2FT, 1) > 57) && (cotes[5][0] * (100 - Math.Round(V2FT, 1)) > 95)) Console.WriteLine("Vainqueur final : " + e1.Nom + " ou nul (" + cotes[5][0] + ")");
+            else if ((100 - Math.Round(NFT, 1) > 57) && (cotes[5][1] * (100 - Math.Round(NFT, 1)) > 95)) Console.WriteLine("Vainqueur final : " + e1.Nom + " ou " + e2.Nom + " (" + cotes[5][1] + ")");
+            else if ((100 - Math.Round(V1FT, 1) > 57) && (cotes[5][2] * (100 - Math.Round(V1FT, 1)) > 95)) Console.WriteLine("Vainqueur final : " + e2.Nom + " ou nul (" + cotes[5][2] + ")");
 
             Console.Write("\n\nVotre choix : ");
             choix = Console.ReadLine();
@@ -907,6 +913,12 @@ namespace QueDuSaleConsole
             else if ((100 - FTplus2 > 57) && (cotes[4][1] * (100 - FTplus2) > 95)) Console.WriteLine("Moins de 1.5 buts dans le match : " + "(" + cotes[4][1] + ")");
             else if ((100 - FTplus3 > 57) && (cotes[4][2] * (100 - FTplus3) > 95)) Console.WriteLine("Moins de 2.5 buts dans le match : " + "(" + cotes[4][2] + ")");
             else if ((100 - FTplus4 > 57) && (cotes[4][3] * (100 - FTplus4) > 95)) Console.WriteLine("Moins de 3.5 buts dans le match : " + "(" + cotes[4][3] + ")");
+            if ((100 - Math.Round(V2MT, 1) > 57) && (cotes[6][0] * (100 - Math.Round(V2MT, 1)) > 95)) Console.WriteLine("Vainqueur double chance à la mi-temps : " + e1.Nom + " ou nul (" + cotes[6][0] + ")");
+            else if ((100 - Math.Round(NMT, 1) > 57) && (cotes[6][1] * (100 - Math.Round(NMT, 1)) > 95)) Console.WriteLine("Vainqueur double chance à la mi-temps : " + e1.Nom + " ou " + e2.Nom + " (" + cotes[6][1] + ")");
+            else if ((100 - Math.Round(V1MT, 1) > 57) && (cotes[6][2] * (100 - Math.Round(V1MT, 1)) > 95)) Console.WriteLine("Vainqueur double chance à la mi-temps : " + e2.Nom + " ou nul (" + cotes[6][2] + ")");
+            if ((100 - Math.Round(V2FT, 1) > 57) && (cotes[5][0] * (100 - Math.Round(V2FT, 1)) > 95)) Console.WriteLine("Vainqueur final : " + e1.Nom + " ou nul (" + cotes[5][0] + ")");
+            else if ((100 - Math.Round(NFT, 1) > 57) && (cotes[5][1] * (100 - Math.Round(NFT, 1)) > 95)) Console.WriteLine("Vainqueur final : " + e1.Nom + " ou " + e2.Nom + " (" + cotes[5][1] + ")");
+            else if ((100 - Math.Round(V1FT, 1) > 57) && (cotes[5][2] * (100 - Math.Round(V1FT, 1)) > 95)) Console.WriteLine("Vainqueur final : " + e2.Nom + " ou nul (" + cotes[5][2] + ")");
 
             Console.Write("\n\nVotre choix : ");
             choix = Console.ReadLine();
@@ -1044,6 +1056,9 @@ namespace QueDuSaleConsole
                 new List<double> {0,0}, //btts o/n
                 new List<double> {0,0,0,0}, //nombre buts plus final
                 new List<double> {0,0,0,0}, //nombre buts moins final
+                new List<double> {0,0,0}, //victoire final double chance 1X2
+                new List<double> {0,0,0}, //victoire mitemps double chance 1X2
+
             };
             Equipe e1 = data.Equipes.Where(x => x.Id == match.IdEquipes[0]).ToList()[0];
             Equipe e2 = data.Equipes.Where(x => x.Id == match.IdEquipes[1]).ToList()[0];
@@ -1084,6 +1099,20 @@ namespace QueDuSaleConsole
             Cotes[4][2] = Convert.ToDouble(Console.ReadLine());
             Console.Write("\nCôte moins de 3.5 buts dans le match : ");
             Cotes[4][3] = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine(" _VAINQUEUR DOUBLE CHANCE FINAL_");
+            Console.Write("\nCôte " + e1.Nom + " ou nul : ");
+            Cotes[5][0] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte " + e1.Nom + " ou " + e2.Nom + " : ");
+            Cotes[5][1] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte " + e2.Nom + " ou nul : ");
+            Cotes[5][2] = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("\n\n _VAINQUEUR DOUBLE CHANCE MI-TEMPS_");
+            Console.Write("\nCôte " + e1.Nom + " ou nul : ");
+            Cotes[6][0] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte " + e1.Nom + " ou " + e2.Nom + " : ");
+            Cotes[6][1] = Convert.ToDouble(Console.ReadLine());
+            Console.Write("\nCôte " + e2.Nom + " ou nul : ");
+            Cotes[6][2] = Convert.ToDouble(Console.ReadLine());
             return Cotes;
         }
         #endregion
