@@ -106,7 +106,7 @@ namespace QueDuSaleConsole
             Saison saison = new Saison();
             Newtonsoft.Json.Linq.JObject objectSaison = GetJsonObject("https://api.football-data.org/v2/competitions/" + competition.Code);
             
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
                 saison = new Saison();
                 saisons.Add(saison);
@@ -162,9 +162,7 @@ namespace QueDuSaleConsole
         public Data CreateMatchs(Data data, Saison saison)
         {
             Newtonsoft.Json.Linq.JObject objectMatchs;
-            List<Match> matchs = new List<Match>();
             Match match = new Match();
-            matchs = new List<Match>();
             objectMatchs = GetJsonObject("https://api.football-data.org/v2/competitions/" + data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Code + "/matches?season=" + data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Debut.Year);
             for (int i = 0; i < Convert.ToInt32(objectMatchs["count"]); i++)
             {
@@ -176,6 +174,10 @@ namespace QueDuSaleConsole
                     match.IdCompetition = saison.IdCompetition;
                     match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"]));
                     match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"]));
+                    byte[] bytes = Encoding.Default.GetBytes(objectMatchs["matches"][i]["homeTeam"]["name"].ToString());
+                    match.NomEquipes.Add(Encoding.UTF8.GetString(bytes));
+                    bytes = Encoding.Default.GetBytes(objectMatchs["matches"][i]["awayTeam"]["name"].ToString());
+                    match.NomEquipes.Add(Encoding.UTF8.GetString(bytes));
                     try { match.Journee = Convert.ToInt32(objectMatchs["matches"][i]["matchday"]); } catch { match.Journee = 0; }
                     match.Maj = Convert.ToDateTime(objectMatchs["matches"][i]["lastUpdated"]);
                     match.DateEtHeure = Convert.ToDateTime(objectMatchs["matches"][i]["utcDate"]);
@@ -211,6 +213,62 @@ namespace QueDuSaleConsole
             return data;
         }
         /** 
+         * <summary> Création d'une liste de matchs pour une compétition seulement pour l'equipe domicile </summary>
+         * <returns> Retourne la liste des matchs dans une compétition </returns>
+         */
+        public Data CreateMatchsHomeOnly(Data data, Saison saison)
+        {
+            Newtonsoft.Json.Linq.JObject objectMatchs;
+            Match match = new Match();
+            objectMatchs = GetJsonObject("https://api.football-data.org/v2/competitions/" + data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Code + "/matches?season=" + data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Debut.Year);
+            for (int i = 0; i < Convert.ToInt32(objectMatchs["count"]); i++)
+            {
+                try
+                {
+                    match = new Match();
+                    match.Id = Convert.ToInt32(objectMatchs["matches"][i]["id"]);
+                    match.IdSaison = Convert.ToInt32(objectMatchs["matches"][i]["season"]["id"]);
+                    match.IdCompetition = saison.IdCompetition;
+                    match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"]));
+                    match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"]));
+                    byte[] bytes = Encoding.Default.GetBytes(objectMatchs["matches"][i]["homeTeam"]["name"].ToString());
+                    match.NomEquipes.Add(Encoding.UTF8.GetString(bytes));
+                    bytes = Encoding.Default.GetBytes(objectMatchs["matches"][i]["awayTeam"]["name"].ToString());
+                    match.NomEquipes.Add(Encoding.UTF8.GetString(bytes));
+                    try { match.Journee = Convert.ToInt32(objectMatchs["matches"][i]["matchday"]); } catch { match.Journee = 0; }
+                    match.Maj = Convert.ToDateTime(objectMatchs["matches"][i]["lastUpdated"]);
+                    match.DateEtHeure = Convert.ToDateTime(objectMatchs["matches"][i]["utcDate"]);
+                    int scoreFTh = 0;
+                    int scoreFTa = 0;
+                    int scoreMTh = 0;
+                    int scoreMTa = 0;
+                    int scoreETh = 0;
+                    int scoreETa = 0;
+                    int scorePh = 0;
+                    int scorePa = 0;
+                    try { scoreFTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["homeTeam"]); } catch { }
+                    try { scoreFTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["awayTeam"]); } catch { }
+                    try { scoreMTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["homeTeam"]); } catch { }
+                    try { scoreMTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["awayTeam"]); } catch { }
+                    try { scoreETh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["homeTeam"]); } catch { }
+                    try { scoreETa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["awayTeam"]); } catch { }
+                    try { scorePh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["homeTeam"]); } catch { }
+                    try { scorePa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["penalties"]["awayTeam"]); } catch { }
+                    match.ScoreFT.Add(scoreFTh);
+                    match.ScoreFT.Add(scoreFTa);
+                    match.ScoreMT.Add(scoreMTh);
+                    match.ScoreMT.Add(scoreMTa);
+                    match.ScoreProlongation.Add(scoreETh);
+                    match.ScoreProlongation.Add(scoreETa);
+                    match.ScorePenalty.Add(scorePh);
+                    match.ScorePenalty.Add(scorePa);
+                    data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes.Where(x => x.Id == match.IdEquipes[0]).ToList()[0].Matchs.Add(match);
+                }
+                catch (Exception a) { Console.WriteLine(a); Console.Read(); }
+            }
+            return data;
+        }
+        /** 
          * <summary> Création d'une liste de matchs pour une compétition </summary>
          * <returns> Retourne la liste des matchs dans une compétition </returns>
          */
@@ -219,7 +277,6 @@ namespace QueDuSaleConsole
             Newtonsoft.Json.Linq.JObject objectMatchs;
             List<Match> matchs = new List<Match>();
             Match match = new Match();
-            matchs = new List<Match>();
             data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes.Where(x => x.Id == equipe.Id).ToList()[0].Matchs = matchs;
             objectMatchs = GetJsonObject("https://api.football-data.org/v2/teams/" + equipe.Id + "/matches");
             for (int i = 0; i < Convert.ToInt32(objectMatchs["count"]); i++)
@@ -232,6 +289,10 @@ namespace QueDuSaleConsole
                     match.IdCompetition = saison.IdCompetition;
                     match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["homeTeam"]["id"]));
                     match.IdEquipes.Add(Convert.ToInt32(objectMatchs["matches"][i]["awayTeam"]["id"]));
+                    byte[] bytes = Encoding.Default.GetBytes(objectMatchs["matches"][i]["homeTeam"]["name"].ToString());
+                    match.NomEquipes.Add(Encoding.UTF8.GetString(bytes));
+                    bytes = Encoding.Default.GetBytes(objectMatchs["matches"][i]["awayTeam"]["name"].ToString());
+                    match.NomEquipes.Add(Encoding.UTF8.GetString(bytes));
                     try { match.Journee = Convert.ToInt32(objectMatchs["matches"][i]["matchday"]); } catch { match.Journee = 0; }
                     match.Maj = Convert.ToDateTime(objectMatchs["matches"][i]["lastUpdated"]);
                     match.DateEtHeure = Convert.ToDateTime(objectMatchs["matches"][i]["utcDate"]);

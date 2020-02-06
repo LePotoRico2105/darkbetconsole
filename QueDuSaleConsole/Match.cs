@@ -10,6 +10,7 @@ namespace QueDuSaleConsole
     {
         #region Variables
         private int id, idCompetition, idSaison, journee;
+        private List<string> nomEquipes;
         private List<int> idEquipes;
         private DateTime dateEtHeure, maj;
         private string gagnant;
@@ -29,6 +30,7 @@ namespace QueDuSaleConsole
             this.idCompetition = 0;
             this.idSaison = 0;
             this.idEquipes = new List<int>();
+            this.nomEquipes = new List<string>();
             this.journee = 0;
             this.dateEtHeure = new DateTime();
             this.maj = new DateTime();
@@ -47,12 +49,13 @@ namespace QueDuSaleConsole
         /**
          * <summary> Constructeur de la classe Match avec ses paramètres </summary>
          **/
-        public Match(int pId, int pIdCompetition, int pIdSaison, List<int> pIdEquipes, int pJournee, List<int> pScoreMT, List<int> pScoreFT,List<int> pScoreProlongation, List<int> pScorePenalty, DateTime pDateEtHeure, DateTime pMaj, string pGagnant)
+        public Match(int pId, int pIdCompetition, int pIdSaison, List<string> pNomEquipes, List<int> pIdEquipes, int pJournee, List<int> pScoreMT, List<int> pScoreFT,List<int> pScoreProlongation, List<int> pScorePenalty, DateTime pDateEtHeure, DateTime pMaj, string pGagnant)
         {
             this.id = pId;
             this.idCompetition = pIdCompetition;
             this.idSaison = pIdSaison;
             this.idEquipes = pIdEquipes;
+            this.nomEquipes = pNomEquipes;
             this.journee = pJournee;
             this.dateEtHeure = pDateEtHeure;
             this.maj = pMaj;
@@ -143,6 +146,22 @@ namespace QueDuSaleConsole
             set
             {
                 idEquipes = value;
+            }
+        }
+
+        /**
+         * <summary> Accesseur/Mutateur de la variable nomEquipes </summary>
+         **/
+        public List<string> NomEquipes
+        {
+            get
+            {
+                return nomEquipes;
+            }
+
+            set
+            {
+                nomEquipes = value;
             }
         }
 
