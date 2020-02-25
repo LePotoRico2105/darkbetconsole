@@ -995,6 +995,7 @@ namespace QueDuSaleConsole
             Console.WriteLine("| - 0 : fermer app                 |");
             Console.WriteLine("| - 1 : retour menu principal      |");
             Console.WriteLine("|_________________________ ________|");
+
             double nM6 = 0;
             double nOK6 = 0;
             for (int m = 0; m < matchs1X2_1.Count(); m++)
@@ -1006,10 +1007,20 @@ namespace QueDuSaleConsole
                 }
             }
             Console.WriteLine("\nSTATISTIQUES PRONOS VICTOIRE DOMICILE 7 DERNIERS JOURS (" + nOK6 + "/" + nM6 + " : " + Math.Round(nOK6 / nM6 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchs1X2_1.Count(); m++) if (matchs1X2_1[m].DateHeure.Date < DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_1[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_1[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_1[m].NomEquipes[0] + " - " + matchs1X2_1[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_1[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchs1X2_1.Count(); m++) {
+                if (matchs1X2_1[m].DateHeure.Date < DateTime.Today)
+                {
+                    if (matchs1X2_1[m].Score[0] > matchs1X2_1[m].Score[1])
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_1[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_1[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_1[m].NomEquipes[0] + " - " + matchs1X2_1[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_1[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS VICTOIRE DOMICILE PROCHAINS JOURS :\n");
             for (int m = 0; m < matchs1X2_1.Count(); m++) if (matchs1X2_1[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_1[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_1[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_1[m].NomEquipes[0] + " - " + matchs1X2_1[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_1[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n__________________________________________\n");
+            
             double nM9 = 0;
             double nOK9 = 0;
             for (int m = 0; m < matchs1X2_1X.Count(); m++)
@@ -1021,10 +1032,21 @@ namespace QueDuSaleConsole
                 }
             }
             Console.WriteLine("\nSTATISTIQUES PRONOS VICTOIRE/NUL DOMICILE 7 DERNIERS JOURS (" + nOK9 + "/" + nM9 + " : " + Math.Round(nOK9 / nM9 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchs1X2_1X.Count(); m++) if (matchs1X2_1X[m].DateHeure.Date < DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_1X[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_1X[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_1X[m].NomEquipes[0] + " - " + matchs1X2_1X[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_1X[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchs1X2_1X.Count(); m++)
+            {
+                if (matchs1X2_1X[m].DateHeure.Date < DateTime.Today)
+                {
+                    if (matchs1X2_1X[m].Score[0] >= matchs1X2_1X[m].Score[1])
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_1X[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_1X[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_1X[m].NomEquipes[0] + " - " + matchs1X2_1X[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_1X[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS VICTOIRE/NUL DOMICILE PROCHAINS JOURS :\n");
             for (int m = 0; m < matchs1X2_1X.Count(); m++) if (matchs1X2_1X[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_1X[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_1X[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_1X[m].NomEquipes[0] + " - " + matchs1X2_1X[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_1X[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n__________________________________________\n");
+
             double nM8 = 0;
             double nOK8 = 0;
             for (int m = 0; m < matchs1X2_2.Count(); m++)
@@ -1036,10 +1058,21 @@ namespace QueDuSaleConsole
                 }
             }
             Console.WriteLine("\nSTATISTIQUES PRONOS VICTOIRE EXTERIEUR 7 DERNIERS JOURS (" + nOK8 + "/" + nM8 + " : " + Math.Round(nOK8 / nM8 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchs1X2_2.Count(); m++) if (matchs1X2_2[m].DateHeure.Date < DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_2[m].NomEquipes[0] + " - " + matchs1X2_2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_2[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchs1X2_2.Count(); m++)
+            {
+                if (matchs1X2_2[m].DateHeure.Date < DateTime.Today)
+                {
+                    if (matchs1X2_2[m].Score[0] < matchs1X2_2[m].Score[1])
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_2[m].NomEquipes[0] + " - " + matchs1X2_2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_2[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS VICTOIRE EXTERIEUR PROCHAINS JOURS :\n");
             for (int m = 0; m < matchs1X2_2.Count(); m++) if (matchs1X2_2[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_2[m].NomEquipes[0] + " - " + matchs1X2_2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_2[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n__________________________________________\n");
+
             double nM10 = 0;
             double nOK10 = 0;
             for (int m = 0; m < matchs1X2_X2.Count(); m++)
@@ -1051,10 +1084,21 @@ namespace QueDuSaleConsole
                 }
             }
             Console.WriteLine("\nSTATISTIQUES PRONOS NUL/VICTOIRE EXTERIEUR 7 DERNIERS JOURS (" + nOK10 + "/" + nM10 + " : " + Math.Round(nOK10 / nM10 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchs1X2_X2.Count(); m++) if (matchs1X2_X2[m].DateHeure.Date < DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_X2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_X2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_X2[m].NomEquipes[0] + " - " + matchs1X2_X2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_X2[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchs1X2_X2.Count(); m++)
+            {
+                if (matchs1X2_X2[m].DateHeure.Date < DateTime.Today)
+                {
+                    if (matchs1X2_X2[m].Score[0] <= matchs1X2_X2[m].Score[1])
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_X2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_X2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_X2[m].NomEquipes[0] + " - " + matchs1X2_X2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_X2[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS NUL/VICTOIRE EXTERIEUR PROCHAINS JOURS :\n");
             for (int m = 0; m < matchs1X2_X2.Count(); m++) if (matchs1X2_X2[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_X2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_X2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_X2[m].NomEquipes[0] + " - " + matchs1X2_X2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_X2[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n__________________________________________\n");
+            
             double nM = 0;
             double nOK = 0;
             for (int m = 0; m < matchsBTTS.Count(); m++) {
@@ -1065,10 +1109,21 @@ namespace QueDuSaleConsole
                 }
             }
             Console.WriteLine("\nSTATISTIQUES PRONO BTTS 7 DERNIERS JOURS (" + nOK + "/" + nM + " : " + Math.Round(nOK/nM*100.00, 2) + "%)\n");
-            for (int m = 0; m < matchsBTTS.Count(); m++) if (matchsBTTS[m].DateHeure.Date < DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsBTTS[m].IdCompetition).ToList()[0].Nom + ") " + matchsBTTS[m].DateHeure.Date.ToShortDateString() + " : " + matchsBTTS[m].NomEquipes[0] + " - " + matchsBTTS[m].NomEquipes[1] + "(" + Math.Round(matchsBTTS[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchsBTTS.Count(); m++)
+            {
+                if (matchsBTTS[m].DateHeure.Date < DateTime.Today)
+                {
+                    if ((matchsBTTS[m].Score[0] >= 1) && (matchsBTTS[m].Score[1] >= 1))
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsBTTS[m].IdCompetition).ToList()[0].Nom + ") " + matchsBTTS[m].DateHeure.Date.ToShortDateString() + " : " + matchsBTTS[m].NomEquipes[0] + " - " + matchsBTTS[m].NomEquipes[1] + "(" + Math.Round(matchsBTTS[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS BTTS PROCHAINS JOURS :\n");
             for (int m = 0; m < matchsBTTS.Count(); m++) if(matchsBTTS[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsBTTS[m].IdCompetition).ToList()[0].Nom + ") " +matchsBTTS[m].DateHeure.Date.ToShortDateString() + " : " + matchsBTTS[m].NomEquipes[0] + " - " + matchsBTTS[m].NomEquipes[1] + "(" + Math.Round(matchsBTTS[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n__________________________________________\n");
+
             double nM2 = 0;
             double nOK2 = 0;
             for (int m = 0; m < matchsNBTTS.Count(); m++)
@@ -1080,10 +1135,21 @@ namespace QueDuSaleConsole
                 }
             }
             Console.WriteLine("\nSTATISTIQUES NON BTTS 7 DERNIERS JOURS (" + nOK2 + "/" + nM2 + " : " + Math.Round(nOK2 / nM2 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchsNBTTS.Count(); m++) if (matchsNBTTS[m].DateHeure.Date < DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsNBTTS[m].IdCompetition).ToList()[0].Nom + ") " + matchsNBTTS[m].DateHeure.Date.ToShortDateString() + " : " + matchsNBTTS[m].NomEquipes[0] + " - " + matchsNBTTS[m].NomEquipes[1] + "(" + Math.Round(matchsNBTTS[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchsNBTTS.Count(); m++)
+            {
+                if (matchsNBTTS[m].DateHeure.Date < DateTime.Today)
+                {
+                    if ((matchsNBTTS[m].Score[0] < 1) || (matchsNBTTS[m].Score[1] < 1))
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsNBTTS[m].IdCompetition).ToList()[0].Nom + ") " + matchsNBTTS[m].DateHeure.Date.ToShortDateString() + " : " + matchsNBTTS[m].NomEquipes[0] + " - " + matchsNBTTS[m].NomEquipes[1] + "(" + Math.Round(matchsNBTTS[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS NON BTTS PROCHAINS JOURS :\n");
             for (int m = 0; m < matchsNBTTS.Count(); m++) if (matchsNBTTS[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsNBTTS[m].IdCompetition).ToList()[0].Nom + ") " + matchsNBTTS[m].DateHeure.Date.ToShortDateString() + " : " + matchsNBTTS[m].NomEquipes[0] + " - " + matchsNBTTS[m].NomEquipes[1] + "(" + Math.Round(matchsNBTTS[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n_______________________________________________\n");
+
             double nM3 = 0;
             double nOK3 = 0;
             for (int m = 0; m < matchsPlus15.Count(); m++)
@@ -1095,10 +1161,21 @@ namespace QueDuSaleConsole
                 }
             }
             Console.WriteLine("\nSTATISTIQUES +1.5 BUTS FIN DU MATCH 7 DERNIERS JOURS (" + nOK3 + "/" + nM3 + " : " + Math.Round(nOK3 / nM3 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchsPlus15.Count(); m++) if (matchsPlus15[m].DateHeure.Date < DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsPlus15[m].IdCompetition).ToList()[0].Nom + ") " + matchsPlus15[m].DateHeure.Date.ToShortDateString() + " : " + matchsPlus15[m].NomEquipes[0] + " - " + matchsPlus15[m].NomEquipes[1] + "(" + Math.Round(matchsPlus15[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchsPlus15.Count(); m++)
+            {
+                if (matchsPlus15[m].DateHeure.Date < DateTime.Today)
+                {
+                    if (matchsPlus15[m].Score[0] + matchsPlus15[m].Score[1] > 1.5)
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsPlus15[m].IdCompetition).ToList()[0].Nom + ") " + matchsPlus15[m].DateHeure.Date.ToShortDateString() + " : " + matchsPlus15[m].NomEquipes[0] + " - " + matchsPlus15[m].NomEquipes[1] + "(" + Math.Round(matchsPlus15[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS +1.5 BUTS FIN DU MATCH PROCHAINS JOURS :\n");
             for (int m = 0; m < matchsPlus15.Count(); m++) if (matchsPlus15[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsPlus15[m].IdCompetition).ToList()[0].Nom + ") " + matchsPlus15[m].DateHeure.Date.ToShortDateString() + " : " + matchsPlus15[m].NomEquipes[0] + " - " + matchsPlus15[m].NomEquipes[1] + "(" + Math.Round(matchsPlus15[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n_______________________________________________\n");
+
             double nM4 = 0;
             double nOK4 = 0;
             for (int m = 0; m < matchsMoins15.Count(); m++)
@@ -1110,10 +1187,21 @@ namespace QueDuSaleConsole
                 }
             }
             Console.WriteLine("\nSTATISTIQUES -1.5 BUTS FIN DU MATCH 7 DERNIERS JOURS (" + nOK4 + "/" + nM4 + " : " + Math.Round(nOK4 / nM4 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchsMoins15.Count(); m++) if (matchsMoins15[m].DateHeure.Date < DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins15[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins15[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins15[m].NomEquipes[0] + " - " + matchsMoins15[m].NomEquipes[1] + "(" + Math.Round(matchsMoins15[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchsMoins15.Count(); m++)
+            {
+                if (matchsMoins15[m].DateHeure.Date < DateTime.Today)
+                {
+                    if (matchsMoins15[m].Score[0] + matchsMoins15[m].Score[1] < 1.5)
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins15[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins15[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins15[m].NomEquipes[0] + " - " + matchsMoins15[m].NomEquipes[1] + "(" + Math.Round(matchsMoins15[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS -1.5 BUTS FIN DU MATCH PROCHAINS JOURS :\n");
             for (int m = 0; m < matchsMoins15.Count(); m++) if (matchsMoins15[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins15[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins15[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins15[m].NomEquipes[0] + " - " + matchsMoins15[m].NomEquipes[1] + "(" + Math.Round(matchsMoins15[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n_______________________________________________\n");
+
             double nM5 = 0;
             double nOK5 = 0;
             for (int m = 0; m < matchsMoins25.Count(); m++)
@@ -1125,7 +1213,17 @@ namespace QueDuSaleConsole
                 }
             }
             Console.WriteLine("\nSTATISTIQUES -2.5 BUTS FIN DU MATCH 7 DERNIERS JOURS (" + nOK5 + "/" + nM5 + " : " + Math.Round(nOK5 / nM5 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchsMoins25.Count(); m++) if (matchsMoins25[m].DateHeure.Date < DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins25[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins25[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins25[m].NomEquipes[0] + " - " + matchsMoins25[m].NomEquipes[1] + "(" + Math.Round(matchsMoins25[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchsMoins25.Count(); m++)
+            {
+                if (matchsMoins25[m].DateHeure.Date < DateTime.Today)
+                {
+                    if (matchsMoins25[m].Score[0] + matchsMoins25[m].Score[1] < 2.5)
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins25[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins25[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins25[m].NomEquipes[0] + " - " + matchsMoins25[m].NomEquipes[1] + "(" + Math.Round(matchsMoins25[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS -2.5 BUTS FIN DU MATCH PROCHAINS JOURS :\n");
             for (int m = 0; m < matchsMoins25.Count(); m++) if (matchsMoins25[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins25[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins25[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins25[m].NomEquipes[0] + " - " + matchsMoins25[m].NomEquipes[1] + "(" + Math.Round(matchsMoins25[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n_______________________________________________\n");
