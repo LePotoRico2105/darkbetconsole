@@ -1503,7 +1503,7 @@ namespace QueDuSaleConsole
                         if (!matchs1X2_2.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1))
                         {
                             score = (pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][0] / pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][1]) / (pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][0] / pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][1]);
-                            if (score >= 0.4 && score <= 0.8)
+                            if (score >= 0.4 && score <= 0.6)
                             {
                                 prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
                                 prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
