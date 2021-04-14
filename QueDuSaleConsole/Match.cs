@@ -15,6 +15,7 @@ namespace QueDuSaleConsole
         private DateTime dateEtHeure, maj;
         private string gagnant;
         private List<int> scoreMT;
+        private List<int> score2MT;
         private List<int> scoreFT;
         private List<int> scoreProlongation;
         private List<int> scorePenalty;
@@ -37,6 +38,8 @@ namespace QueDuSaleConsole
             this.gagnant = "";
             // Liste des scores à la fin de la 1ère mi-temps
             scoreMT = new List<int>();
+            // Liste des scores à la fin de la 2ème mi-temps
+            score2MT = new List<int>();
             // Liste des scores à la fin du temps réglementaire
             scoreFT = new List<int>();
             // Liste des scores à la fin des prolongations
@@ -49,7 +52,7 @@ namespace QueDuSaleConsole
         /**
          * <summary> Constructeur de la classe Match avec ses paramètres </summary>
          **/
-        public Match(int pId, int pIdCompetition, int pIdSaison, List<string> pNomEquipes, List<int> pIdEquipes, int pJournee, List<int> pScoreMT, List<int> pScoreFT,List<int> pScoreProlongation, List<int> pScorePenalty, DateTime pDateEtHeure, DateTime pMaj, string pGagnant)
+        public Match(int pId, int pIdCompetition, int pIdSaison, List<string> pNomEquipes, List<int> pIdEquipes, int pJournee, List<int> pScoreMT, List<int> pScore2MT, List<int> pScoreFT,List<int> pScoreProlongation, List<int> pScorePenalty, DateTime pDateEtHeure, DateTime pMaj, string pGagnant)
         {
             this.id = pId;
             this.idCompetition = pIdCompetition;
@@ -62,6 +65,8 @@ namespace QueDuSaleConsole
             this.gagnant = pGagnant;
             // Liste des scores à la fin de la 1ère mi-temps
             scoreMT = pScoreMT;
+            // Liste des scores à la fin de la 1ère mi-temps
+            score2MT = pScore2MT;
             // Liste des scores à la fin du temps réglementaire
             scoreFT = pScoreFT;
             // Liste des scores à la fin des prolongations
@@ -244,6 +249,23 @@ namespace QueDuSaleConsole
                 scoreMT = value;
             }
         }
+
+        /**
+         * <summmary> Accesseur/Mutateur de la liste score2MT </summmary>
+         **/
+        public List<int> Score2MT
+        {
+            get
+            {
+                return score2MT;
+            }
+
+            set
+            {
+                score2MT = value;
+            }
+        }
+
 
         /**
          * <summmary> Accesseur/Mutateur de la liste scoreFT </summmary>

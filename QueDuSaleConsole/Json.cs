@@ -22,13 +22,11 @@ namespace QueDuSaleConsole
         {
             tokens = new List<string>(); // initialisation d'une liste de Token
             // ici, on ajoute à la liste toutes les clés de l'API
-            tokens.Add("832593ac26474ca08bf040526470f67a");
-            tokens.Add("89f54cbe1d4a40afa128132bc25499de");
+            tokens.Add("b572f89e5c8b4934a7e86a0b4b87733c");
             tokens.Add("8eaad1b696ca4e5eafbcf2f447a500d7");
-            tokens.Add("6e6e9b9dd4d6431e9977ca0ff448ed56");
-            tokens.Add("796d1f39632c48afa396273a061faadc");
-            tokens.Add("ee2d2b8c006840e5978519d9540d7fb3");
             tokens.Add("f108148043af452aa893f1098e3ffd8e");
+            tokens.Add("94a185bff16c478594715bbfd05054c4");
+            tokens.Add("1fdafea3b2804e83af99290310134cc5");
         }
 
         /**
@@ -79,7 +77,7 @@ namespace QueDuSaleConsole
             Newtonsoft.Json.Linq.JObject objectCompetitions = GetJsonObject("https://api.football-data.org/v2/competitions?plan=TIER_ONE");
             for (int i = 0; i < Convert.ToInt32(objectCompetitions["count"]); i++)
             {
-                if (objectCompetitions["competitions"][i]["code"].ToString() != "EC" && objectCompetitions["competitions"][i]["code"].ToString() != "WC")
+                if (objectCompetitions["competitions"][i]["code"].ToString() != "EC" && objectCompetitions["competitions"][i]["code"].ToString() != "WC" && objectCompetitions["competitions"][i]["code"].ToString() != "ELC" && objectCompetitions["competitions"][i]["code"].ToString() != "BSA")
                 {
                     competition = new Competition();
                     competition.Id = Convert.ToInt32(objectCompetitions["competitions"][i]["id"]);
@@ -205,8 +203,8 @@ namespace QueDuSaleConsole
                     match.ScoreProlongation.Add(scoreETa);
                     match.ScorePenalty.Add(scorePh);
                     match.ScorePenalty.Add(scorePa);
-                    data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes.Where(x => x.Id == match.IdEquipes[0]).ToList()[0].Matchs.Add(match);
-                    data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes.Where(x => x.Id == match.IdEquipes[1]).ToList()[0].Matchs.Add(match);
+                    try { data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes.Where(x => x.Id == match.IdEquipes[0]).ToList()[0].Matchs.Add(match); } catch { }
+                    try { data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Equipes.Where(x => x.Id == match.IdEquipes[1]).ToList()[0].Matchs.Add(match); } catch { }
                 }
                 catch(Exception a) { Console.WriteLine(a);Console.Read(); }
             }
@@ -220,7 +218,7 @@ namespace QueDuSaleConsole
         {
             Newtonsoft.Json.Linq.JObject objectMatchs;
             Match match = new Match();
-            objectMatchs = GetJsonObject("https://api.football-data.org/v2/competitions/" + data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Code + "/matches?season=" + data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Saisons.Where(x => x.Id == saison.Id).ToList()[0].Debut.Year);
+            objectMatchs = GetJsonObject("https://api.football-data.org/v2/competitions/" + data.Competitions.Where(x => x.Id == saison.IdCompetition).ToList()[0].Code);
             for (int i = 0; i < Convert.ToInt32(objectMatchs["count"]); i++)
             {
                 try
@@ -300,6 +298,8 @@ namespace QueDuSaleConsole
                     int scoreFTa = 0;
                     int scoreMTh = 0;
                     int scoreMTa = 0;
+                    int score2MTh = 0;
+                    int score2MTa = 0;
                     int scoreETh = 0;
                     int scoreETa = 0;
                     int scorePh = 0;
@@ -307,6 +307,8 @@ namespace QueDuSaleConsole
                     try { scoreFTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["homeTeam"]); } catch { }
                     try { scoreFTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["awayTeam"]); } catch { }
                     try { scoreMTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["homeTeam"]); } catch { }
+                    try { score2MTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["awayTeam"]) - Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["awayTeam"]); } catch { }
+                    try { score2MTh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["fullTime"]["homeTeam"]) - Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["homeTeam"]); } catch { }
                     try { scoreMTa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["halfTime"]["awayTeam"]); } catch { }
                     try { scoreETh = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["homeTeam"]); } catch { }
                     try { scoreETa = Convert.ToInt32(objectMatchs["matches"][i]["score"]["extraTime"]["awayTeam"]); } catch { }
@@ -316,6 +318,8 @@ namespace QueDuSaleConsole
                     match.ScoreFT.Add(scoreFTa);
                     match.ScoreMT.Add(scoreMTh);
                     match.ScoreMT.Add(scoreMTa);
+                    match.Score2MT.Add(score2MTh);
+                    match.Score2MT.Add(score2MTa);
                     match.ScoreProlongation.Add(scoreETh);
                     match.ScoreProlongation.Add(scoreETa);
                     match.ScorePenalty.Add(scorePh);

@@ -17,8 +17,6 @@ namespace QueDuSaleConsole
             try
             {
                 Console.WriteLine("DOWNLOAD DATA...");
-                data = data._Json.CreateEquipes(data, data.Competitions[9].Saisons[0]);
-                data = data._Json.CreateEquipes(data, data.Competitions[9].Saisons[1]);
             }
             catch { Console.WriteLine("Nombre d'appels API trop important, merci de relancer l'app et d'attendre 1 minute"); Console.Read(); Environment.Exit(0); }
             string choix = "";
@@ -952,15 +950,22 @@ namespace QueDuSaleConsole
         static string AfficherMeilleursPronos(Data data, string[] args)
         {
             Console.Clear();
-            List<Pronostic> matchs1X2_1 = new List<Pronostic>();
-            List<Pronostic> matchs1X2_1X = new List<Pronostic>();
-            List<Pronostic> matchs1X2_2 = new List<Pronostic>();
-            List<Pronostic> matchs1X2_X2 = new List<Pronostic>();
-            List<Pronostic> matchsBTTS = new List<Pronostic>();
-            List<Pronostic> matchsNBTTS = new List<Pronostic>();
-            List<Pronostic> matchsPlus15 = new List<Pronostic>();
-            List<Pronostic> matchsMoins15 = new List<Pronostic>();
-            List<Pronostic> matchsMoins25 = new List<Pronostic>();
+            List<Pronostic> matchs1X2FT_1 = new List<Pronostic>();
+            List<Pronostic> matchs1X2FT_1X = new List<Pronostic>();
+            List<Pronostic> matchs1X2MT_1 = new List<Pronostic>();
+            List<Pronostic> matchs1X2FT_2 = new List<Pronostic>();
+            List<Pronostic> matchs1X2MT_2 = new List<Pronostic>();
+            List<Pronostic> matchs1X2FT_X2 = new List<Pronostic>();
+            List<Pronostic> matchsBTTS_MT = new List<Pronostic>();
+            List<Pronostic> matchsNBTTS_MT = new List<Pronostic>();
+            //List<Pronostic> matchsBTTS_2MT = new List<Pronostic>();
+            //List<Pronostic> matchsNBTTS_2MT = new List<Pronostic>();
+            List<Pronostic> matchsBTTS_FT = new List<Pronostic>();
+            List<Pronostic> matchsNBTTS_FT = new List<Pronostic>();
+            List<Pronostic> matchsPlus15_FT = new List<Pronostic>();
+            List<Pronostic> matchsPlus25_FT = new List<Pronostic>();
+            List<Pronostic> matchsMoins15_FT = new List<Pronostic>();
+            List<Pronostic> matchsMoins25_FT = new List<Pronostic>();
             try
             {
                 Console.WriteLine("CHARGEMENT DES MEILLEURS PRONOSTICS...");
@@ -972,15 +977,22 @@ namespace QueDuSaleConsole
                     }
                 }
                 Console.Clear();
-                matchsBTTS = ChargerBTTS(data);
-                matchsNBTTS = ChargerNBTTS(data);
-                matchsPlus15 = ChargerPlus15(data);
-                matchsMoins15 = ChargerMoins15(data);
-                matchsMoins25 = ChargerMoins25(data);
-                matchs1X2_1 = Charger1X2_1(data);
-                matchs1X2_1X = Charger1X2_1X(data);
-                matchs1X2_2 = Charger1X2_2(data);
-                matchs1X2_X2 = Charger1X2_X2(data);
+                matchsBTTS_MT = ChargerBTTS_MT(data);
+                matchsNBTTS_MT = ChargerNBTTS_MT(data);
+                //matchsBTTS_2MT = ChargerBTTS_2MT(data);
+                //matchsNBTTS_2MT = ChargerNBTTS_2MT(data);
+                matchsBTTS_FT = ChargerBTTS_FT(data);
+                matchsNBTTS_FT = ChargerNBTTS_FT(data);
+                matchsPlus15_FT = ChargerPlus15_FT(data);
+                matchsPlus25_FT = ChargerPlus25_FT(data);
+                matchsMoins15_FT = ChargerMoins15_FT(data);
+                matchsMoins25_FT = ChargerMoins25_FT(data);
+                matchs1X2FT_1 = Charger1X2FT_1(data);
+                matchs1X2FT_1X = Charger1X2FT_1X(data);
+                matchs1X2MT_1 = Charger1X2MT_1(data);
+                matchs1X2FT_2 = Charger1X2FT_2(data);
+                matchs1X2MT_2 = Charger1X2MT_2(data);
+                matchs1X2FT_X2 = Charger1X2FT_X2(data);
             }
             catch (Exception e){ Console.WriteLine(e); }
             string choix = "";
@@ -995,238 +1007,420 @@ namespace QueDuSaleConsole
             Console.WriteLine("| - 0 : fermer app                 |");
             Console.WriteLine("| - 1 : retour menu principal      |");
             Console.WriteLine("|_________________________ ________|");
-
+            
             double nM6 = 0;
             double nOK6 = 0;
-            for (int m = 0; m < matchs1X2_1.Count(); m++)
+            for (int m = 0; m < matchs1X2FT_1.Count(); m++)
             {
-                if (matchs1X2_1[m].DateHeure.Date < DateTime.Today)
+                if (matchs1X2FT_1[m].DateHeure.Date < DateTime.Today)
                 {
                     nM6++;
-                    if (matchs1X2_1[m].Score[0] > matchs1X2_1[m].Score[1]) nOK6++;
+                    if (matchs1X2FT_1[m].Score[0] > matchs1X2FT_1[m].Score[1]) nOK6++;
                 }
             }
-            Console.WriteLine("\nSTATISTIQUES PRONOS VICTOIRE DOMICILE 7 DERNIERS JOURS (" + nOK6 + "/" + nM6 + " : " + Math.Round(nOK6 / nM6 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchs1X2_1.Count(); m++) {
-                if (matchs1X2_1[m].DateHeure.Date < DateTime.Today)
+            Console.WriteLine("\nSTATISTIQUES PRONOS VICTOIRE DOMICILE (FIN DE MATCH) 7 DERNIERS JOURS (" + nOK6 + "/" + nM6 + " : " + Math.Round(nOK6 / nM6 * 100.00, 2) + "%)\n");
+            for (int m = 0; m < matchs1X2FT_1.Count(); m++) {
+                if (matchs1X2FT_1[m].DateHeure.Date < DateTime.Today)
                 {
-                    if (matchs1X2_1[m].Score[0] > matchs1X2_1[m].Score[1])
+                    if (matchs1X2FT_1[m].Score[0] > matchs1X2FT_1[m].Score[1])
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                     else Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_1[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_1[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_1[m].NomEquipes[0] + " - " + matchs1X2_1[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_1[m].Fiabilite, 2) + "%)");
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2FT_1[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2FT_1[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2FT_1[m].NomEquipes[0] + " - " + matchs1X2FT_1[m].NomEquipes[1] + "(" + Math.Round(matchs1X2FT_1[m].Fiabilite, 2) + "%)");
                 }
             }
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("\nLISTE MATCHS VICTOIRE DOMICILE PROCHAINS JOURS :\n");
-            for (int m = 0; m < matchs1X2_1.Count(); m++) if (matchs1X2_1[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_1[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_1[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_1[m].NomEquipes[0] + " - " + matchs1X2_1[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_1[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\nLISTE MATCHS VICTOIRE DOMICILE (FIN DE MATCH) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchs1X2FT_1.Count(); m++) if (matchs1X2FT_1[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2FT_1[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2FT_1[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2FT_1[m].NomEquipes[0] + " - " + matchs1X2FT_1[m].NomEquipes[1] + "(" + Math.Round(matchs1X2FT_1[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\n\n__________________________________________\n");
+            
+            double nM7 = 0;
+            double nOK7 = 0;
+            for (int m = 0; m < matchs1X2MT_1.Count(); m++)
+            {
+                if (matchs1X2MT_1[m].DateHeure.Date < DateTime.Today)
+                {
+                    nM7++;
+                    if (matchs1X2MT_1[m].Score[0] > matchs1X2MT_1[m].Score[1]) nOK7++;
+                }
+            }
+            Console.WriteLine("\nSTATISTIQUES PRONOS VICTOIRE DOMICILE (MI-TEMPS) 7 DERNIERS JOURS (" + nOK7 + "/" + nM7 + " : " + Math.Round(nOK7 / nM7 * 100.00, 2) + "%)\n");
+            for (int m = 0; m < matchs1X2MT_1.Count(); m++)
+            {
+                if (matchs1X2MT_1[m].DateHeure.Date < DateTime.Today)
+                {
+                    if (matchs1X2MT_1[m].Score[0] > matchs1X2MT_1[m].Score[1])
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2MT_1[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2MT_1[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2MT_1[m].NomEquipes[0] + " - " + matchs1X2MT_1[m].NomEquipes[1] + "(" + Math.Round(matchs1X2MT_1[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nLISTE MATCHS VICTOIRE DOMICILE (MI-TEMPS) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchs1X2MT_1.Count(); m++) if (matchs1X2MT_1[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2MT_1[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2MT_1[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2MT_1[m].NomEquipes[0] + " - " + matchs1X2MT_1[m].NomEquipes[1] + "(" + Math.Round(matchs1X2MT_1[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n__________________________________________\n");
             
             double nM9 = 0;
             double nOK9 = 0;
-            for (int m = 0; m < matchs1X2_1X.Count(); m++)
+            for (int m = 0; m < matchs1X2FT_1X.Count(); m++)
             {
-                if (matchs1X2_1X[m].DateHeure.Date < DateTime.Today)
+                if (matchs1X2FT_1X[m].DateHeure.Date < DateTime.Today)
                 {
                     nM9++;
-                    if (matchs1X2_1X[m].Score[0] >= matchs1X2_1X[m].Score[1]) nOK9++;
+                    if (matchs1X2FT_1X[m].Score[0] >= matchs1X2FT_1X[m].Score[1]) nOK9++;
                 }
             }
-            Console.WriteLine("\nSTATISTIQUES PRONOS VICTOIRE/NUL DOMICILE 7 DERNIERS JOURS (" + nOK9 + "/" + nM9 + " : " + Math.Round(nOK9 / nM9 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchs1X2_1X.Count(); m++)
+            Console.WriteLine("\nSTATISTIQUES PRONOS VICTOIRE/NUL DOMICILE (FIN DE MATCH) 7 DERNIERS JOURS (" + nOK9 + "/" + nM9 + " : " + Math.Round(nOK9 / nM9 * 100.00, 2) + "%)\n");
+            for (int m = 0; m < matchs1X2FT_1X.Count(); m++)
             {
-                if (matchs1X2_1X[m].DateHeure.Date < DateTime.Today)
+                if (matchs1X2FT_1X[m].DateHeure.Date < DateTime.Today)
                 {
-                    if (matchs1X2_1X[m].Score[0] >= matchs1X2_1X[m].Score[1])
+                    if (matchs1X2FT_1X[m].Score[0] >= matchs1X2FT_1X[m].Score[1])
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                     else Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_1X[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_1X[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_1X[m].NomEquipes[0] + " - " + matchs1X2_1X[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_1X[m].Fiabilite, 2) + "%)");
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2FT_1X[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2FT_1X[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2FT_1X[m].NomEquipes[0] + " - " + matchs1X2FT_1X[m].NomEquipes[1] + "(" + Math.Round(matchs1X2FT_1X[m].Fiabilite, 2) + "%)");
                 }
             }
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("\nLISTE MATCHS VICTOIRE/NUL DOMICILE PROCHAINS JOURS :\n");
-            for (int m = 0; m < matchs1X2_1X.Count(); m++) if (matchs1X2_1X[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_1X[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_1X[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_1X[m].NomEquipes[0] + " - " + matchs1X2_1X[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_1X[m].Fiabilite, 2) + "%)");
-            Console.WriteLine("\n\n__________________________________________\n");
-
-            double nM8 = 0;
-            double nOK8 = 0;
-            for (int m = 0; m < matchs1X2_2.Count(); m++)
-            {
-                if (matchs1X2_2[m].DateHeure.Date < DateTime.Today)
-                {
-                    nM8++;
-                    if (matchs1X2_2[m].Score[0] < matchs1X2_2[m].Score[1]) nOK8++;
-                }
-            }
-            Console.WriteLine("\nSTATISTIQUES PRONOS VICTOIRE EXTERIEUR 7 DERNIERS JOURS (" + nOK8 + "/" + nM8 + " : " + Math.Round(nOK8 / nM8 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchs1X2_2.Count(); m++)
-            {
-                if (matchs1X2_2[m].DateHeure.Date < DateTime.Today)
-                {
-                    if (matchs1X2_2[m].Score[0] < matchs1X2_2[m].Score[1])
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    else Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_2[m].NomEquipes[0] + " - " + matchs1X2_2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_2[m].Fiabilite, 2) + "%)");
-                }
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("\nLISTE MATCHS VICTOIRE EXTERIEUR PROCHAINS JOURS :\n");
-            for (int m = 0; m < matchs1X2_2.Count(); m++) if (matchs1X2_2[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_2[m].NomEquipes[0] + " - " + matchs1X2_2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_2[m].Fiabilite, 2) + "%)");
-            Console.WriteLine("\n\n__________________________________________\n");
-
-            double nM10 = 0;
-            double nOK10 = 0;
-            for (int m = 0; m < matchs1X2_X2.Count(); m++)
-            {
-                if (matchs1X2_X2[m].DateHeure.Date < DateTime.Today)
-                {
-                    nM10++;
-                    if (matchs1X2_X2[m].Score[0] <= matchs1X2_X2[m].Score[1]) nOK10++;
-                }
-            }
-            Console.WriteLine("\nSTATISTIQUES PRONOS NUL/VICTOIRE EXTERIEUR 7 DERNIERS JOURS (" + nOK10 + "/" + nM10 + " : " + Math.Round(nOK10 / nM10 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchs1X2_X2.Count(); m++)
-            {
-                if (matchs1X2_X2[m].DateHeure.Date < DateTime.Today)
-                {
-                    if (matchs1X2_X2[m].Score[0] <= matchs1X2_X2[m].Score[1])
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    else Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_X2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_X2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_X2[m].NomEquipes[0] + " - " + matchs1X2_X2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_X2[m].Fiabilite, 2) + "%)");
-                }
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("\nLISTE MATCHS NUL/VICTOIRE EXTERIEUR PROCHAINS JOURS :\n");
-            for (int m = 0; m < matchs1X2_X2.Count(); m++) if (matchs1X2_X2[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2_X2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2_X2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2_X2[m].NomEquipes[0] + " - " + matchs1X2_X2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2_X2[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\nLISTE MATCHS VICTOIRE/NUL DOMICILE (FIN DE MATCH) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchs1X2FT_1X.Count(); m++) if (matchs1X2FT_1X[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2FT_1X[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2FT_1X[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2FT_1X[m].NomEquipes[0] + " - " + matchs1X2FT_1X[m].NomEquipes[1] + "(" + Math.Round(matchs1X2FT_1X[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n__________________________________________\n");
             
-            double nM = 0;
-            double nOK = 0;
-            for (int m = 0; m < matchsBTTS.Count(); m++) {
-                if (matchsBTTS[m].DateHeure.Date < DateTime.Today)
+            double nM8 = 0;
+            double nOK8 = 0;
+            for (int m = 0; m < matchs1X2FT_2.Count(); m++)
+            {
+                if (matchs1X2FT_2[m].DateHeure.Date < DateTime.Today)
                 {
-                    nM++;
-                    if (matchsBTTS[m].Score[0] > 0 && matchsBTTS[m].Score[1] > 0) nOK++;
+                    nM8++;
+                    if (matchs1X2FT_2[m].Score[0] < matchs1X2FT_2[m].Score[1]) nOK8++;
                 }
             }
-            Console.WriteLine("\nSTATISTIQUES PRONO BTTS 7 DERNIERS JOURS (" + nOK + "/" + nM + " : " + Math.Round(nOK/nM*100.00, 2) + "%)\n");
-            for (int m = 0; m < matchsBTTS.Count(); m++)
+            Console.WriteLine("\nSTATISTIQUES PRONOS VICTOIRE EXTERIEUR (FIN DE MATCH) 7 DERNIERS JOURS (" + nOK8 + "/" + nM8 + " : " + Math.Round(nOK8 / nM8 * 100.00, 2) + "%)\n");
+            for (int m = 0; m < matchs1X2FT_2.Count(); m++)
             {
-                if (matchsBTTS[m].DateHeure.Date < DateTime.Today)
+                if (matchs1X2FT_2[m].DateHeure.Date < DateTime.Today)
                 {
-                    if ((matchsBTTS[m].Score[0] >= 1) && (matchsBTTS[m].Score[1] >= 1))
+                    if (matchs1X2FT_2[m].Score[0] < matchs1X2FT_2[m].Score[1])
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                     else Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsBTTS[m].IdCompetition).ToList()[0].Nom + ") " + matchsBTTS[m].DateHeure.Date.ToShortDateString() + " : " + matchsBTTS[m].NomEquipes[0] + " - " + matchsBTTS[m].NomEquipes[1] + "(" + Math.Round(matchsBTTS[m].Fiabilite, 2) + "%)");
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2FT_2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2FT_2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2FT_2[m].NomEquipes[0] + " - " + matchs1X2FT_2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2FT_2[m].Fiabilite, 2) + "%)");
                 }
             }
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("\nLISTE MATCHS BTTS PROCHAINS JOURS :\n");
-            for (int m = 0; m < matchsBTTS.Count(); m++) if(matchsBTTS[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsBTTS[m].IdCompetition).ToList()[0].Nom + ") " +matchsBTTS[m].DateHeure.Date.ToShortDateString() + " : " + matchsBTTS[m].NomEquipes[0] + " - " + matchsBTTS[m].NomEquipes[1] + "(" + Math.Round(matchsBTTS[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\nLISTE MATCHS VICTOIRE EXTERIEUR (FIN DE MATCH) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchs1X2FT_2.Count(); m++) if (matchs1X2FT_2[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2FT_2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2FT_2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2FT_2[m].NomEquipes[0] + " - " + matchs1X2FT_2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2FT_2[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\n\n__________________________________________\n");
+            
+            double nM11 = 0;
+            double nOK11 = 0;
+            for (int m = 0; m < matchs1X2MT_2.Count(); m++)
+            {
+                if (matchs1X2MT_2[m].DateHeure.Date < DateTime.Today)
+                {
+                    nM11++;
+                    if (matchs1X2MT_2[m].Score[0] < matchs1X2MT_2[m].Score[1]) nOK11++;
+                }
+            }
+            Console.WriteLine("\nSTATISTIQUES PRONOS VICTOIRE EXTERIEUR (MI-TEMPS) 7 DERNIERS JOURS (" + nOK11 + "/" + nM11 + " : " + Math.Round(nOK11 / nM11 * 100.00, 2) + "%)\n");
+            for (int m = 0; m < matchs1X2MT_2.Count(); m++)
+            {
+                if (matchs1X2MT_2[m].DateHeure.Date < DateTime.Today)
+                {
+                    if (matchs1X2MT_2[m].Score[0] < matchs1X2MT_2[m].Score[1])
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2MT_2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2MT_2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2MT_2[m].NomEquipes[0] + " - " + matchs1X2MT_2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2MT_2[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nLISTE MATCHS VICTOIRE EXTERIEUR (MI-TEMPS) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchs1X2MT_2.Count(); m++) if (matchs1X2MT_2[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2MT_2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2MT_2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2MT_2[m].NomEquipes[0] + " - " + matchs1X2MT_2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2MT_2[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\n\n__________________________________________\n");
+            
+            double nM10 = 0;
+            double nOK10 = 0;
+            for (int m = 0; m < matchs1X2FT_X2.Count(); m++)
+            {
+                if (matchs1X2FT_X2[m].DateHeure.Date < DateTime.Today)
+                {
+                    nM10++;
+                    if (matchs1X2FT_X2[m].Score[0] <= matchs1X2FT_X2[m].Score[1]) nOK10++;
+                }
+            }
+            Console.WriteLine("\nSTATISTIQUES PRONOS NUL/VICTOIRE EXTERIEUR (FIN DE MATCH) 7 DERNIERS JOURS (" + nOK10 + "/" + nM10 + " : " + Math.Round(nOK10 / nM10 * 100.00, 2) + "%)\n");
+            for (int m = 0; m < matchs1X2FT_X2.Count(); m++)
+            {
+                if (matchs1X2FT_X2[m].DateHeure.Date < DateTime.Today)
+                {
+                    if (matchs1X2FT_X2[m].Score[0] <= matchs1X2FT_X2[m].Score[1])
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2FT_X2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2FT_X2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2FT_X2[m].NomEquipes[0] + " - " + matchs1X2FT_X2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2FT_X2[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nLISTE MATCHS NUL/VICTOIRE EXTERIEUR (FIN DE MATCH) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchs1X2FT_X2.Count(); m++) if (matchs1X2FT_X2[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchs1X2FT_X2[m].IdCompetition).ToList()[0].Nom + ") " + matchs1X2FT_X2[m].DateHeure.Date.ToShortDateString() + " : " + matchs1X2FT_X2[m].NomEquipes[0] + " - " + matchs1X2FT_X2[m].NomEquipes[1] + "(" + Math.Round(matchs1X2FT_X2[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\n\n__________________________________________\n");
+            
+            double nM20 = 0;
+            double nOK20 = 0;
+            for (int m = 0; m < matchsBTTS_MT.Count(); m++) {
+                if (matchsBTTS_MT[m].DateHeure.Date < DateTime.Today)
+                {
+                    nM20++;
+                    if (matchsBTTS_MT[m].Score[0] > 0 && matchsBTTS_MT[m].Score[1] > 0) nOK20++;
+                }
+            }
+            Console.WriteLine("\nSTATISTIQUES PRONO BTTS (MI-TEMPS) 7 DERNIERS JOURS (" + nOK20 + "/" + nM20 + " : " + Math.Round(nOK20/nM20*100.00, 2) + "%)\n");
+            for (int m = 0; m < matchsBTTS_MT.Count(); m++)
+            {
+                if (matchsBTTS_MT[m].DateHeure.Date < DateTime.Today)
+                {
+                    if ((matchsBTTS_MT[m].Score[0] >= 1) && (matchsBTTS_MT[m].Score[1] >= 1))
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsBTTS_MT[m].IdCompetition).ToList()[0].Nom + ") " + matchsBTTS_MT[m].DateHeure.Date.ToShortDateString() + " : " + matchsBTTS_MT[m].NomEquipes[0] + " - " + matchsBTTS_MT[m].NomEquipes[1] + "(" + Math.Round(matchsBTTS_MT[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nLISTE MATCHS BTTS (MI-TEMPS) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchsBTTS_MT.Count(); m++) if(matchsBTTS_MT[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsBTTS_MT[m].IdCompetition).ToList()[0].Nom + ") " +matchsBTTS_MT[m].DateHeure.Date.ToShortDateString() + " : " + matchsBTTS_MT[m].NomEquipes[0] + " - " + matchsBTTS_MT[m].NomEquipes[1] + "(" + Math.Round(matchsBTTS_MT[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\n\n__________________________________________\n");
+            
+            double nM30 = 0;
+            double nOK30 = 0;
+            for (int m = 0; m < matchsNBTTS_MT.Count(); m++) {
+                if (matchsNBTTS_MT[m].DateHeure.Date < DateTime.Today)
+                {
+                    nM30++;
+                    if (matchsNBTTS_MT[m].Score[0] == 0 || matchsNBTTS_MT[m].Score[1] == 0) nOK30++;
+                }
+            }
+            
+            Console.WriteLine("\nSTATISTIQUES PRONO NON BTTS (MI-TEMPS) 7 DERNIERS JOURS (" + nOK30 + "/" + nM30 + " : " + Math.Round(nOK30/nM30*100.00, 2) + "%)\n");
+            for (int m = 0; m < matchsNBTTS_MT.Count(); m++)
+            {
+                if (matchsNBTTS_MT[m].DateHeure.Date < DateTime.Today)
+                {
+                    if ((matchsNBTTS_MT[m].Score[0] < 1) || (matchsNBTTS_MT[m].Score[1] < 1))
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsNBTTS_MT[m].IdCompetition).ToList()[0].Nom + ") " + matchsNBTTS_MT[m].DateHeure.Date.ToShortDateString() + " : " + matchsNBTTS_MT[m].NomEquipes[0] + " - " + matchsNBTTS_MT[m].NomEquipes[1] + "(" + Math.Round(matchsNBTTS_MT[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nLISTE MATCHS NON BTTS (MI-TEMPS) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchsNBTTS_MT.Count(); m++) if(matchsNBTTS_MT[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsNBTTS_MT[m].IdCompetition).ToList()[0].Nom + ") " + matchsNBTTS_MT[m].DateHeure.Date.ToShortDateString() + " : " + matchsNBTTS_MT[m].NomEquipes[0] + " - " + matchsNBTTS_MT[m].NomEquipes[1] + "(" + Math.Round(matchsNBTTS_MT[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\n\n__________________________________________\n");
+            /*
+            double nM60 = 0;
+            double nOK60 = 0;
+            for (int m = 0; m < matchsBTTS_2MT.Count(); m++)
+            {
+                if (matchsBTTS_2MT[m].DateHeure.Date < DateTime.Today)
+                {
+                    nM60++;
+                    if (matchsBTTS_2MT[m].Score[0] > 0 && matchsBTTS_2MT[m].Score[1] > 0) nOK60++;
+                }
+            }
+            
+            Console.WriteLine("\nSTATISTIQUES PRONO BTTS (SECONDE MI-TEMPS) 7 DERNIERS JOURS (" + nOK60 + "/" + nM60 + " : " + Math.Round(nOK60 / nM60 * 100.00, 2) + "%)\n");
+            for (int m = 0; m < matchsBTTS_2MT.Count(); m++)
+            {
+                if (matchsBTTS_2MT[m].DateHeure.Date < DateTime.Today)
+                {
+                    if ((matchsBTTS_2MT[m].Score[0] >= 1) && (matchsBTTS_2MT[m].Score[1] >= 1))
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsBTTS_2MT[m].IdCompetition).ToList()[0].Nom + ") " + matchsBTTS_2MT[m].DateHeure.Date.ToShortDateString() + " : " + matchsBTTS_2MT[m].NomEquipes[0] + " - " + matchsBTTS_2MT[m].NomEquipes[1] + "(" + Math.Round(matchsBTTS_2MT[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nLISTE MATCHS BTTS (SECONDE MI-TEMPS) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchsBTTS_2MT.Count(); m++) if (matchsBTTS_2MT[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsBTTS_2MT[m].IdCompetition).ToList()[0].Nom + ") " + matchsBTTS_2MT[m].DateHeure.Date.ToShortDateString() + " : " + matchsBTTS_2MT[m].NomEquipes[0] + " - " + matchsBTTS_2MT[m].NomEquipes[1] + "(" + Math.Round(matchsBTTS_2MT[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n__________________________________________\n");
 
-            double nM2 = 0;
-            double nOK2 = 0;
-            for (int m = 0; m < matchsNBTTS.Count(); m++)
-            {
-                if (matchsNBTTS[m].DateHeure.Date < DateTime.Today)
+            double nM50 = 0;
+            double nOK50 = 0;
+            for (int m = 0; m < matchsNBTTS_2MT.Count(); m++) {
+                if (matchsNBTTS_2MT[m].DateHeure.Date < DateTime.Today)
                 {
-                    nM2++;
-                    if (matchsNBTTS[m].Score[0] < 1 || matchsNBTTS[m].Score[1] < 1) nOK2++;
+                    nM50++;
+                    if (matchsNBTTS_2MT[m].Score[0] == 0 || matchsNBTTS_2MT[m].Score[1] == 0) nOK50++;
                 }
             }
-            Console.WriteLine("\nSTATISTIQUES NON BTTS 7 DERNIERS JOURS (" + nOK2 + "/" + nM2 + " : " + Math.Round(nOK2 / nM2 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchsNBTTS.Count(); m++)
+            Console.WriteLine("\nSTATISTIQUES PRONO NON BTTS (SECONDE MI-TEMPS) 7 DERNIERS JOURS (" + nOK50 + "/" + nM50 + " : " + Math.Round(nOK50/nM50*100.00, 2) + "%)\n");
+            for (int m = 0; m < matchsNBTTS_2MT.Count(); m++)
             {
-                if (matchsNBTTS[m].DateHeure.Date < DateTime.Today)
+                if (matchsNBTTS_2MT[m].DateHeure.Date < DateTime.Today)
                 {
-                    if ((matchsNBTTS[m].Score[0] < 1) || (matchsNBTTS[m].Score[1] < 1))
+                    if ((matchsNBTTS_2MT[m].Score[0] < 1) || (matchsNBTTS_2MT[m].Score[1] < 1))
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                     else Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsNBTTS[m].IdCompetition).ToList()[0].Nom + ") " + matchsNBTTS[m].DateHeure.Date.ToShortDateString() + " : " + matchsNBTTS[m].NomEquipes[0] + " - " + matchsNBTTS[m].NomEquipes[1] + "(" + Math.Round(matchsNBTTS[m].Fiabilite, 2) + "%)");
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsNBTTS_2MT[m].IdCompetition).ToList()[0].Nom + ") " + matchsNBTTS_2MT[m].DateHeure.Date.ToShortDateString() + " : " + matchsNBTTS_2MT[m].NomEquipes[0] + " - " + matchsNBTTS_2MT[m].NomEquipes[1] + "(" + Math.Round(matchsNBTTS_2MT[m].Fiabilite, 2) + "%)");
                 }
             }
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("\nLISTE MATCHS NON BTTS PROCHAINS JOURS :\n");
-            for (int m = 0; m < matchsNBTTS.Count(); m++) if (matchsNBTTS[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsNBTTS[m].IdCompetition).ToList()[0].Nom + ") " + matchsNBTTS[m].DateHeure.Date.ToShortDateString() + " : " + matchsNBTTS[m].NomEquipes[0] + " - " + matchsNBTTS[m].NomEquipes[1] + "(" + Math.Round(matchsNBTTS[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\nLISTE MATCHS NON BTTS (SECONDE MI-TEMPS) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchsNBTTS_2MT.Count(); m++) if(matchsNBTTS_2MT[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsNBTTS_2MT[m].IdCompetition).ToList()[0].Nom + ") " + matchsNBTTS_2MT[m].DateHeure.Date.ToShortDateString() + " : " + matchsNBTTS_2MT[m].NomEquipes[0] + " - " + matchsNBTTS_2MT[m].NomEquipes[1] + "(" + Math.Round(matchsNBTTS_2MT[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\n\n__________________________________________\n");
+            */
+            double nM = 0;
+            double nOK = 0;
+            for (int m = 0; m < matchsBTTS_FT.Count(); m++) {
+                if (matchsBTTS_FT[m].DateHeure.Date < DateTime.Today)
+                {
+                    nM++;
+                    if (matchsBTTS_FT[m].Score[0] > 0 && matchsBTTS_FT[m].Score[1] > 0) nOK++;
+                }
+            }
+            Console.WriteLine("\nSTATISTIQUES PRONO BTTS (FIN DE MATCH) 7 DERNIERS JOURS (" + nOK + "/" + nM + " : " + Math.Round(nOK/nM*100.00, 2) + "%)\n");
+            for (int m = 0; m < matchsBTTS_FT.Count(); m++)
+            {
+                if (matchsBTTS_FT[m].DateHeure.Date < DateTime.Today)
+                {
+                    if ((matchsBTTS_FT[m].Score[0] >= 1) && (matchsBTTS_FT[m].Score[1] >= 1))
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsBTTS_FT[m].IdCompetition).ToList()[0].Nom + ") " + matchsBTTS_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsBTTS_FT[m].NomEquipes[0] + " - " + matchsBTTS_FT[m].NomEquipes[1] + "(" + Math.Round(matchsBTTS_FT[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nLISTE MATCHS BTTS (FIN DE MATCH) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchsBTTS_FT.Count(); m++) if(matchsBTTS_FT[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsBTTS_FT[m].IdCompetition).ToList()[0].Nom + ") " +matchsBTTS_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsBTTS_FT[m].NomEquipes[0] + " - " + matchsBTTS_FT[m].NomEquipes[1] + "(" + Math.Round(matchsBTTS_FT[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\n\n__________________________________________\n");
+            
+            double nM2 = 0;
+            double nOK2 = 0;
+            for (int m = 0; m < matchsNBTTS_FT.Count(); m++)
+            {
+                if (matchsNBTTS_FT[m].DateHeure.Date < DateTime.Today)
+                {
+                    nM2++;
+                    if (matchsNBTTS_FT[m].Score[0] < 1 || matchsNBTTS_FT[m].Score[1] < 1) nOK2++;
+                }
+            }
+            Console.WriteLine("\nSTATISTIQUES NON BTTS (FIN DE MATCH) 7 DERNIERS JOURS (" + nOK2 + "/" + nM2 + " : " + Math.Round(nOK2 / nM2 * 100.00, 2) + "%)\n");
+            for (int m = 0; m < matchsNBTTS_FT.Count(); m++)
+            {
+                if (matchsNBTTS_FT[m].DateHeure.Date < DateTime.Today)
+                {
+                    if ((matchsNBTTS_FT[m].Score[0] < 1) || (matchsNBTTS_FT[m].Score[1] < 1))
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsNBTTS_FT[m].IdCompetition).ToList()[0].Nom + ") " + matchsNBTTS_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsNBTTS_FT[m].NomEquipes[0] + " - " + matchsNBTTS_FT[m].NomEquipes[1] + "(" + Math.Round(matchsNBTTS_FT[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nLISTE MATCHS NON BTTS (FIN de MATCH) PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchsNBTTS_FT.Count(); m++) if (matchsNBTTS_FT[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsNBTTS_FT[m].IdCompetition).ToList()[0].Nom + ") " + matchsNBTTS_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsNBTTS_FT[m].NomEquipes[0] + " - " + matchsNBTTS_FT[m].NomEquipes[1] + "(" + Math.Round(matchsNBTTS_FT[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n_______________________________________________\n");
-
+            
             double nM3 = 0;
             double nOK3 = 0;
-            for (int m = 0; m < matchsPlus15.Count(); m++)
+            for (int m = 0; m < matchsPlus15_FT.Count(); m++)
             {
-                if (matchsPlus15[m].DateHeure.Date < DateTime.Today)
+                if (matchsPlus15_FT[m].DateHeure.Date < DateTime.Today)
                 {
                     nM3++;
-                    if (matchsPlus15[m].Score[0] + matchsPlus15[m].Score[1] > 1.5) nOK3++;
+                    if (matchsPlus15_FT[m].Score[0] + matchsPlus15_FT[m].Score[1] > 1.5) nOK3++;
                 }
             }
             Console.WriteLine("\nSTATISTIQUES +1.5 BUTS FIN DU MATCH 7 DERNIERS JOURS (" + nOK3 + "/" + nM3 + " : " + Math.Round(nOK3 / nM3 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchsPlus15.Count(); m++)
+            for (int m = 0; m < matchsPlus15_FT.Count(); m++)
             {
-                if (matchsPlus15[m].DateHeure.Date < DateTime.Today)
+                if (matchsPlus15_FT[m].DateHeure.Date < DateTime.Today)
                 {
-                    if (matchsPlus15[m].Score[0] + matchsPlus15[m].Score[1] > 1.5)
+                    if (matchsPlus15_FT[m].Score[0] + matchsPlus15_FT[m].Score[1] > 1.5)
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                     else Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsPlus15[m].IdCompetition).ToList()[0].Nom + ") " + matchsPlus15[m].DateHeure.Date.ToShortDateString() + " : " + matchsPlus15[m].NomEquipes[0] + " - " + matchsPlus15[m].NomEquipes[1] + "(" + Math.Round(matchsPlus15[m].Fiabilite, 2) + "%)");
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsPlus15_FT[m].IdCompetition).ToList()[0].Nom + ") " + matchsPlus15_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsPlus15_FT[m].NomEquipes[0] + " - " + matchsPlus15_FT[m].NomEquipes[1] + "(" + Math.Round(matchsPlus15_FT[m].Fiabilite, 2) + "%)");
                 }
             }
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS +1.5 BUTS FIN DU MATCH PROCHAINS JOURS :\n");
-            for (int m = 0; m < matchsPlus15.Count(); m++) if (matchsPlus15[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsPlus15[m].IdCompetition).ToList()[0].Nom + ") " + matchsPlus15[m].DateHeure.Date.ToShortDateString() + " : " + matchsPlus15[m].NomEquipes[0] + " - " + matchsPlus15[m].NomEquipes[1] + "(" + Math.Round(matchsPlus15[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchsPlus15_FT.Count(); m++) if (matchsPlus15_FT[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsPlus15_FT[m].IdCompetition).ToList()[0].Nom + ") " + matchsPlus15_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsPlus15_FT[m].NomEquipes[0] + " - " + matchsPlus15_FT[m].NomEquipes[1] + "(" + Math.Round(matchsPlus15_FT[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n_______________________________________________\n");
 
             double nM4 = 0;
             double nOK4 = 0;
-            for (int m = 0; m < matchsMoins15.Count(); m++)
+            for (int m = 0; m < matchsMoins15_FT.Count(); m++)
             {
-                if (matchsMoins15[m].DateHeure.Date < DateTime.Today)
+                if (matchsMoins15_FT[m].DateHeure.Date < DateTime.Today)
                 {
                     nM4++;
-                    if (matchsMoins15[m].Score[0] + matchsMoins15[m].Score[1] < 1.5) nOK4++;
+                    if (matchsMoins15_FT[m].Score[0] + matchsMoins15_FT[m].Score[1] < 1.5) nOK4++;
                 }
             }
             Console.WriteLine("\nSTATISTIQUES -1.5 BUTS FIN DU MATCH 7 DERNIERS JOURS (" + nOK4 + "/" + nM4 + " : " + Math.Round(nOK4 / nM4 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchsMoins15.Count(); m++)
+            for (int m = 0; m < matchsMoins15_FT.Count(); m++)
             {
-                if (matchsMoins15[m].DateHeure.Date < DateTime.Today)
+                if (matchsMoins15_FT[m].DateHeure.Date < DateTime.Today)
                 {
-                    if (matchsMoins15[m].Score[0] + matchsMoins15[m].Score[1] < 1.5)
+                    if (matchsMoins15_FT[m].Score[0] + matchsMoins15_FT[m].Score[1] < 1.5)
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                     else Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins15[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins15[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins15[m].NomEquipes[0] + " - " + matchsMoins15[m].NomEquipes[1] + "(" + Math.Round(matchsMoins15[m].Fiabilite, 2) + "%)");
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins15_FT[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins15_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins15_FT[m].NomEquipes[0] + " - " + matchsMoins15_FT[m].NomEquipes[1] + "(" + Math.Round(matchsMoins15_FT[m].Fiabilite, 2) + "%)");
                 }
             }
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS -1.5 BUTS FIN DU MATCH PROCHAINS JOURS :\n");
-            for (int m = 0; m < matchsMoins15.Count(); m++) if (matchsMoins15[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins15[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins15[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins15[m].NomEquipes[0] + " - " + matchsMoins15[m].NomEquipes[1] + "(" + Math.Round(matchsMoins15[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchsMoins15_FT.Count(); m++) if (matchsMoins15_FT[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins15_FT[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins15_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins15_FT[m].NomEquipes[0] + " - " + matchsMoins15_FT[m].NomEquipes[1] + "(" + Math.Round(matchsMoins15_FT[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n_______________________________________________\n");
-
+            
             double nM5 = 0;
             double nOK5 = 0;
-            for (int m = 0; m < matchsMoins25.Count(); m++)
+            for (int m = 0; m < matchsMoins25_FT.Count(); m++)
             {
-                if (matchsMoins25[m].DateHeure.Date < DateTime.Today)
+                if (matchsMoins25_FT[m].DateHeure.Date < DateTime.Today)
                 {
                     nM5++;
-                    if (matchsMoins25[m].Score[0] + matchsMoins25[m].Score[1] < 2.5) nOK5++;
+                    if (matchsMoins25_FT[m].Score[0] + matchsMoins25_FT[m].Score[1] < 2.5) nOK5++;
                 }
             }
             Console.WriteLine("\nSTATISTIQUES -2.5 BUTS FIN DU MATCH 7 DERNIERS JOURS (" + nOK5 + "/" + nM5 + " : " + Math.Round(nOK5 / nM5 * 100.00, 2) + "%)\n");
-            for (int m = 0; m < matchsMoins25.Count(); m++)
+            for (int m = 0; m < matchsMoins25_FT.Count(); m++)
             {
-                if (matchsMoins25[m].DateHeure.Date < DateTime.Today)
+                if (matchsMoins25_FT[m].DateHeure.Date < DateTime.Today)
                 {
-                    if (matchsMoins25[m].Score[0] + matchsMoins25[m].Score[1] < 2.5)
+                    if (matchsMoins25_FT[m].Score[0] + matchsMoins25_FT[m].Score[1] < 2.5)
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                     else Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins25[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins25[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins25[m].NomEquipes[0] + " - " + matchsMoins25[m].NomEquipes[1] + "(" + Math.Round(matchsMoins25[m].Fiabilite, 2) + "%)");
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins25_FT[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins25_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins25_FT[m].NomEquipes[0] + " - " + matchsMoins25_FT[m].NomEquipes[1] + "(" + Math.Round(matchsMoins25_FT[m].Fiabilite, 2) + "%)");
                 }
             }
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nLISTE MATCHS -2.5 BUTS FIN DU MATCH PROCHAINS JOURS :\n");
-            for (int m = 0; m < matchsMoins25.Count(); m++) if (matchsMoins25[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins25[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins25[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins25[m].NomEquipes[0] + " - " + matchsMoins25[m].NomEquipes[1] + "(" + Math.Round(matchsMoins25[m].Fiabilite, 2) + "%)");
+            for (int m = 0; m < matchsMoins25_FT.Count(); m++) if (matchsMoins25_FT[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsMoins25_FT[m].IdCompetition).ToList()[0].Nom + ") " + matchsMoins25_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsMoins25_FT[m].NomEquipes[0] + " - " + matchsMoins25_FT[m].NomEquipes[1] + "(" + Math.Round(matchsMoins25_FT[m].Fiabilite, 2) + "%)");
             Console.WriteLine("\n\n_______________________________________________\n");
+            
+            double nM12 = 0;
+            double nOK12 = 0;
+            for (int m = 0; m < matchsPlus25_FT.Count(); m++)
+            {
+                if (matchsPlus25_FT[m].DateHeure.Date < DateTime.Today)
+                {
+                    nM12++;
+                    if (matchsPlus25_FT[m].Score[0] + matchsPlus25_FT[m].Score[1] > 2.5) nOK12++;
+                }
+            }
+            Console.WriteLine("\nSTATISTIQUES +2.5 BUTS FIN DU MATCH 7 DERNIERS JOURS (" + nOK12 + "/" + nM12 + " : " + Math.Round(nOK12 / nM12 * 100.00, 2) + "%)\n");
+            for (int m = 0; m < matchsPlus25_FT.Count(); m++)
+            {
+                if (matchsPlus25_FT[m].DateHeure.Date < DateTime.Today)
+                {
+                    if (matchsPlus25_FT[m].Score[0] + matchsPlus25_FT[m].Score[1] > 2.5)
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    else Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsPlus25_FT[m].IdCompetition).ToList()[0].Nom + ") " + matchsPlus25_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsPlus25_FT[m].NomEquipes[0] + " - " + matchsPlus25_FT[m].NomEquipes[1] + "(" + Math.Round(matchsPlus25_FT[m].Fiabilite, 2) + "%)");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nLISTE MATCHS +2.5 BUTS FIN DU MATCH PROCHAINS JOURS :\n");
+            for (int m = 0; m < matchsPlus25_FT.Count(); m++) if (matchsPlus25_FT[m].DateHeure.Date >= DateTime.Today) Console.WriteLine(" (" + data.Competitions.Where(x => x.Id == matchsPlus25_FT[m].IdCompetition).ToList()[0].Nom + ") " + matchsPlus25_FT[m].DateHeure.Date.ToShortDateString() + " : " + matchsPlus25_FT[m].NomEquipes[0] + " - " + matchsPlus25_FT[m].NomEquipes[1] + "(" + Math.Round(matchsPlus25_FT[m].Fiabilite, 2) + "%)");
+            Console.WriteLine("\n\n_______________________________________________\n");
+           
             Console.Write("\nVotre choix : ");
             choix = Console.ReadLine();
             switch (choix)
@@ -1256,13 +1450,14 @@ namespace QueDuSaleConsole
             else
                 return number * factorial(number - 1);
         }
-        static List<Pronostic> Charger1X2_1(Data data)
+
+        static List<Pronostic> Charger1X2FT_1(Data data)
         {
             List<List<double>> pointsEquipesHome = new List<List<double>>();
             List<List<double>> pointsEquipesAway = new List<List<double>>();
             int iEquipes = 0;
             List<Equipe> equipes = new List<Equipe>();
-            List<Pronostic> matchs1X2_1 = new List<Pronostic>();
+            List<Pronostic> matchs1X2FT_1 = new List<Pronostic>();
             List<double> liste = new List<double> { 0, 0 };
             for (int c = 0; c < data.Competitions.Count(); c++)
             {
@@ -1300,7 +1495,7 @@ namespace QueDuSaleConsole
                 {
                     for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
                     {
-                        if (!matchs1X2_1.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1))
+                        if (!matchs1X2FT_1.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1))
                         {
                             score = (pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][0] / pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][1]) / (pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][0] / pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][1]);
                             if (score > 3.5)
@@ -1310,9 +1505,9 @@ namespace QueDuSaleConsole
                                 prono.DateHeure = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure;
                                 prono.Score = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreFT;
                                 prono.Prono = "Victoire : " + prono.NomEquipes[0];
-                                prono.Fiabilite = score*10*1.5;
-                                if (prono.Fiabilite > 100) prono.Fiabilite = 100;
-                                matchs1X2_1.Add(prono);
+                                prono.Fiabilite = score*10*1.3;
+                                if (prono.Fiabilite > 100) prono.Fiabilite = 95;
+                                matchs1X2FT_1.Add(prono);
                                 prono = new Pronostic();
                             }
                         }
@@ -1320,16 +1515,83 @@ namespace QueDuSaleConsole
                     }
                 }
             }
-
-            return matchs1X2_1;
+            return matchs1X2FT_1;
         }
-        static List<Pronostic> Charger1X2_1X(Data data)
+
+        static List<Pronostic> Charger1X2MT_1(Data data)
         {
             List<List<double>> pointsEquipesHome = new List<List<double>>();
             List<List<double>> pointsEquipesAway = new List<List<double>>();
             int iEquipes = 0;
             List<Equipe> equipes = new List<Equipe>();
-            List<Pronostic> matchs1X2_1 = new List<Pronostic>();
+            List<Pronostic> matchs1X2MT_1 = new List<Pronostic>();
+            List<double> liste = new List<double> { 0, 0 };
+            for (int c = 0; c < data.Competitions.Count(); c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    equipes.Add(data.Competitions[c].Saisons[0].Equipes[e]);
+                    pointsEquipesHome.Add(liste);
+                    liste = new List<double> { 0, 0 };
+                    pointsEquipesAway.Add(liste);
+                    liste = new List<double> { 0, 0 };
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today)
+                        {
+                            if (data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0])
+                            {
+                                pointsEquipesHome[iEquipes][0] += data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[0];
+                                pointsEquipesHome[iEquipes][1] += data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[1];
+                            }
+                            if (data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1])
+                            {
+                                pointsEquipesAway[iEquipes][0] += data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[1];
+                                pointsEquipesAway[iEquipes][1] += data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[0];
+                            }
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            double score = 0.0;
+            Pronostic prono = new Pronostic();
+            for (int c = 0; c < data.Competitions.Count(); c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (!matchs1X2MT_1.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1))
+                        {
+                            score = (pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][0] / pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][1]) / (pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][0] / pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][1]);
+                            if (score > 7)
+                            {
+                                prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
+                                prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
+                                prono.DateHeure = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure;
+                                prono.Score = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT;
+                                prono.Prono = "Victoire : " + prono.NomEquipes[0];
+                                prono.Fiabilite = score * 10 * 0.7;
+                                if (prono.Fiabilite > 100) prono.Fiabilite = 100;
+                                matchs1X2MT_1.Add(prono);
+                                prono = new Pronostic();
+                            }
+                        }
+
+                    }
+                }
+            }
+            return matchs1X2MT_1;
+        }
+
+        static List<Pronostic> Charger1X2FT_1X(Data data)
+        {
+            List<List<double>> pointsEquipesHome = new List<List<double>>();
+            List<List<double>> pointsEquipesAway = new List<List<double>>();
+            int iEquipes = 0;
+            List<Equipe> equipes = new List<Equipe>();
+            List<Pronostic> matchs1X2FT_1 = new List<Pronostic>();
             List<double> liste = new List<double> { 0, 0 };
             for (int c = 0; c < data.Competitions.Count()-1; c++)
             {
@@ -1367,7 +1629,7 @@ namespace QueDuSaleConsole
                 {
                     for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
                     {
-                        if (!matchs1X2_1.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1))
+                        if (!matchs1X2FT_1.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1))
                         {
                             score = (pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][0] / pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][1]) / (pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][0] / pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][1]);
                             if (score <=4.5 && score >= 3)
@@ -1377,26 +1639,25 @@ namespace QueDuSaleConsole
                                 prono.DateHeure = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure;
                                 prono.Score = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreFT;
                                 prono.Prono = "Victoire/Nul : " + prono.NomEquipes[0];
-                                prono.Fiabilite = score * 10 * 3;
+                                prono.Fiabilite = score * 10 * 2;
                                 if (prono.Fiabilite > 100) prono.Fiabilite = 100;
-                                matchs1X2_1.Add(prono);
+                                matchs1X2FT_1.Add(prono);
                                 prono = new Pronostic();
                             }
                         }
-
                     }
                 }
             }
-
-            return matchs1X2_1;
+            return matchs1X2FT_1;
         }
-        static List<Pronostic> Charger1X2_2(Data data)
+
+        static List<Pronostic> Charger1X2FT_2(Data data)
         {
             List<List<double>> pointsEquipesHome = new List<List<double>>();
             List<List<double>> pointsEquipesAway = new List<List<double>>();
             int iEquipes = 0;
             List<Equipe> equipes = new List<Equipe>();
-            List<Pronostic> matchs1X2_2 = new List<Pronostic>();
+            List<Pronostic> matchs1X2FT_2 = new List<Pronostic>();
             List<double> liste = new List<double> { 0, 0 };
             for (int c = 0; c < data.Competitions.Count()-1; c++)
             {
@@ -1434,7 +1695,7 @@ namespace QueDuSaleConsole
                 {
                     for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
                     {
-                        if (!matchs1X2_2.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1))
+                        if (!matchs1X2FT_2.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1))
                         {
                             score = (pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][0] / pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][1]) / (pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][0] / pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][1]);
                             if (score < 0.6)
@@ -1446,23 +1707,90 @@ namespace QueDuSaleConsole
                                 prono.Prono = "Victoire : " + prono.NomEquipes[1];
                                 prono.Fiabilite = (1 - score) * 100 * 1.2;
                                 if (prono.Fiabilite > 100) prono.Fiabilite = 100;
-                                matchs1X2_2.Add(prono);
+                                matchs1X2FT_2.Add(prono);
                                 prono = new Pronostic();
                             }
                         }
-
                     }
                 }
             }
-            return matchs1X2_2;
+            return matchs1X2FT_2;
         }
-        static List<Pronostic> Charger1X2_X2(Data data)
+
+        static List<Pronostic> Charger1X2MT_2(Data data)
         {
             List<List<double>> pointsEquipesHome = new List<List<double>>();
             List<List<double>> pointsEquipesAway = new List<List<double>>();
             int iEquipes = 0;
             List<Equipe> equipes = new List<Equipe>();
-            List<Pronostic> matchs1X2_2 = new List<Pronostic>();
+            List<Pronostic> matchs1X2MT_2 = new List<Pronostic>();
+            List<double> liste = new List<double> { 0, 0 };
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    equipes.Add(data.Competitions[c].Saisons[0].Equipes[e]);
+                    pointsEquipesHome.Add(liste);
+                    liste = new List<double> { 0, 0 };
+                    pointsEquipesAway.Add(liste);
+                    liste = new List<double> { 0, 0 };
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today)
+                        {
+                            if (data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0])
+                            {
+                                pointsEquipesHome[iEquipes][0] = pointsEquipesHome[iEquipes][0] + data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[0];
+                                pointsEquipesHome[iEquipes][1] = pointsEquipesHome[iEquipes][1] + data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[1];
+                            }
+                            else if (data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1])
+                            {
+                                pointsEquipesAway[iEquipes][0] = pointsEquipesAway[iEquipes][0] + data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[1];
+                                pointsEquipesAway[iEquipes][1] = pointsEquipesAway[iEquipes][1] + data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[0];
+                            }
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            double score = 0.0;
+            Pronostic prono = new Pronostic();
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (!matchs1X2MT_2.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1))
+                        {
+                            score = (pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][0] / pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][1]) / (pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][0] / pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][1]);
+                            if (score < 0.35)
+                            {
+                                prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
+                                prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
+                                prono.DateHeure = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure;
+                                prono.Score = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT;
+                                prono.Prono = "Victoire : " + prono.NomEquipes[1];
+                                prono.Fiabilite = (1 - score) * 100 * 1.3;
+                                if (prono.Fiabilite > 100) prono.Fiabilite = 100;
+                                matchs1X2MT_2.Add(prono);
+                                prono = new Pronostic();
+                            }
+                        }
+                    }
+                }
+            }
+            return matchs1X2MT_2;
+        }
+
+
+        static List<Pronostic> Charger1X2FT_X2(Data data)
+        {
+            List<List<double>> pointsEquipesHome = new List<List<double>>();
+            List<List<double>> pointsEquipesAway = new List<List<double>>();
+            int iEquipes = 0;
+            List<Equipe> equipes = new List<Equipe>();
+            List<Pronostic> matchs1X2FT_2 = new List<Pronostic>();
             List<double> liste = new List<double> { 0, 0 };
             for (int c = 0; c < data.Competitions.Count()-1; c++)
             {
@@ -1500,7 +1828,7 @@ namespace QueDuSaleConsole
                 {
                     for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
                     {
-                        if (!matchs1X2_2.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1))
+                        if (!matchs1X2FT_2.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1))
                         {
                             score = (pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][0] / pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])][1]) / (pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][0] / pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])][1]);
                             if (score >= 0.4 && score <= 0.6)
@@ -1512,7 +1840,7 @@ namespace QueDuSaleConsole
                                 prono.Prono = "Victoire/Nul : " + prono.NomEquipes[1];
                                 prono.Fiabilite = (1-score) * 100 * 1.8;
                                 if (prono.Fiabilite > 100) prono.Fiabilite = 100;
-                                matchs1X2_2.Add(prono);
+                                matchs1X2FT_2.Add(prono);
                                 prono = new Pronostic();
                             }
                         }
@@ -1520,9 +1848,10 @@ namespace QueDuSaleConsole
                     }
                 }
             }
-            return matchs1X2_2;
+            return matchs1X2FT_2;
         }
-        static List<Pronostic> ChargerBTTS(Data data)
+
+        static List<Pronostic> ChargerBTTS_FT(Data data)
         {
             List<double> pointsChampionnats = new List<double>();
             for (int i = 0; i < data.Competitions.Count()-1; i++) pointsChampionnats.Add(0);
@@ -1530,7 +1859,7 @@ namespace QueDuSaleConsole
             List<double> pointsEquipesAway = new List<double>();
             int iEquipes = 0;
             List<Equipe> equipes = new List<Equipe>();
-            List<Pronostic> matchsBTTS = new List<Pronostic>();
+            List<Pronostic> matchsBTTS_FT = new List<Pronostic>();
             for (int c = 0; c < data.Competitions.Count()-1; c++)
             {
                 for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
@@ -1573,7 +1902,7 @@ namespace QueDuSaleConsole
                     {
                         double score1 = pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
                         double score2 = pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
-                        if (!matchsBTTS.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 1.05 && score2 > 1.25)
+                        if (!matchsBTTS_FT.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 1.05 && score2 > 1.25)
                         {
                             prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
                             prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
@@ -1582,17 +1911,157 @@ namespace QueDuSaleConsole
                             prono.Prono = "BTTS : Oui";
                             prono.Fiabilite = score1*score2 * 100 * 0.4;
                             if (prono.Fiabilite > 100) prono.Fiabilite = 100;
-                            matchsBTTS.Add(prono);
+                            matchsBTTS_FT.Add(prono);
                             prono = new Pronostic();
                         }
                     }
                 }
             }
 
-            return matchsBTTS;
+            return matchsBTTS_FT;
         }
 
-        static List<Pronostic> ChargerNBTTS(Data data)
+        static List<Pronostic> ChargerBTTS_MT(Data data)
+        {
+            List<double> pointsChampionnats = new List<double>();
+            for (int i = 0; i < data.Competitions.Count() - 1; i++) pointsChampionnats.Add(0);
+            List<double> pointsEquipesHome = new List<double>();
+            List<double> pointsEquipesAway = new List<double>();
+            int iEquipes = 0;
+            List<Equipe> equipes = new List<Equipe>();
+            List<Pronostic> matchsBTTS_MT = new List<Pronostic>();
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    equipes.Add(data.Competitions[c].Saisons[0].Equipes[e]);
+                    pointsEquipesHome.Add(0);
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[0] > 0 && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[1] > 0)
+                        {
+                            pointsChampionnats[c]++;
+                            if (data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]) pointsEquipesHome[iEquipes]++;
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            iEquipes = 0;
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    pointsEquipesAway.Add(0);
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today && data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1] && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[0] > 0 && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[1] > 0)
+                        {
+                            pointsEquipesAway[iEquipes]++;
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            Pronostic prono = new Pronostic();
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        double score1 = pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
+                        double score2 = pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
+                        if (!matchsBTTS_MT.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 1.05 && score2 > 1.25)
+                        {
+                            prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
+                            prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
+                            prono.DateHeure = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure;
+                            prono.Score = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT;
+                            prono.Prono = "BTTS : Oui";
+                            prono.Fiabilite = score1 * score2 * 100 * 0.4;
+                            if (prono.Fiabilite > 100) prono.Fiabilite = 100;
+                            matchsBTTS_MT.Add(prono);
+                            prono = new Pronostic();
+                        }
+                    }
+                }
+            }
+
+            return matchsBTTS_MT;
+        }
+
+        static List<Pronostic> ChargerBTTS_2MT(Data data)
+        {
+            List<double> pointsChampionnats = new List<double>();
+            for (int i = 0; i < data.Competitions.Count() - 1; i++) pointsChampionnats.Add(0);
+            List<double> pointsEquipesHome = new List<double>();
+            List<double> pointsEquipesAway = new List<double>();
+            int iEquipes = 0;
+            List<Equipe> equipes = new List<Equipe>();
+            List<Pronostic> matchsBTTS_2MT = new List<Pronostic>();
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    equipes.Add(data.Competitions[c].Saisons[0].Equipes[e]);
+                    pointsEquipesHome.Add(0);
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].Score2MT[0] > 0 && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].Score2MT[1] > 0)
+                        {
+                            pointsChampionnats[c]++;
+                            if (data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]) pointsEquipesHome[iEquipes]++;
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            iEquipes = 0;
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    pointsEquipesAway.Add(0);
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today && data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1] && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].Score2MT[0] > 0 && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].Score2MT[1] > 0)
+                        {
+                            pointsEquipesAway[iEquipes]++;
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            Pronostic prono = new Pronostic();
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        double score1 = pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
+                        double score2 = pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
+                        if (!matchsBTTS_2MT.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 1.05 && score2 > 1.25)
+                        {
+                            prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
+                            prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
+                            prono.DateHeure = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure;
+                            prono.Score = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].Score2MT;
+                            prono.Prono = "BTTS : Oui";
+                            prono.Fiabilite = score1 * score2 * 100 * 0.4;
+                            if (prono.Fiabilite > 100) prono.Fiabilite = 100;
+                            matchsBTTS_2MT.Add(prono);
+                            prono = new Pronostic();
+                        }
+                    }
+                }
+            }
+
+            return matchsBTTS_2MT;
+        }
+
+        static List<Pronostic> ChargerNBTTS_FT(Data data)
         {
             List<double> pointsChampionnats = new List<double>();
             for (int i = 0; i < data.Competitions.Count()-1; i++) pointsChampionnats.Add(0);
@@ -1600,7 +2069,7 @@ namespace QueDuSaleConsole
             List<double> pointsEquipesAway = new List<double>();
             int iEquipes = 0;
             List<Equipe> equipes = new List<Equipe>();
-            List<Pronostic> matchsNBTTS = new List<Pronostic>();
+            List<Pronostic> matchsNBTTS_FT = new List<Pronostic>();
             for (int c = 0; c < data.Competitions.Count()-1; c++)
             {
                 for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
@@ -1643,7 +2112,7 @@ namespace QueDuSaleConsole
                     {
                         double score1 = pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
                         double score2 = pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])] / ((pointsChampionnats[c]) / 2 / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
-                        if (!matchsNBTTS.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 0.8 && score2 > 1.2)
+                        if (!matchsNBTTS_FT.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 0.8 && score2 > 1.2)
                         {
                             prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
                             prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
@@ -1652,17 +2121,155 @@ namespace QueDuSaleConsole
                             prono.Prono = "BTTS : Non";
                             prono.Fiabilite = score1 * score2 * 100 * 0.4;
                             if (prono.Fiabilite > 100) prono.Fiabilite = 100;
-                            matchsNBTTS.Add(prono);
+                            matchsNBTTS_FT.Add(prono);
                             prono = new Pronostic();
                         }
                     }
                 }
             }
 
-            return matchsNBTTS;
+            return matchsNBTTS_FT;
         }
 
-        static List<Pronostic> ChargerPlus15(Data data)
+        static List<Pronostic> ChargerNBTTS_MT(Data data)
+        {
+            List<double> pointsChampionnats = new List<double>();
+            for (int i = 0; i < data.Competitions.Count() - 1; i++) pointsChampionnats.Add(0);
+            List<double> pointsEquipesHome = new List<double>();
+            List<double> pointsEquipesAway = new List<double>();
+            int iEquipes = 0;
+            List<Equipe> equipes = new List<Equipe>();
+            List<Pronostic> matchsNBTTS_MT = new List<Pronostic>();
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    equipes.Add(data.Competitions[c].Saisons[0].Equipes[e]);
+                    pointsEquipesHome.Add(0);
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today && (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[0] < 1 || data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[1] < 1))
+                        {
+                            pointsChampionnats[c]++;
+                            if (data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]) pointsEquipesHome[iEquipes]++;
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            iEquipes = 0;
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    pointsEquipesAway.Add(0);
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today && data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1] && (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[0] < 1 || data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT[1] < 1))
+                        {
+                            pointsEquipesAway[iEquipes]++;
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            Pronostic prono = new Pronostic();
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        double score1 = pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
+                        double score2 = pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])] / ((pointsChampionnats[c]) / 2 / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
+                        if (!matchsNBTTS_MT.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 0.7 && score2 > 1.1)
+                        {
+                            prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
+                            prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
+                            prono.DateHeure = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure;
+                            prono.Score = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreMT;
+                            prono.Prono = "BTTS : Non";
+                            prono.Fiabilite = score1 * score2 * 100 * 0.7;
+                            if (prono.Fiabilite > 100) prono.Fiabilite = 100;
+                            matchsNBTTS_MT.Add(prono);
+                            prono = new Pronostic();
+                        }
+                    }
+                }
+            }
+            return matchsNBTTS_MT;
+        }
+
+        static List<Pronostic> ChargerNBTTS_2MT(Data data)
+        {
+            List<double> pointsChampionnats = new List<double>();
+            for (int i = 0; i < data.Competitions.Count() - 1; i++) pointsChampionnats.Add(0);
+            List<double> pointsEquipesHome = new List<double>();
+            List<double> pointsEquipesAway = new List<double>();
+            int iEquipes = 0;
+            List<Equipe> equipes = new List<Equipe>();
+            List<Pronostic> matchsNBTTS_2MT = new List<Pronostic>();
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    equipes.Add(data.Competitions[c].Saisons[0].Equipes[e]);
+                    pointsEquipesHome.Add(0);
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].Score2MT[0] < 1 || data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].Score2MT[1] < 1)
+                        {
+                            pointsChampionnats[c]++;
+                            if (data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]) pointsEquipesHome[iEquipes]++;
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            iEquipes = 0;
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    pointsEquipesAway.Add(0);
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today && data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1] && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].Score2MT[0] < 1 || data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].Score2MT[1] < 1)
+                        {
+                            pointsEquipesAway[iEquipes]++;
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            Pronostic prono = new Pronostic();
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        double score1 = pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
+                        double score2 = pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])] / ((pointsChampionnats[c]) / 2 / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
+                        if (!matchsNBTTS_2MT.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 0.7 && score2 > 1.1)
+                        {
+                            prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
+                            prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
+                            prono.DateHeure = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure;
+                            prono.Score = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].Score2MT;
+                            prono.Prono = "BTTS : Non";
+                            prono.Fiabilite = score1 * score2 * 100 * 0.7;
+                            if (prono.Fiabilite > 100) prono.Fiabilite = 100;
+                            matchsNBTTS_2MT.Add(prono);
+                            prono = new Pronostic();
+                        }
+                    }
+                }
+            }
+            return matchsNBTTS_2MT;
+        }
+
+        static List<Pronostic> ChargerPlus15_FT(Data data)
         {
             List<double> pointsChampionnats = new List<double>();
             for (int i = 0; i < data.Competitions.Count()-1; i++) pointsChampionnats.Add(0);
@@ -1670,7 +2277,7 @@ namespace QueDuSaleConsole
             List<double> pointsEquipesAway = new List<double>();
             int iEquipes = 0;
             List<Equipe> equipes = new List<Equipe>();
-            List<Pronostic> matchsPlus15 = new List<Pronostic>();
+            List<Pronostic> matchsPlus15_FT = new List<Pronostic>();
             for (int c = 0; c < data.Competitions.Count()-1; c++)
             {
                 for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
@@ -1713,7 +2320,7 @@ namespace QueDuSaleConsole
                     {
                         double score1 = pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
                         double score2 = pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])] / ((pointsChampionnats[c]) / 2 / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
-                        if (!matchsPlus15.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 1.05 && score2 > 1.1)
+                        if (!matchsPlus15_FT.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 1.05 && score2 > 1.1)
                         {
                             prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
                             prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
@@ -1722,17 +2329,87 @@ namespace QueDuSaleConsole
                             prono.Prono = "Nombre de buts : + 1.5";
                             prono.Fiabilite = score1 * score2 * 100 * 0.6;
                             if (prono.Fiabilite > 100) prono.Fiabilite = 100;
-                            matchsPlus15.Add(prono);
+                            matchsPlus15_FT.Add(prono);
                             prono = new Pronostic();
                         }
                     }
                 }
             }
 
-            return matchsPlus15;
+            return matchsPlus15_FT;
         }
 
-        static List<Pronostic> ChargerMoins15(Data data)
+        static List<Pronostic> ChargerPlus25_FT(Data data)
+        {
+            List<double> pointsChampionnats = new List<double>();
+            for (int i = 0; i < data.Competitions.Count() - 1; i++) pointsChampionnats.Add(0);
+            List<double> pointsEquipesHome = new List<double>();
+            List<double> pointsEquipesAway = new List<double>();
+            int iEquipes = 0;
+            List<Equipe> equipes = new List<Equipe>();
+            List<Pronostic> matchsPlus25_FT = new List<Pronostic>();
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    equipes.Add(data.Competitions[c].Saisons[0].Equipes[e]);
+                    pointsEquipesHome.Add(0);
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreFT[0] + data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreFT[1] > 2.5)
+                        {
+                            pointsChampionnats[c]++;
+                            if (data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]) pointsEquipesHome[iEquipes]++;
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            iEquipes = 0;
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    pointsEquipesAway.Add(0);
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        if (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date < DateTime.Today && data.Competitions[c].Saisons[0].Equipes[e].Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1] && (data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreFT[0] + data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreFT[1] > 2.5))
+                        {
+                            pointsEquipesAway[iEquipes]++;
+                        }
+                    }
+                    iEquipes++;
+                }
+            }
+            Pronostic prono = new Pronostic();
+            for (int c = 0; c < data.Competitions.Count() - 1; c++)
+            {
+                for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
+                {
+                    for (int m = 0; m < data.Competitions[c].Saisons[0].Equipes[e].Matchs.Count; m++)
+                    {
+                        double score1 = pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
+                        double score2 = pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])] / ((pointsChampionnats[c]) / 2 / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
+                        if (!matchsPlus25_FT.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 1.05 && score2 > 1.1)
+                        {
+                            prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
+                            prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
+                            prono.DateHeure = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure;
+                            prono.Score = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].ScoreFT;
+                            prono.Prono = "Nombre de buts : + 2.5";
+                            prono.Fiabilite = score1 * score2 * 100 * 0.6;
+                            if (prono.Fiabilite > 100) prono.Fiabilite = 100;
+                            matchsPlus25_FT.Add(prono);
+                            prono = new Pronostic();
+                        }
+                    }
+                }
+            }
+
+            return matchsPlus25_FT;
+        }
+
+        static List<Pronostic> ChargerMoins15_FT(Data data)
         {
             List<double> pointsChampionnats = new List<double>();
             for (int i = 0; i < data.Competitions.Count()-1; i++) pointsChampionnats.Add(0);
@@ -1740,7 +2417,7 @@ namespace QueDuSaleConsole
             List<double> pointsEquipesAway = new List<double>();
             int iEquipes = 0;
             List<Equipe> equipes = new List<Equipe>();
-            List<Pronostic> matchsMoins15 = new List<Pronostic>();
+            List<Pronostic> matchsMoins15_FT = new List<Pronostic>();
             for (int c = 0; c < data.Competitions.Count()-1; c++)
             {
                 for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
@@ -1783,7 +2460,7 @@ namespace QueDuSaleConsole
                     {
                         double score1 = pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
                         double score2 = pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])] / ((pointsChampionnats[c]) / 2 / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
-                        if (!matchsMoins15.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 1.5 && score2 > 1.5)
+                        if (!matchsMoins15_FT.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 1.5 && score2 > 1.5)
                         {
                             prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
                             prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
@@ -1792,17 +2469,17 @@ namespace QueDuSaleConsole
                             prono.Prono = "Nombre de buts : - 1.5";
                             prono.Fiabilite = score1 * score2 * 10 * 1.2;
                             if (prono.Fiabilite > 100) prono.Fiabilite = 100;
-                            matchsMoins15.Add(prono);
+                            matchsMoins15_FT.Add(prono);
                             prono = new Pronostic();
                         }
                     }
                 }
             }
 
-            return matchsMoins15;
+            return matchsMoins15_FT;
         }
 
-        static List<Pronostic> ChargerMoins25(Data data)
+        static List<Pronostic> ChargerMoins25_FT(Data data)
         {
             List<double> pointsChampionnats = new List<double>();
             for (int i = 0; i < data.Competitions.Count()-1; i++) pointsChampionnats.Add(0);
@@ -1810,7 +2487,7 @@ namespace QueDuSaleConsole
             List<double> pointsEquipesAway = new List<double>();
             int iEquipes = 0;
             List<Equipe> equipes = new List<Equipe>();
-            List<Pronostic> matchsMoins25 = new List<Pronostic>();
+            List<Pronostic> matchsMoins25_FT = new List<Pronostic>();
             for (int c = 0; c < data.Competitions.Count()-1; c++)
             {
                 for (int e = 0; e < data.Competitions[c].Saisons[0].Equipes.Count(); e++)
@@ -1853,7 +2530,7 @@ namespace QueDuSaleConsole
                     {
                         double score1 = pointsEquipesHome[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[0]).ToList()[0])] / ((pointsChampionnats[c] / 2) / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
                         double score2 = pointsEquipesAway[equipes.IndexOf(equipes.Where(x => x.Id == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdEquipes[1]).ToList()[0])] / ((pointsChampionnats[c]) / 2 / Convert.ToDouble(data.Competitions[c].Saisons[0].Equipes.Count()));
-                        if (!matchsMoins25.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 1.2 && score2 > 1.2)
+                        if (!matchsMoins25_FT.Any(x => x.NomEquipes == data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date >= DateTime.Today.AddDays(-7) && data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].DateEtHeure.Date <= DateTime.Today.AddDays(1) && score1 > 1.2 && score2 > 1.2)
                         {
                             prono.NomEquipes = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].NomEquipes;
                             prono.IdCompetition = data.Competitions[c].Saisons[0].Equipes[e].Matchs[m].IdCompetition;
@@ -1862,14 +2539,14 @@ namespace QueDuSaleConsole
                             prono.Prono = "Nombre de buts : - 2.5";
                             prono.Fiabilite = score1 * score2 * 100 * 0.3;
                             if (prono.Fiabilite > 100) prono.Fiabilite = 100;
-                            matchsMoins25.Add(prono);
+                            matchsMoins25_FT.Add(prono);
                             prono = new Pronostic();
                         }
                     }
                 }
             }
 
-            return matchsMoins25;
+            return matchsMoins25_FT;
         }
 
         /**
@@ -1878,7 +2555,7 @@ namespace QueDuSaleConsole
         * Le premier   : Correspond à la saison [0], à l'équipe locale [1] ou à l'équipe visiteuse [2]
         * Le second    : Correspond aux buts, si les buts sont marqués [0] ou concédés [1]
         * Le troisième : Correspond à une équipe, l'équipe à domicile [0] ou l'équipe à l'extérieur [1]
-        * Le quatrième : Correspond à la durée, la première mi-temps [0] ou la fin du match [1]
+        * Le quatrième : Correspond à la durée, la première mi-temps [0], fin du match [1] ou 2nde mi-temps [2]
         * </remarks>
         **/
 
@@ -1942,31 +2619,39 @@ namespace QueDuSaleConsole
             {
                 Buts[0][0][0][0] = Buts[0][0][0][0] + m.ScoreMT[0]; // Nombre de buts marqué au total à domicile, mi-temps
                 Buts[0][0][0][1] = Buts[0][0][0][1] + m.ScoreFT[0]; // Nombre de buts marqué au total à domicile, fin de match
+                Buts[0][0][0][2] = Buts[0][0][0][2] + m.Score2MT[0]; // Nombre de buts marqué au total à domicile, seconde mi-temps
                 Buts[0][0][1][0] = Buts[0][0][1][0] + m.ScoreMT[1]; // Nombre de buts marqué au total à l'extérieur, mi-temps
                 Buts[0][0][1][1] = Buts[0][0][1][1] + m.ScoreFT[1]; // Nombre de buts marqué au total à l'extérieur, fin de match
+                Buts[0][0][1][2] = Buts[0][0][1][2] + m.Score2MT[1]; // Nombre de buts marqué au total à l'extérieur, seconde mi-temps
                 Buts[0][1][0][0] = Buts[0][1][0][0] + m.ScoreMT[1]; // Nombre de buts concédé au total à domicile, mi-temps
                 Buts[0][1][0][1] = Buts[0][1][0][1] + m.ScoreFT[1]; // Nombre de buts concédé au total à domicile, fin de match
+                Buts[0][1][0][2] = Buts[0][1][0][2] + m.Score2MT[1]; // Nombre de buts concédé au total à domicile, seconde mi-temps
                 Buts[0][1][1][0] = Buts[0][1][1][0] + m.ScoreMT[0]; // Nombre de buts concédé au total à l'extérieur, mi-temps
                 Buts[0][1][1][1] = Buts[0][1][1][1] + m.ScoreFT[0]; // Nombre de buts concédé au total à l'extérieur, fin de match
+                Buts[0][1][1][2] = Buts[0][1][1][2] + m.Score2MT[0]; // Nombre de buts concédé au total à l'extérieur, seconde mi-temps
 
                 if (m.IdEquipes[0] == match.IdEquipes[0])
                 {
                     Buts[1][0][0][0] = Buts[1][0][0][0] + m.ScoreMT[0]; // Nombre de buts marqué par l'équipe à domicile, mi-temps
                     Buts[1][0][0][1] = Buts[1][0][0][1] + m.ScoreFT[0]; // Nombre de buts marqué par l'équipe à domicile, fin de match
+                    Buts[1][0][0][2] = Buts[1][0][0][2] + m.Score2MT[0]; // Nombre de buts marqué par l'équipe à domicile, seconde mi-temps
                     Buts[1][1][0][0] = Buts[1][1][0][0] + m.ScoreMT[1]; // Nombre de buts concédé par l'équipe à domicile, mi-temps
                     Buts[1][1][0][1] = Buts[1][1][0][1] + m.ScoreFT[1]; // Nombre de buts concédé par l'équipe à domicile, fin de match
+                    Buts[1][1][0][2] = Buts[1][1][0][2] + m.Score2MT[1]; // Nombre de buts concédé par l'équipe à domicile, seconde mi-temps
                 }
                 else if (m.IdEquipes[1] == match.IdEquipes[1])
                 {
                     Buts[2][0][1][0] = Buts[2][0][1][0] + m.ScoreMT[1]; // Nombre de buts marqué par l'équipe à l'extérieur, mi-temps
                     Buts[2][0][1][1] = Buts[2][0][1][1] + m.ScoreFT[1]; // Nombre de buts marqué par l'équipe à l'extérieur, fin de match
+                    Buts[2][0][1][2] = Buts[2][0][1][2] + m.Score2MT[1]; // Nombre de buts marqué par l'équipe à l'extérieur, seconde mi-temps
                     Buts[2][1][1][0] = Buts[2][1][1][0] + m.ScoreMT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, mi-temps
                     Buts[2][1][1][1] = Buts[2][1][1][1] + m.ScoreFT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, fin de match
+                    Buts[2][1][1][2] = Buts[2][1][1][2] + m.Score2MT[0]; // Nombre de buts concédé par l'équipe à l'extérieur, seconde mi-temps
                 }
             }
-            
             return Buts;
         }
+
         static List<List<double>> ChargerCotes(Data data, int c, int s, Match match)
         {
             List<List<double>> Cotes = new List<List<double>>
